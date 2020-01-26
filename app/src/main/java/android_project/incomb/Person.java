@@ -10,7 +10,7 @@ abstract class Person {
     Person(String firstName, String lastName, String email) {
         setFirstName(firstName);
         setLastName(lastName);
-        setEmail(email);
+        setEmail(email); /// NEEN TO CHECK (Avraham)
     }
 
     //Getters and Setters
