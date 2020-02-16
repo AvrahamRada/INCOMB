@@ -20,11 +20,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
-    TextInputLayout mEmail,mPassword;
+    TextInputLayout mEmail, mPassword;
     Button mLoginBtn;
     TextView mCreateBtn;
     ProgressBar progressBar;
     FirebaseAuth fAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +35,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         findViewById(R.id.login_btn).setOnClickListener(this);
         findViewById(R.id.registration_btn).setOnClickListener(this);
 
-        mEmail = (TextInputLayout)findViewById(R.id.login_email);
-        mPassword = (TextInputLayout)findViewById(R.id.login_password);
+        mEmail = (TextInputLayout) findViewById(R.id.login_email);
+        mPassword = (TextInputLayout) findViewById(R.id.login_password);
         progressBar = findViewById(R.id.progressBar);
         fAuth = FirebaseAuth.getInstance();
     }
@@ -47,7 +48,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private boolean checkPassword(String password) {
-        int countChar = 0,countNum = 0,i;
+        int countChar = 0, countNum = 0, i;
         if (TextUtils.isEmpty(password) || (password.length() < 6))
             return false;
         for (i = 0; i < password.length(); i++) {
@@ -84,12 +85,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 String email = mEmail.getEditText().getText().toString().trim();
                 String password = mPassword.getEditText().getText().toString().trim();
 
-                if(TextUtils.isEmpty(email)){
+                if (TextUtils.isEmpty(email)) {
                     mEmail.setError("Email is Required.");
                     return;
                 }
 
-                if(!checkPassword(password)) {
+                if (!checkPassword(password)) {
                     mPassword.setError("Invalide Password (length >=6, A-Z,a-z,0-9).");
                     return;
                 }
@@ -97,18 +98,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 progressBar.setVisibility(View.VISIBLE);
 
                 // authenticate the user
-                fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        }else {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        } else {
                             Toast.makeText(Login.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             mPassword.setError("");
                             progressBar.setVisibility(View.GONE);
                         }
-
                     }
                 });
                 break;
