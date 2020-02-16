@@ -11,93 +11,115 @@
     <ImageView
         android:id="@+id/login_logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/incomb_srinke">
-    </ImageView>
+        android:paddingTop="20dp"
+        android:layout_height="100dp"
+        android:src="@drawable/incomb_srinke"></ImageView>
 
     // Email
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login to the system"
+        android:textColor="#D2388E3C"
+        android:textSize="15sp"
+        android:fontFamily="@font/exo_bold"
+        android:layout_marginBottom="50dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColorHint="@color/colorAccent"
+        android:layout_margin="5dp"
+        android:textColorHint="#FF0000"
+        app:boxBackgroundColor="#64AA69"
+        app:boxStrokeColor="#64AA69"
         app:counterEnabled="true"
+        android:fontFamily="@font/exo_bold"
         app:counterMaxLength="30"
-        app:errorEnabled="true"
-        android:layout_marginTop="5dp">
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:inputType="textEmailAddress"
-            android:maxLength="30"
-            android:textColor="#99000000"
-            android:textSize="22sp"
-            android:textStyle="bold"
             android:hint="Email"
-            android:ems="10">
+            android:inputType="textEmailAddress"
+            android:maxLength="31"
+            android:textColor="#64AA69"
+            android:fontFamily="@font/exo_bold"
+            android:textColorHighlight="#64AA69"
+            android:textColorLink="#64AA69"
+            android:textSize="16sp"
+            android:textStyle="bold">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     // Password
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColorHint="@color/colorAccent"
-        app:counterEnabled="true"
-        app:counterMaxLength="30"
-        app:errorEnabled="true"
-        android:layout_marginTop="5dp">
+        android:layout_margin="5dp"
+        android:textColorHint="#FF0000"
+        android:fontFamily="@font/exo_bold"
+        app:boxBackgroundColor="#64AA69"
+        app:boxStrokeColor="#64AA69"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:inputType="textPassword"
-            android:maxLength="30"
-            android:textColor="#99000000"
-            android:textSize="22sp"
-            android:textStyle="bold"
             android:hint="Password"
-            android:ems="10">
+            android:inputType="textPassword"
+            android:fontFamily="@font/exo_bold"
+            android:textColor="#64AA69"
+            android:textColorHighlight="#64AA69"
+            android:textColorLink="#64AA69"
+            android:textSize="16sp"
+            android:textStyle="bold">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/exo_bold"
+        android:background="@drawable/buttonshape"
+        android:paddingBottom="10dp"
+        android:text="Login"></Button>
+
+    <Button
+        android:id="@+id/registration_btn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:background="#00FFFFFF"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/exo_bold"
+        android:text=" New Here ?   Create Account "
+        android:textColor="#D2388E3C">
+    </Button>
 
-        <Button
-            android:id="@+id/registration_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Register"
-            android:background="@drawable/buttonshape"
-            android:layout_marginHorizontal="30dp"
-            android:layout_gravity="left">
-
-        </Button>
-
-        <Button
-            android:id="@+id/login_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Login"
-            android:background="@drawable/buttonshape">
-
-        </Button>
-
-
-    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_margin="5dp"
+        android:layout_gravity="center"/>
 </LinearLayout>

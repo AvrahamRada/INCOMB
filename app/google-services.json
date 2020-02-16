@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "323312016185",
+    "firebase_url": "https://incomb-79fdb.firebaseio.com",
+    "project_id": "incomb-79fdb",
+    "storage_bucket": "incomb-79fdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323312016185:android:abde9c1c303617dadfa6e8",
+        "android_client_info": {
+          "package_name": "android_project.incomb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323312016185-rc1873oqsf5l36u5fmm5rs49tna2s6ri.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android_project.incomb",
+            "certificate_hash": "07cca42944e9a7b1e649dd4097de0f75832e2362"
+          }
+        },
+        {
+          "client_id": "323312016185-7l8l77sqisku51odr585ohbbde9ft1be.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvXy5z2JhNP2_c3ku1codioJo1XqP4zDU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323312016185-7l8l77sqisku51odr585ohbbde9ft1be.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
