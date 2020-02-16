@@ -7,10 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
     TextInputLayout mEmail, mPassword;
-    Button mLoginBtn;
-    TextView mCreateBtn;
     ProgressBar progressBar;
     FirebaseAuth fAuth;
 
@@ -45,6 +40,37 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         Intent registrationActivityIntent = new Intent(this, Registration.class);
         startActivity(registrationActivityIntent);
         finish();
+    }
+    private void login() {
+        String email = mEmail.getEditText().getText().toString().trim();
+        String password = mPassword.getEditText().getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            mEmail.setError("Email is Required.");
+            return;
+        }
+
+        if (!checkPassword(password)) {
+            mPassword.setError("Invalide Password (length >=6, A-Z,a-z,0-9).");
+            return;
+        }
+        mPassword.setError("");
+        progressBar.setVisibility(View.VISIBLE);
+
+        // authenticate the user
+        fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } else {
+                    Toast.makeText(Login.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    mPassword.setError("");
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private boolean checkPassword(String password) {
@@ -82,35 +108,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_btn:
-                String email = mEmail.getEditText().getText().toString().trim();
-                String password = mPassword.getEditText().getText().toString().trim();
-
-                if (TextUtils.isEmpty(email)) {
-                    mEmail.setError("Email is Required.");
-                    return;
-                }
-
-                if (!checkPassword(password)) {
-                    mPassword.setError("Invalide Password (length >=6, A-Z,a-z,0-9).");
-                    return;
-                }
-                mPassword.setError("");
-                progressBar.setVisibility(View.VISIBLE);
-
-                // authenticate the user
-                fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        } else {
-                            Toast.makeText(Login.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            mPassword.setError("");
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
+                login();
                 break;
 
             case R.id.registration_btn:
