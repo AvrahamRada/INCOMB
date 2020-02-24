@@ -14,7 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:src="@drawable/incomb_srinke">
-
     </ImageView>
 
     <TextView
@@ -28,7 +27,7 @@
         android:textStyle="bold"
         android:textSize="15sp"
         android:layout_gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/registration_logo" />
+        app:layout_constraintTop_toBottomOf="@+id/registration_logo"/>
 
     <LinearLayout
         android:id="@+id/kind_of_user"
@@ -55,8 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/king_of_user_text"
-            android:textAlignment="center"
-            />
+            android:textAlignment="center"/>
     </LinearLayout>
 
     // Full Name
@@ -190,7 +188,6 @@
             android:layout_marginRight="5dp"
             android:text="Male"
             android:fontFamily="@font/exo_bold">
-
         </RadioButton>
 
         <RadioButton
@@ -200,7 +197,6 @@
             android:layout_marginRight="5dp"
             android:text="Female"
             android:fontFamily="@font/exo_bold">
-
         </RadioButton>
     </RadioGroup>
 
