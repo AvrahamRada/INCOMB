@@ -118,6 +118,7 @@
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
+    //Suitable
     <LinearLayout
         android:id="@+id/sutiable"
         android:layout_width="match_parent"
@@ -142,6 +143,90 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/suitable_text"
             android:textAlignment="center"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/priceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="What is the rent for it?"
+        android:fontFamily="@font/exo_bold"
+        android:textColor="#D2388E3C"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_gravity="center"/>
+
+    //Price
+    <LinearLayout
+        android:id="@+id/priceRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/hourly_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The hourly rate for renting mu place is"
+            android:fontFamily="@font/exo_bold"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/price"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_bold"
+            android:textStyle="bold"
+            android:text="Shekels"/>
+    </LinearLayout>
+
+    //Discount
+    <LinearLayout
+        android:id="@+id/discount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/checkbox_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I offer a discount of "/>
+
+            //android:onClick="onCheckboxClicked"
+        <EditText
+            android:id="@+id/discount_price"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="for more than"/>
+
+        <EditText
+            android:id="@+id/discount_hour"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="hours"/>
     </LinearLayout>
 
     <Button

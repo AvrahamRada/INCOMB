@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/cardview_light_background"
+    android:padding="30dp"
+    tools:context=".RentPlaceStepThree">
+
+    <ImageView
+        android:id="@+id/login_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/incomb_srinke"/>
+
+    <TextView
+        android:id="@+id/photo_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Upload photos of your place"
+        android:fontFamily="@font/exo_bold"
+        android:textColor="#D2388E3C"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/make_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="make sure the photos are in high-quality"
+        android:fontFamily="@font/exo_bold"
+        android:textColor="#D2388E3C"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_gravity="center"/>
+
+    // need to add an upload photo
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/finally_step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Finally, give your place a spicy name"
+        android:fontFamily="@font/exo_bold"
+        android:textColor="#D2388E3C"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/name_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="as it would show in the listing page"
+        android:fontFamily="@font/exo_bold"
+        android:textColor="#D2388E3C"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_gravity="center"/>
+
+    //Give a name
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColorHint="@color/colorAccent"
+        android:fontFamily="@font/exo_bold"
+        android:layout_marginTop="5dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="textPersonName"
+            android:maxLength="31"
+            android:textColor="#64AA69"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/exo_bold"
+            android:hint="Your place's name is..."
+            android:ems="10">
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/firstStep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/exo_bold"
+        android:background="@drawable/buttonshape"
+        android:layout_gravity="center">
+    </Button>
+
+
+</LinearLayout>
