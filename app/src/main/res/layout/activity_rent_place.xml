@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/cardview_light_background"
+    android:padding="30dp"
+    tools:context=".RentPlace">
+
+    <ImageView
+        android:id="@+id/login_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/incomb_srinke"/>
+
+    <TextView
+        android:id="@+id/openText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Let's get started listing your space"
+        android:fontFamily="@font/exo_bold"
+        android:textColor="#D2388E3C"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/tellUsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Tell us about the place you have"
+        android:fontFamily="@font/exo_bold"
+        android:textColor="#D2388E3C"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/place_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="I have a"
+            android:textSize="12dp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spinner_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/place_text"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/capacity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text=", that can host a maximum of"
+            android:textSize="12dp"
+            android:textStyle="bold"/>
+        //this is a number - need to find how to do it
+        <Spinner
+            android:id="@+id/spinner_capacity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/capacity_text"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/end_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="people"
+            android:textSize="12dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    //Location
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColorHint="@color/colorAccent"
+        android:fontFamily="@font/exo_bold"
+        android:layout_marginTop="5dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="textPersonName"
+            android:maxLength="31"
+            android:textColor="#64AA69"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/exo_bold"
+            android:hint="It's located in"
+            android:ems="10">
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/sutiable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/suitable_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="My place is suitable for"
+            android:textSize="18dp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spinner_suitable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/suitable_text"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/firstStep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/exo_bold"
+        android:background="@drawable/buttonshape"
+        android:layout_gravity="center">
+    </Button>
+
+
+    </LinearLayout>

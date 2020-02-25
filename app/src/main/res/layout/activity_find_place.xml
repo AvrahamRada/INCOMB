@@ -133,7 +133,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/registration"
+        android:id="@+id/finding_place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Find an Host"
