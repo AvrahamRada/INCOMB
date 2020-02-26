@@ -9,11 +9,15 @@ public class Guest extends Person {
     private Calendar dateOfTheActivity; //check how to save dates
 
     //constructor
-    public Guest(String firstName, String lastName, String email, String typeActivity, String location, Calendar dateOfTheActivity) {
-        super(firstName, lastName, email);
-        setTypeActivity(typeActivity);
-        setLocation(location);
-        setDateOfTheActivity(dateOfTheActivity);
+//    public Guest(String fullName, String email, String phoneNumber) {
+//        super(fullName, email, phoneNumber);
+//        setTypeActivity(typeActivity);
+//        setLocation(location);
+//        setDateOfTheActivity(dateOfTheActivity);
+//    }
+
+    public Guest() {
+        super();
     }
 
     //Getters and Setters

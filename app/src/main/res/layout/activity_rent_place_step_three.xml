@@ -97,7 +97,7 @@
         android:id="@+id/firstStep"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="Finish"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/exo_bold"
         android:background="@drawable/buttonshape"

@@ -18,9 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     TextInputLayout mFullName, mEmail, mPassword, mPhone;
+    String userType;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
 
@@ -32,8 +34,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
         //Spinner
         Spinner spinner = findViewById(R.id.columnSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.columns_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.columns_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
@@ -48,12 +49,15 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
         findViewById(R.id.move_to_sign_in).setOnClickListener(this);
         findViewById(R.id.registration).setOnClickListener(this);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         if (fAuth.getCurrentUser() != null) { // if current user is already present we dont want to re-create
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
-
     }
 
     @Override
@@ -87,10 +91,11 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         return ((ch >= '0') && (ch <= '9'));
     }
 
-
+    //Spinner - get the user type
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+        userType = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), userType, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -121,14 +126,26 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     private void registration() {
         final String email = mEmail.getEditText().getText().toString().trim();
         String password = mPassword.getEditText().getText().toString().trim();
+        final String name = mFullName.getEditText().getText().toString().trim();
+        final String phone = mPhone.getEditText().getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
             mEmail.setError("Email is Required.");
             return;
         }
 
+        if (TextUtils.isEmpty(name)) {
+            mEmail.setError("Name is Required.");
+            return;
+        }
+
         if (!checkPassword(password)) {
-            mPassword.setError("Invalide Password (length >=6, A-Z,a-z,0-9).");
+            mPassword.setError("Invalid Password (length >=6, A-Z,a-z,0-9).");
+            return;
+        }
+
+        if (phone.isEmpty() || phone.length() != 10) {
+            mPhone.setError("Invalid Phone number ");
             return;
         }
 
@@ -139,10 +156,33 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) { // User Created Successfully
-                    Toast.makeText(Registration.this, "User Created.", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                if(task.isSuccessful()){
+                    Person user = new Person(name,email,phone,userType);
+                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>(){
 
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            progressBar.setVisibility(View.GONE);
+                            if (task.isSuccessful()) {// User Created Successfully
+                                Toast.makeText(Registration.this, "User Created.", Toast.LENGTH_SHORT).show();
+                                //by the type the user, we send him to the right activity
+                                switch(userType){
+                                    case "Fest":
+                                        startActivity(new Intent(getApplicationContext(), FindPlaceActivity.class));
+                                        break;
+                                    case "Guest":
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        break;
+                                    case "Host":
+                                        startActivity(new Intent(getApplicationContext(), RentPlace.class));
+                                        break;
+                                }
+                            } else {
+                                //display a failure message
+                                Toast.makeText(Registration.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
                 } else {
                     Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     mPassword.setError("");
@@ -151,6 +191,4 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             }
         });
     }
-
-
 }

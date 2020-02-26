@@ -12,13 +12,17 @@ public class Fest extends Person {
     private Calendar dateOfTheActivity; //check how to save dates
 
     //constructor
-    public Fest(String firstName, String lastName, String email, String typeActivity, String space, String location, int amountOfGuest, Calendar dateOfTheActivity) throws IOException {
-        super(firstName, lastName, email);
-        setTypeActivity(typeActivity);
-        setSpace(space);
-        setLocation(location);
-        setAmountOfGuest(amountOfGuest);
-        setDateOfTheActivity(dateOfTheActivity);
+//    public Fest(String fullName, String email, String phoneNumber) /*throws IOException*/ {
+//        super(fullName, email, phoneNumber);
+//        setTypeActivity(typeActivity);
+//        setSpace(space);
+//        setLocation(location);
+//        setAmountOfGuest(amountOfGuest);
+//        setDateOfTheActivity(dateOfTheActivity);
+//    }
+
+    public Fest() {
+        super();
     }
 
     //Getters and Setters

@@ -19,15 +19,22 @@ public class Host extends Person {
     private enum typeOfActivities {yoga,lecture,socialAction};
     private enum typeOfSpaces {bar,studio,houseLivingRoom,openSpace};
 
-    Host(String firstName, String lastName, String email) {
-        super(firstName, lastName, email);
-        setLocation(location);
-        setAmountOfGuest(amountOfGuest);
-        setYourNameForThePlace(yourNameForThePlace);
-        setRent(rent);
-        setTypeOfActivity(typeOfActivity);
+
+    //constructor
+//    public Host(String fullName, String email, String phoneNumber) {
+//        super(fullName, email, phoneNumber);
+//        setLocation(location);
+//        setAmountOfGuest(amountOfGuest);
+//        setYourNameForThePlace(yourNameForThePlace);
+//        setRent(rent);
+//        setTypeOfActivity(typeOfActivity);
+//    }
+
+    public Host() {
+        super();
     }
 
+    //Getters and Setters
     private void setTypeOfActivity(typeOfActivities typeOfActivity) {
         this.typeOfActivity = (typeOfActivities)typeOfActivity;
     }

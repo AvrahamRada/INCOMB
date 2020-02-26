@@ -1,33 +1,31 @@
 package android_project.incomb;
 
-abstract class Person {
+public class Person {
     // attributes
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String email;
+    private String phoneNumber;
+    private type typeUser;
+    private enum type {Fest,Guest,Host};
 
     //constructor
-    Person(String firstName, String lastName, String email) {
-        setFirstName(firstName);
-        setLastName(lastName);
+    Person(String fullName, String email, String phoneNumber, String type) {
+        setFullName(fullName);
         setEmail(email); /// NEEN TO CHECK (Avraham)
+        setPhoneNumber(phoneNumber);
+        setTypeUser(type);
+    }
+
+    public Person() {
     }
 
     //Getters and Setters
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    private void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    private void setLastName(String lastName) {
-        this.lastName = lastName;
+    private void setFullName(String firstName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -37,4 +35,12 @@ abstract class Person {
     private void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPhoneNumber() { return phoneNumber; }
+
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber;}
+
+    public type getTypeUser() { return typeUser; }
+
+    public void setTypeUser(String typeUser) {this.typeUser = type.valueOf(typeUser); }
 }

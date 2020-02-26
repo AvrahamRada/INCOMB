@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
     TextInputLayout mEmail, mPassword;
+    String userType, Phone;
     ProgressBar progressBar;
     FirebaseAuth fAuth;
 
@@ -51,13 +52,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
 
         if (!checkPassword(password)) {
-            mPassword.setError("Invalide Password (length >=6, A-Z,a-z,0-9).");
+            mPassword.setError("Invalid Password (length >=6, A-Z,a-z,0-9).");
             return;
         }
         mPassword.setError("");
         progressBar.setVisibility(View.VISIBLE);
 
         // authenticate the user
+        // need to get the type from firebase and go to the right activity
         fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
