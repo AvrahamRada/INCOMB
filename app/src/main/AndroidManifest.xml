@@ -15,6 +15,7 @@
         <activity android:name=".RentPlaceCalendar" />
         <activity android:name=".RentPlaceStepTwo" />
         <activity android:name=".RentPlace" />
+        <activity android:name=".FindPlaceActivity"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".Login" />
         <activity android:name=".Registration" />

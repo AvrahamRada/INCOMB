@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -15,6 +16,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
     TextInputLayout mEmail, mPassword;
@@ -65,7 +72,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    onAuthSuccess(task.getResult().getUser());
+                    //startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 } else {
                     Toast.makeText(Login.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     mPassword.setError("");
@@ -73,6 +81,33 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 }
             }
         });
+    }
+
+    private void onAuthSuccess(FirebaseUser user) {
+        if (user != null) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("typeUser");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String type = dataSnapshot.getValue(String.class);
+                    switch(type){
+                        case "Fest":
+                            startActivity(new Intent(getApplicationContext(), FindPlaceActivity.class));
+                            break;
+                        case "Guest":
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            break;
+                        case "Host":
+                            startActivity(new Intent(getApplicationContext(), RentPlace.class));
+                            break;
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    //Log.d(TAG, databaseError.getMessage());
+                }
+            });
+        }
     }
 
     private boolean checkPassword(String password) {
