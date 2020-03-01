@@ -1,9 +1,6 @@
 package android_project.incomb;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
@@ -12,16 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+public class RentPlace extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-public class RentPlace extends AppCompatActivity {
-
-    private TextInputEditText mCapacity,mLocation,mPrice,mDisPrice, mDishour;
+    private TextInputEditText mCapacity,mPrice,mDisPrice, mDishour;
+    private TextInputLayout mLocation;
+    private String sPlace, sSuitable;
     private FirebaseAuth fAuth;
     private Button button;
     private Geocoder geoCoder;
@@ -33,38 +31,34 @@ public class RentPlace extends AppCompatActivity {
         getSupportActionBar().hide();
 
         mCapacity = (TextInputEditText) findViewById(R.id.capacity);
-        mLocation = (TextInputEditText) findViewById(R.id.Location);
+        mLocation = (TextInputLayout) findViewById(R.id.Location);
         mPrice = (TextInputEditText) findViewById(R.id.price);
         mDisPrice = (TextInputEditText) findViewById(R.id.discount_price);
         mDishour = (TextInputEditText) findViewById(R.id.discount_hour);
         button = (Button) findViewById(R.id.firstStep);
 
         //spinner-place
-        Spinner placeSpin = findViewById(R.id.columnSpinner);
+        Spinner placeSpin = findViewById(R.id.spinner_place);
         ArrayAdapter<CharSequence> adapterPlace = ArrayAdapter.createFromResource(this, R.array.spinner_place, android.R.layout.simple_spinner_item);
         adapterPlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         placeSpin.setAdapter(adapterPlace);
-        placeSpin.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        placeSpin.setOnItemSelectedListener(this);
 
         //spinner-suitable 'need to check how to do a multiple spinner'
         //https://stackoverflow.com/questions/5015686/android-spinner-with-multiple-choice
-        Spinner suitableSpin = findViewById(R.id.columnSpinner);
+        Spinner suitableSpin = findViewById(R.id.spinner_suitable);
         ArrayAdapter<CharSequence> adapterSuitable = ArrayAdapter.createFromResource(this, R.array.spinner_suitable, android.R.layout.simple_spinner_item);
         adapterSuitable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         suitableSpin.setAdapter(adapterSuitable);
-        suitableSpin.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        suitableSpin.setOnItemSelectedListener(this);
 
         //String locationHost =  mLocation.getText().toString();
         //findLocation(locationHost);
-
-
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextStep();
-
             }
         });
     }
@@ -73,6 +67,28 @@ public class RentPlace extends AppCompatActivity {
         Intent nextStep = new Intent(this, RentPlaceCalendar.class);
         startActivity(nextStep);
         finish();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Spinner spinner = (Spinner) parent;
+        if(spinner.getId() == R.id.spinner_place){
+            sPlace = parent.getItemAtPosition(position).toString();
+        }
+        else if(spinner.getId() == R.id.spinner_suitable){
+            sSuitable = parent.getItemAtPosition(position).toString();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    // need to check it like registration
+    @Override
+    public void onClick(View v) {
+
     }
 
 //    public void findLocation(String location){

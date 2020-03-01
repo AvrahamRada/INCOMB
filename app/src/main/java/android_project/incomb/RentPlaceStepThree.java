@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -38,7 +39,7 @@ public class RentPlaceStepThree extends AppCompatActivity {
     private ImageView mImageView;
     private ProgressBar mProgressBar;
 
-    private TextInputEditText mName;
+    private TextInputLayout mName;
 
     private Uri mImageUri;
 
@@ -53,7 +54,7 @@ public class RentPlaceStepThree extends AppCompatActivity {
         button = (Button) findViewById(R.id.thirdStep);
         mButtonAddPhoto = (Button) findViewById(R.id.add_photo);
         mImageView = findViewById(R.id.image_view);
-        mName = (TextInputEditText) findViewById(R.id.name_location);
+        mName = (TextInputLayout) findViewById(R.id.name_location);
         mProgressBar = findViewById(R.id.progress_bar);
 
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads");

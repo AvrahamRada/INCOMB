@@ -171,7 +171,7 @@
             android:id="@+id/hourly_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="The hourly rate for renting mu place is"
+            android:text="The hourly rate for renting my place is"
             android:fontFamily="@font/exo_bold"
             android:textStyle="bold"/>
 

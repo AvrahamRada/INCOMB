@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="android_project.incomb">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,9 +10,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        tools:replace="android:supportsRtl"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".RentPlaceStepThree"></activity>
+        <activity android:name=".RentPlaceStepThree"/>
         <activity android:name=".RentPlaceCalendar" />
         <activity android:name=".RentPlaceStepTwo" />
         <activity android:name=".RentPlace" />
