@@ -26,10 +26,44 @@
         android:textSize="20sp"
         android:layout_gravity="center"/>
 
-    //need to fill in the tick box
+    <CheckBox
+        android:id="@+id/checkbox_kitchen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="kitchen"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wifi"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_yoga"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Yoga mats"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_toilet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toilet access"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tables and chairs"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_sink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A sink"/>
 
     <Button
-        android:id="@+id/firstStep"
+        android:id="@+id/secondStep"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Next"

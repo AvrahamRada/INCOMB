@@ -72,11 +72,12 @@
             android:text=", that can host a maximum of"
             android:textSize="12dp"
             android:textStyle="bold"/>
-        //this is a number - need to find how to do it
-        <Spinner
-            android:id="@+id/spinner_capacity"
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/capacity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:layout_toRightOf="@id/capacity_text"
             android:textAlignment="center"/>
 
@@ -174,7 +175,7 @@
             android:fontFamily="@font/exo_bold"
             android:textStyle="bold"/>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/price"
             android:inputType="number"
             android:layout_width="wrap_content"
@@ -203,8 +204,7 @@
             android:layout_height="wrap_content"
             android:text="I offer a discount of "/>
 
-            //android:onClick="onCheckboxClicked"
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/discount_price"
             android:inputType="number"
             android:layout_width="wrap_content"
@@ -216,7 +216,7 @@
             android:textStyle="bold"
             android:text="for more than"/>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/discount_hour"
             android:inputType="number"
             android:layout_width="wrap_content"
@@ -240,5 +240,4 @@
         android:layout_gravity="center">
     </Button>
 
-
-    </LinearLayout>
+</LinearLayout>

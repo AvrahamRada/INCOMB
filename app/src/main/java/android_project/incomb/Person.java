@@ -1,6 +1,6 @@
 package android_project.incomb;
 
-public class Person {
+public class Person{
     // attributes
     private String fullName;
     private String email;

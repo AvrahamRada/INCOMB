@@ -68,7 +68,6 @@ public class Host extends Person {
     }
     private void setRent(double rent) {
         this.rent = rent;
-
     }
 
     private boolean setAmountOfGuest(int amountOfGuest) {

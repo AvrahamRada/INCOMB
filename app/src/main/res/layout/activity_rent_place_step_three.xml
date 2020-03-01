@@ -40,8 +40,27 @@
 
     // need to add an upload photo
     <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_below="@id/photo_upload"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/add_photo"
+        android:layout_width="72dp"
+        android:layout_height="34dp"
+        android:layout_toEndOf="@+id/choose_photo"
+        android:fontFamily="@font/exo_bold"
+        android:text="add"
+        android:textSize="10dp" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:nextFocusRight="@id/add_photo" />
 
     <TextView
         android:id="@+id/finally_step"
@@ -94,7 +113,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/firstStep"
+        android:id="@+id/thirdStep"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Finish"

@@ -21,10 +21,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
-    TextInputLayout mFullName, mEmail, mPassword, mPhone;
-    String userType;
-    FirebaseAuth fAuth;
-    ProgressBar progressBar;
+    private TextInputLayout mFullName, mEmail, mPassword, mPhone;
+    private String userType;
+    private FirebaseAuth fAuth;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,9 +156,9 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Person user = new Person(name,email,phone,userType);
-                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>(){
+                if (task.isSuccessful()) {
+                    Person user = new Person(name, email, phone, userType);
+                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
 
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -166,15 +166,18 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                             if (task.isSuccessful()) {// User Created Successfully
                                 Toast.makeText(Registration.this, "User Created.", Toast.LENGTH_SHORT).show();
                                 //by the type the user, we send him to the right activity
-                                switch(userType){
+                                switch (userType) {
                                     case "Fest":
                                         startActivity(new Intent(getApplicationContext(), FindPlaceActivity.class));
+                                        finish();
                                         break;
                                     case "Guest":
                                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        finish();
                                         break;
                                     case "Host":
                                         startActivity(new Intent(getApplicationContext(), RentPlace.class));
+                                        finish();
                                         break;
                                 }
                             } else {

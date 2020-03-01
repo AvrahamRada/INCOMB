@@ -7,4 +7,17 @@
         <item>Host</item>
     </string-array>
 
+    <string-array name="spinner_place">
+        <item>Bar</item>
+        <item>Studio</item>
+        <item>Living Room</item>
+        <item>Open Space</item>>
+    </string-array>
+
+    <string-array name="spinner_suitable">
+        <item>Lecture</item>
+        <item>Social Action</item>
+        <item>Yoga</item>
+    </string-array>
+
 </resources>

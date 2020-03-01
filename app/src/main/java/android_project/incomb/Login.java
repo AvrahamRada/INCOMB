@@ -24,10 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
-    TextInputLayout mEmail, mPassword;
-    String userType, Phone;
-    ProgressBar progressBar;
-    FirebaseAuth fAuth;
+    private TextInputLayout mEmail, mPassword;
+    private ProgressBar progressBar;
+    private FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         startActivity(registrationActivityIntent);
         finish();
     }
+
     private void login() {
         String email = mEmail.getEditText().getText().toString().trim();
         String password = mPassword.getEditText().getText().toString().trim();
@@ -90,18 +90,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String type = dataSnapshot.getValue(String.class);
-                    switch(type){
+                    switch (type) {
                         case "Fest":
                             startActivity(new Intent(getApplicationContext(), FindPlaceActivity.class));
+                            finish();
                             break;
                         case "Guest":
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
                             break;
                         case "Host":
                             startActivity(new Intent(getApplicationContext(), RentPlace.class));
+                            finish();
                             break;
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     //Log.d(TAG, databaseError.getMessage());
