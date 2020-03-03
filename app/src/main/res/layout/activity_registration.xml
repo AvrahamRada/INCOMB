@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/cardview_light_background"
-    tools:context=".Registration"
+    tools:context=".activites.Start.RegistrationActivity"
     android:padding="30dp">
 
     <ImageView

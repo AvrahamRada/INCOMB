@@ -27,6 +27,11 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.function.Consumer;
+
+import android_project.incomb.entities.Upload;
+import android_project.incomb.activites.Start.LoginActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mButtonChooseImage = findViewById(R.id.choose_photo);
         mButtonUpload = findViewById(R.id.photo_upload);
         mImageView = findViewById(R.id.image_view);
@@ -98,8 +102,23 @@ public class MainActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+
     private void uploadFile() {
+        /*
+        * upload places to firestore w/out images
+        * get id
+        * upload images to firestorage under id folder
+        * foreach image uploaded: get its url -> update place/images array
+        *
+        * uploadPalce(){
+        *
+        *   onsucess{
+        *       uploadImages(url -> updateImage(placeId, url))
+        *   }
+        * */
         if (mImageUri != null) {
+            //Consumer<String> consumer;
+            //consumer.accept(url);
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
             mUploadTask = fileReference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -135,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout
-        startActivity(new Intent(getApplicationContext(), Login.class));
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
     }
 }

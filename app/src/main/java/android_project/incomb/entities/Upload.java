@@ -1,4 +1,4 @@
-package android_project.incomb;
+package android_project.incomb.entities;
 
 public class Upload {
     // attributes

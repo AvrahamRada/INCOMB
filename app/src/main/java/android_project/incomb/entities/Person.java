@@ -1,4 +1,4 @@
-package android_project.incomb;
+package android_project.incomb.entities;
 
 public class Person{
     // attributes
@@ -9,7 +9,7 @@ public class Person{
     private enum type {Fest,Guest,Host};
 
     //constructor
-    Person(String fullName, String email, String phoneNumber, String type) {
+    public Person(String fullName, String email, String phoneNumber, String type) {
         setFullName(fullName);
         setEmail(email); /// NEEN TO CHECK (Avraham)
         setPhoneNumber(phoneNumber);
@@ -24,7 +24,7 @@ public class Person{
         return fullName;
     }
 
-    private void setFullName(String firstName) {
+    private void setFullName(String fullName) {
         this.fullName = fullName;
     }
 

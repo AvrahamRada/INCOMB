@@ -1,4 +1,4 @@
-package android_project.incomb;
+package android_project.incomb.activites.Start;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,12 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -22,8 +23,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class Login extends AppCompatActivity implements View.OnClickListener {
+import android_project.incomb.activites.Fest.FindPlaceActivity;
+import android_project.incomb.MainActivity;
+import android_project.incomb.R;
+import android_project.incomb.activites.Host.RentPlaceActivity;
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private TextInputLayout mEmail, mPassword;
     private ProgressBar progressBar;
     private FirebaseAuth fAuth;
@@ -32,7 +40,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
 
         findViewById(R.id.login_btn).setOnClickListener(this);
         findViewById(R.id.registration_btn).setOnClickListener(this);
@@ -44,7 +51,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void registration() {
-        Intent registrationActivityIntent = new Intent(this, Registration.class);
+        Intent registrationActivityIntent = new Intent(this, RegistrationActivity.class);
         startActivity(registrationActivityIntent);
         finish();
     }
@@ -71,11 +78,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+
                     onAuthSuccess(task.getResult().getUser());
                     //startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 } else {
-                    Toast.makeText(Login.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     mPassword.setError("");
                     progressBar.setVisibility(View.GONE);
                 }
@@ -85,32 +93,30 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private void onAuthSuccess(FirebaseUser user) {
         if (user != null) {
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("typeUser");
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String type = dataSnapshot.getValue(String.class);
-                    switch (type) {
-                        case "Fest":
-                            startActivity(new Intent(getApplicationContext(), FindPlaceActivity.class));
-                            finish();
-                            break;
-                        case "Guest":
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                            break;
-                        case "Host":
-                            startActivity(new Intent(getApplicationContext(), RentPlace.class));
-                            finish();
-                            break;
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    //Log.d(TAG, databaseError.getMessage());
-                }
-            });
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(user.getUid())
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        String userType = (String) documentSnapshot.get("typeUser");
+                        switch (userType) {
+                            case "Fest":
+                                startActivity(new Intent(getApplicationContext(), FindPlaceActivity.class));
+                                finish();
+                                break;
+                            case "Guest":
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                finish();
+                                break;
+                            case "Host":
+                                startActivity(new Intent(getApplicationContext(), RentPlaceActivity.class));
+                                finish();
+                                break;
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        //to do handle failure
+                    });
         }
     }
 

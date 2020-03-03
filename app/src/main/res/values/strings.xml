@@ -20,4 +20,14 @@
         <item>Yoga</item>
     </string-array>
 
+    <string-array name="spinner_activity">
+        <item>Lecture</item>
+        <item>Social Action</item>
+        <item>Yoga</item>
+    </string-array>
+
+    <!-- TO DO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_maps_token">AIzaSyCMX_vZVVWnrqkFhpRCuG1drv5aXeDcvqc</string>
+
 </resources>

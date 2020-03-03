@@ -3,48 +3,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/cardview_light_background"
+    android:orientation="vertical"
     android:padding="30dp"
-    tools:context=".RentPlaceStepThree">
-
-    <ImageView
-        android:id="@+id/login_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:src="@drawable/incomb_srinke"/>
+    tools:context=".activites.Host.RentPlaceActivity">
 
     <TextView
         android:id="@+id/photo_upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:text="Upload photos of your place"
         android:fontFamily="@font/exo_bold"
+        android:text="Upload photos of your place"
         android:textColor="#D2388E3C"
-        android:textStyle="bold"
         android:textSize="20sp"
-        android:layout_gravity="center"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/make_sure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:text="make sure the photos are in high-quality"
         android:fontFamily="@font/exo_bold"
+        android:text="make sure the photos are in high-quality"
         android:textColor="#D2388E3C"
-        android:textStyle="bold"
         android:textSize="15sp"
-        android:layout_gravity="center"/>
+        android:textStyle="bold" />
 
     // need to add an upload photo
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_below="@id/photo_upload"
-        android:layout_marginTop="16dp" />
+    <!--    <ImageView-->
+    <!--        android:id="@+id/image_view"-->
+    <!--        android:layout_width="80dp"-->
+    <!--        android:layout_height="80dp"-->
+    <!--        android:layout_below="@id/photo_upload"-->
+    <!--        android:layout_marginTop="16dp" />-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="7dp">
+
+            <ImageView
+                android:id="@+id/add_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/add_icon" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/images_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/photo_upload"
+            tools:listitem="@layout/image_item" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/add_photo"
@@ -66,62 +89,61 @@
         android:id="@+id/finally_step"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:text="Finally, give your place a spicy name"
         android:fontFamily="@font/exo_bold"
+        android:text="Finally, give your place a spicy name"
         android:textColor="#D2388E3C"
-        android:textStyle="bold"
         android:textSize="20sp"
-        android:layout_gravity="center"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/name_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:text="as it would show in the listing page"
         android:fontFamily="@font/exo_bold"
+        android:text="as it would show in the listing page"
         android:textColor="#D2388E3C"
-        android:textStyle="bold"
         android:textSize="15sp"
-        android:layout_gravity="center"/>
+        android:textStyle="bold" />
 
     //Give a name
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColorHint="@color/colorAccent"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/exo_bold"
-        android:layout_marginTop="5dp">
+        android:textColorHint="@color/colorAccent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:fontFamily="@font/exo_bold"
+            android:hint="Your place's name is..."
             android:inputType="textPersonName"
             android:maxLength="31"
             android:textColor="#64AA69"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/exo_bold"
-            android:hint="Your place's name is..."
-            android:ems="10">
-        </com.google.android.material.textfield.TextInputEditText>
+            android:textStyle="bold"></com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/thirdStep"
+        android:id="@+id/finishPlace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Finish"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/exo_bold"
         android:background="@drawable/buttonshape"
-        android:layout_gravity="center">
-    </Button>
+        android:fontFamily="@font/exo_bold"
+        android:text="Finish"></Button>
 
 
 </LinearLayout>

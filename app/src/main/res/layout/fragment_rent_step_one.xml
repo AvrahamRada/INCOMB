@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
+    android:orientation="vertical"
+    android:padding="30dp"
+    tools:context=".activites.Host.RentPlaceActivity">
+
+    <TextView
+        android:id="@+id/openText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/exo_bold"
+        android:text="Let's get started listing your space"
+        android:textColor="#D2388E3C"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tellUsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/exo_bold"
+        android:text="Tell us about the place you have"
+        android:textColor="#D2388E3C"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/place_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/exo_bold"
+            android:text="I have a"
+            android:textSize="13dp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner_place"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:textColor="#000" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/capacity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="maximum people to host"
+            android:textSize="13dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/capacity"
+            android:textColor="#000"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"/>
+
+    </LinearLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/exo_bold"
+        android:textColorHint="@color/colorAccent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/exo_bold"
+            android:hint="It's located in"
+            android:inputType="textPersonName"
+            android:maxLength="31"
+            android:textColor="#64AA69"
+            android:textSize="16sp"
+            android:textStyle="bold"></com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    //Suitable
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/suitable_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="My place is suitable for"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner_suitable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:textColor="#000" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/priceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/exo_bold"
+        android:text="What is the rent for it?"
+        android:textColor="#D2388E3C"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    //Price
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/hourly_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="The hourly rate for renting my place is"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/price"
+            android:textColor="#000"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="Shekels"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    //Discount
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/checkbox_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="I offer a discount of"
+            android:textSize="11dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/discount_price"
+            android:textColor="#000"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="for more than"
+            android:textSize="11dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/discount_hour"
+            android:textColor="#000"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/exo_bold"
+            android:text="hours"
+            android:textSize="11dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/firstStep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonshape"
+        android:fontFamily="@font/exo_bold"
+        android:text="Next"></Button>
+
+</LinearLayout>

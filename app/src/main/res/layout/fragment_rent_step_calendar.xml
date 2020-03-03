@@ -6,13 +6,7 @@
     android:orientation="vertical"
     android:background="@color/cardview_light_background"
     android:padding="30dp"
-    tools:context=".RentPlaceCalendar">
-
-    <ImageView
-        android:id="@+id/login_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:src="@drawable/incomb_srinke"/>
+    tools:context=".activites.Host.RentPlaceActivity">
 
     <TextView
         android:id="@+id/openText"
