@@ -28,9 +28,8 @@ public class RentStepFourFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private final IRentActivity activity;
-    private Button button, mButtonAddPhoto;
-    private ImageView mImageView;
-    private ProgressBar mProgressBar;
+    private Button button;
+    private TextInputLayout mPlaceName;
     private RecyclerView imagesRecyclerView;
     private ImagesAdapter imagesAdapter;
     private ImageView addImage;
@@ -50,10 +49,8 @@ public class RentStepFourFragment extends Fragment {
 
     private void findViews(View view) {
         button = (Button) view.findViewById(R.id.finishPlace);
-        mButtonAddPhoto = (Button) view.findViewById(R.id.add_photo);
-        mImageView = view.findViewById(R.id.image_view);
+        mPlaceName = (TextInputLayout) view.findViewById(R.id.name_location);
         mName = (TextInputLayout) view.findViewById(R.id.name_location);
-        mProgressBar = view.findViewById(R.id.progress_bar);
         imagesRecyclerView = view.findViewById(R.id.images_recyclerview);
         addImage = view.findViewById(R.id.add_image);
     }
@@ -66,7 +63,7 @@ public class RentStepFourFragment extends Fragment {
         setRecyclerView();
         setAddImage();
         button.setOnClickListener(v -> {
-            activity.setFourData();
+            activity.setFourData(mPlaceName.getEditText().getText().toString());
         });
         return view;
     }

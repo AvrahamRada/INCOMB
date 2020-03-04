@@ -14,24 +14,24 @@
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
         <activity android:name=".activites.Guest.FindEventActivity"/>
-        <activity android:name=".activites.Host.RentPlaceActivity"/>
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-        <activity android:name=".activites.Fest.FindPlaceActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".activites.Start.LoginActivity" />
-        <activity android:name=".activites.Start.RegistrationActivity" />
-        <activity android:name=".activites.Start.SplashScreen">
+        <activity android:name=".activites.Host.RentPlaceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activites.Fest.FindPlaceActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".activites.Start.LoginActivity" />
+        <activity android:name=".activites.Start.RegistrationActivity" />
+        <activity android:name=".activites.Start.SplashScreen"/>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <meta-data
             android:name="preloaded_fonts"

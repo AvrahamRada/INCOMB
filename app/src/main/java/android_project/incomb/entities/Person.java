@@ -11,7 +11,7 @@ public class Person{
     //constructor
     public Person(String fullName, String email, String phoneNumber, String type) {
         setFullName(fullName);
-        setEmail(email); /// NEEN TO CHECK (Avraham)
+        setEmail(email);
         setPhoneNumber(phoneNumber);
         setTypeUser(type);
     }

@@ -17,6 +17,30 @@ public class Amenities {
         this.sink = false;
     }
 
+    public boolean isKitchen() {
+        return kitchen;
+    }
+
+    public boolean isWifi() {
+        return wifi;
+    }
+
+    public boolean isYoga() {
+        return yoga;
+    }
+
+    public boolean isToilet() {
+        return toilet;
+    }
+
+    public boolean isTable() {
+        return table;
+    }
+
+    public boolean isSink() {
+        return sink;
+    }
+
     public void updateAmenities(String string, boolean check){
         switch (string) {
             case "kitchen":

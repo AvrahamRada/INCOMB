@@ -5,7 +5,7 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.ArrayList;
 
 public class Place {
-
+    // attributes
     private GeoPoint location; // Physical location
     private int amountOfGuest;
     private typeOfActivities activityType; // yoga, lecture or Social Action
@@ -16,8 +16,8 @@ public class Place {
     private ArrayList<String> idGuest;
     private Amenities amenities;
 
-    private enum typeOfActivities {yoga,lecture,socialAction};
-    private enum typeOfSpaces {bar,studio,houseLivingRoom,openSpace};
+    private enum typeOfActivities {Yoga,Lecture,SocialAction};
+    private enum typeOfSpaces {Bar,Studio,LivingRoom,OpenSpace};
 
     //Constructor
     public Place() {

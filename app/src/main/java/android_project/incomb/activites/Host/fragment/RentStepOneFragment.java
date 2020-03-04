@@ -1,5 +1,6 @@
 package android_project.incomb.activites.Host.fragment;
 
+import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
@@ -11,11 +12,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.GeoPoint;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.IRentActivity;
@@ -24,9 +31,11 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
     private final IRentActivity activity;
     private EditText mCapacity, mPrice, mDisPrice, mDishour;
     private TextInputLayout mLocation;
-    private String sPlace, sSuitable;
     private Button button;
-    private Geocoder geoCoder;
+    private GeoPoint geoPoint;
+    private CheckBox chDiscount;
+
+    private String sPlace, sSuitable, sCapacity, sPrice, sDisPrice, sDishour;
 
     public RentStepOneFragment(IRentActivity activity) {
         this.activity = activity;
@@ -43,6 +52,7 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         mPrice = (EditText) view.findViewById(R.id.price);
         mDisPrice = (EditText) view.findViewById(R.id.discount_price);
         mDishour = (EditText) view.findViewById(R.id.discount_hour);
+        chDiscount = (CheckBox) view.findViewById(R.id.checkbox_discount);
         button = (Button) view.findViewById(R.id.firstStep);
 
         //spinner-place
@@ -67,33 +77,36 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         View view = inflater.inflate(R.layout.fragment_rent_step_one, container, false);
         findViews(view);
         button.setOnClickListener(v -> {
-            //MyData data = fetchData();
-            activity.setFirstData(mCapacity.getText().toString(),mPrice.getText().toString(),sPlace,sSuitable);
+            getDatafromUser();
+            activity.setFirstData(sCapacity,sPrice,sPlace,sSuitable, geoPoint);
+            //activity.setFirstData(sCapacity,sPrice,sPlace,sSuitable, geoPoint, sDisPrice, sDishour);
         });
         return view;
     }
 
-//    private MyData fetchData(){
-//        MyData data = new MyData();
-//       // data.capacity = mCapacity.getText().toString();
-//        //data.
-//        return data;
-//    }
-//
-//    public class MyData{
-//        //String
-//        //int
-//    }
+    private void getDatafromUser() {
+        sCapacity = mCapacity.getText().toString();
+        sPrice = mPrice.getText().toString();
+        geoPoint = getLocationFromAddress(mLocation.getEditText().getText().toString());
+        if(chDiscount.isChecked()){
+            sDisPrice = mDisPrice.getText().toString();
+            sDishour = mDishour.getText().toString();
+        }
+        else{
+            sDisPrice = "0";
+            sDishour = "0";
+        }
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Spinner spinner = (Spinner) parent;
         switch (spinner.getId()) {
             case R.id.spinner_place:
-                sPlace = parent.getItemAtPosition(position).toString();
+                sPlace = parent.getItemAtPosition(position).toString().replaceAll(" ","");
                 break;
             case R.id.spinner_suitable:
-                sSuitable = parent.getItemAtPosition(position).toString();
+                sSuitable = parent.getItemAtPosition(position).toString().replaceAll(" ","");
                 break;
         }
     }
@@ -101,5 +114,24 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public GeoPoint getLocationFromAddress(String strAddress) {
+        Geocoder coder = new Geocoder(getContext());
+        List<Address> address;
+        GeoPoint p1 = null;
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null)
+                return null;
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+            //p1 = new GeoPoint((double) (location.getLatitude() * 1E6), (double) (location.getLongitude() * 1E6));
+            p1 = new GeoPoint((double) (location.getLatitude()), (double) (location.getLongitude()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return p1;
     }
 }

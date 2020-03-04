@@ -47,8 +47,8 @@ public class RentStepTwoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rent_step_two, container, false);
         findViews(view);
-        isCheck();
         button.setOnClickListener(v -> {
+            isCheck();
             activity.setTwoData(hmap);
         });
         return view;

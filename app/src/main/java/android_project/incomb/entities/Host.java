@@ -10,7 +10,7 @@ import java.util.LinkedList;
 public class Host extends Person {
 
     private ArrayList<Place> listOfPlaces;
-    private ArrayList<Host> list;
+    //private ArrayList<Host> list;
     private LinkedList<ReservationsTimes> reservationsTimes; // in "ReservationsTimes" there will be start & end time (2 attributes)
     private ArrayList<PictureDrawable> arrOfAllPic; // need more thinking.....
 
@@ -28,8 +28,7 @@ public class Host extends Person {
         super();
     }
 
-//    public void addPlace(GeoPoint location, int amountOfGuest, String typeOfActivity, String space, double rent, String yourNameForThePlace){
-//        Place newPlace = new Place(location,amountOfGuest,typeOfActivity,space,rent,yourNameForThePlace);
-//        listOfPlaces.add(newPlace);
-//    }
+    public void addPlace(Place newPlace){
+        listOfPlaces.add(newPlace);
+    }
 }
