@@ -65,7 +65,6 @@ public class RentStepFourFragment extends Fragment {
         findViews(view);
         setRecyclerView();
         setAddImage();
-
         button.setOnClickListener(v -> {
             activity.setFourData();
         });

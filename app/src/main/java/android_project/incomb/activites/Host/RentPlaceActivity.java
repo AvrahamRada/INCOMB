@@ -9,6 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import android_project.incomb.activites.Host.fragment.RentStepCalendarFragment;
 import android_project.incomb.activites.Host.fragment.RentStepFourFragment;
 import android_project.incomb.activites.Host.fragment.RentStepTwoFragment;
 import android_project.incomb.entities.Place;
@@ -17,44 +22,49 @@ import android_project.incomb.R;
 public class RentPlaceActivity extends AppCompatActivity implements IRentActivity, IRentView {
 
     Presenter mPresenter;
+    Place newPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new Presenter(this);
+        newPlace = new Place();
         setContentView(R.layout.activity_rent_place);
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new RentStepFourFragment(this))
                 .commit();
-
-        //String locationHost =  mLocation.getText().toString();
-        //findLocation(locationHost);
-
     }
 
     @Override
-    public void setFirstData() {
-        //save data
-        //openSecondFragment();
-        submitData();
+    public void setFirstData(String capacity, String price, String place, String suitable) {
+        newPlace.addAmountOfGuest(Integer.parseInt(capacity));
+        newPlace.addRent(Double.parseDouble(price));
+        newPlace.addTypeOfSpaces(place);
+        newPlace.addTypeOfActivity(suitable);
+        openSecondFragment();
     }
 
     @Override
-    public void setTwoData() {
-        //save data
-        //openCalendarFragment();
+    public void setTwoData(Map hmap) {
+        Iterator it = hmap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            newPlace.updateCheck((String) pair.getKey(), (boolean) pair.getValue());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+        openCalendarFragment();
     }
 
     @Override
     public void setCalendarData(){
         //save data
-        //openFourFragment();
+        openFourFragment();
     }
 
     @Override
-    public void setFourData() {
+    public void setFourData(){
         //submit the place
         submitData();
         //open new activity - back to list of place
@@ -68,27 +78,24 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                 .commit();
     }
 
-    private void openCalendarFragment() {
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.fragment_container, /*new fragment*/new RentStepCalendarFragment(this))
-//                .commit();
+    private void openCalendarFragment(){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, /*new fragment*/new RentStepCalendarFragment(this))
+                .commit();
     }
 
     private void openFourFragment() {
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.fragment_container, /*new fragment*/new RentStepFourFragment(this))
-//                .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, /*new fragment*/new RentStepFourFragment(this))
+                .commit();
     }
 
-
-
     public void submitData(){
-        Place place = new Place(new GeoPoint(31,34), 30,"yoga","bar",30,"hello");
         FirebaseFirestore.getInstance()
                 .collection("places")
-                .add(place)
+                .add(newPlace)
                 .addOnSuccessListener(documentReference -> {
                 })
                 .addOnFailureListener(e -> {

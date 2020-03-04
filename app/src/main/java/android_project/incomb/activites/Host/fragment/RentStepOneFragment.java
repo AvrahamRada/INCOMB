@@ -25,7 +25,6 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
     private EditText mCapacity, mPrice, mDisPrice, mDishour;
     private TextInputLayout mLocation;
     private String sPlace, sSuitable;
-    private FirebaseAuth fAuth;
     private Button button;
     private Geocoder geoCoder;
 
@@ -68,23 +67,23 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         View view = inflater.inflate(R.layout.fragment_rent_step_one, container, false);
         findViews(view);
         button.setOnClickListener(v -> {
-            MyData data = fetchData();
-            //activity.setFirstData(data);
+            //MyData data = fetchData();
+            activity.setFirstData(mCapacity.getText().toString(),mPrice.getText().toString(),sPlace,sSuitable);
         });
         return view;
     }
 
-    private MyData fetchData(){
-        MyData data = new MyData();
-       // data.capacity = mCapacity.getText().toString();
-        //data.
-        return data;
-    }
-
-    public class MyData{
-        //String
-        //int
-    }
+//    private MyData fetchData(){
+//        MyData data = new MyData();
+//       // data.capacity = mCapacity.getText().toString();
+//        //data.
+//        return data;
+//    }
+//
+//    public class MyData{
+//        //String
+//        //int
+//    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

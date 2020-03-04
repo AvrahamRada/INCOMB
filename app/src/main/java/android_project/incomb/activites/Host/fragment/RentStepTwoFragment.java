@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.IRentActivity;
 
@@ -17,6 +20,7 @@ public class RentStepTwoFragment extends Fragment {
     private final IRentActivity activity;
     private Button button;
     private CheckBox chKitchen, chWifi, chYoga, chToilet, chTable, chSink;
+    private Map<String, Boolean> hmap = new HashMap<>();
 
     public RentStepTwoFragment(IRentActivity activity) {
         this.activity = activity;
@@ -43,21 +47,37 @@ public class RentStepTwoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rent_step_two, container, false);
         findViews(view);
+        isCheck();
         button.setOnClickListener(v -> {
-            activity.setTwoData();
+            activity.setTwoData(hmap);
         });
         return view;
     }
 
-    private MyData fetchData(){
-        MyData data = new MyData();
-        //data.capacity = chKitchen.getText().toString();
-        //data.
-        return data;
+    private void isCheck() {
+        if(chKitchen.isChecked())
+            hmap.put("kitchen", true);
+        if(chWifi.isChecked())
+            hmap.put("wifi", true);
+        if(chYoga.isChecked())
+            hmap.put("yoga", true);
+        if(chToilet.isChecked())
+            hmap.put("toilet", true);
+        if(chTable.isChecked())
+            hmap.put("table", true);
+        if(chSink.isChecked())
+            hmap.put("sink", true);
     }
 
-    public class MyData{
-        //String
-        //int
-    }
+//    private MyData fetchData(){
+//        MyData data = new MyData();
+//        //data.capacity = chKitchen.getText().toString();
+//        //data.
+//        return data;
+//    }
+//
+//    public class MyData{
+//        //String
+//        //int
+//    }
 }

@@ -14,18 +14,15 @@ public class Place {
     private String placeName;
     private String idHost;
     private ArrayList<String> idGuest;
+    private Amenities amenities;
 
     private enum typeOfActivities {yoga,lecture,socialAction};
     private enum typeOfSpaces {bar,studio,houseLivingRoom,openSpace};
 
-    public Place(GeoPoint location, int amountOfGuest, String activityType, String spaceType, double rent, String placeName) {
-        setAmountOfGuest(amountOfGuest);
-        setLocation(location);
-        setTypeOfActivity(activityType);
-        setTypeOfSpaces(spaceType);
-        setRent(rent);
-        setYourNameForThePlace(placeName);
+    //Constructor
+    public Place() {
         this.idHost = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        this.amenities = new Amenities();
     }
 
     //Getters and Setters
@@ -43,11 +40,11 @@ public class Place {
         return spaceType;
     }
 
-    public GeoPoint getLocation() {
-        return location;
-    }
     private void setLocation(GeoPoint location) {
         this.location = location;
+    }
+    public GeoPoint getLocation() {
+        return location;
     }
 
     private void setYourNameForThePlace(String placeName) {
@@ -57,11 +54,11 @@ public class Place {
         return this.placeName;
     }
 
-    public double getRent() {
-        return this.rent;
-    }
     private void setRent(double rent) {
         this.rent = rent;
+    }
+    public double getRent() {
+        return this.rent;
     }
 
     private boolean setAmountOfGuest(int amountOfGuest) {
@@ -72,5 +69,15 @@ public class Place {
         return amountOfGuest;
     }
 
-    // add guest....
+    //Methods
+    public void addGuest(String string){ idGuest.add(string); }
+    public void addLocation(GeoPoint location){ setLocation(location); }
+    public void addAmountOfGuest(int amountOfGuest){ setAmountOfGuest(amountOfGuest); }
+    public void addYourNameForThePlace(String placeName){ setYourNameForThePlace(placeName); }
+    public void addRent(double rent){ setRent(rent); }
+    public void addTypeOfActivity(String activityType) { setTypeOfActivity(activityType); }
+    public void addTypeOfSpaces(String spaceType) {setTypeOfSpaces(spaceType); }
+    public void updateCheck(String string, boolean check) { amenities.updateAmenities(string,check);
+    }
+
 }

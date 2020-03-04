@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +45,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
         for(int i=0 ; i < uris.getItemCount() ; i++){
             addPhoto(uris.getItemAt(i).getUri());
         }
-        //imagesList.addAll(uris);
+    }
+
+    public void removePhoto(Uri uri) {
+        imagesList.remove(uri);
+        notifyItemChanged(imagesList.size()-1);
     }
 }
