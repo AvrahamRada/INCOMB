@@ -18,6 +18,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     //list of images
     List<Uri> imagesList = new ArrayList<>();
 
+    public List<Uri> getImagesList() {
+        return imagesList;
+    }
+
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

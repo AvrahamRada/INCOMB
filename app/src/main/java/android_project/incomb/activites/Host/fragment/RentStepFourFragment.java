@@ -18,6 +18,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.IRentActivity;
@@ -34,9 +39,10 @@ public class RentStepFourFragment extends Fragment {
     private ImagesAdapter imagesAdapter;
     private ImageView addImage;
 
-    private TextInputLayout mName;
-
     private Uri mImageUri;
+    private StorageReference mStorageRef;
+    private DatabaseReference mDatabaseRef;
+    private StorageTask mUploadTask;
 
     public RentStepFourFragment(IRentActivity activity) {
         this.activity = activity;
@@ -45,12 +51,13 @@ public class RentStepFourFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
     }
 
     private void findViews(View view) {
         button = (Button) view.findViewById(R.id.finishPlace);
         mPlaceName = (TextInputLayout) view.findViewById(R.id.name_location);
-        mName = (TextInputLayout) view.findViewById(R.id.name_location);
         imagesRecyclerView = view.findViewById(R.id.images_recyclerview);
         addImage = view.findViewById(R.id.add_image);
     }
@@ -60,12 +67,17 @@ public class RentStepFourFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rent_step_four, container, false);
         findViews(view);
-        setRecyclerView();
-        setAddImage();
+        uploadImagePlace();
         button.setOnClickListener(v -> {
             activity.setFourData(mPlaceName.getEditText().getText().toString());
         });
         return view;
+    }
+
+    private void uploadImagePlace() {
+        setRecyclerView();
+        setAddImage();
+        setFireBaseStorage();
     }
 
     private void setAddImage() {
@@ -100,5 +112,9 @@ public class RentStepFourFragment extends Fragment {
                 }
                 break;
         }
+    }
+
+    private void setFireBaseStorage() {
+
     }
 }
