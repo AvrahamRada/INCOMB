@@ -28,8 +28,8 @@ public class Host extends Person {
         super();
     }
 
-    public void addPlace(GeoPoint location, int amountOfGuest, String typeOfActivity, String space, double rent, String yourNameForThePlace){
-        Place newPlace = new Place(location,amountOfGuest,typeOfActivity,space,rent,yourNameForThePlace);
-        listOfPlaces.add(newPlace);
-    }
+//    public void addPlace(GeoPoint location, int amountOfGuest, String typeOfActivity, String space, double rent, String yourNameForThePlace){
+//        Place newPlace = new Place(location,amountOfGuest,typeOfActivity,space,rent,yourNameForThePlace);
+//        listOfPlaces.add(newPlace);
+//    }
 }

@@ -9,10 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import android_project.incomb.MainActivity;
 import android_project.incomb.activites.Host.fragment.RentStepCalendarFragment;
 import android_project.incomb.activites.Host.fragment.RentStepFourFragment;
 import android_project.incomb.activites.Host.fragment.RentStepTwoFragment;
@@ -67,8 +67,8 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
     public void setFourData(){
         //submit the place
         submitData();
-        //open new activity - back to list of place
-
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
 
     private void openSecondFragment() {
@@ -93,6 +93,7 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
     }
 
     public void submitData(){
+        //Place place = new Place(new GeoPoint(31,34), 30,"yoga","bar",30,"hello");
         FirebaseFirestore.getInstance()
                 .collection("places")
                 .add(newPlace)
