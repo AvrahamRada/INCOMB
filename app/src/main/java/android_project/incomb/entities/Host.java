@@ -2,8 +2,6 @@ package android_project.incomb.entities;
 
 import android.graphics.drawable.PictureDrawable;
 
-import com.google.firebase.firestore.GeoPoint;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -32,3 +30,4 @@ public class Host extends Person {
         listOfPlaces.add(newPlace);
     }
 }
+/* can delete this because i will use adapter*/

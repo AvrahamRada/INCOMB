@@ -13,10 +13,9 @@
         android:layout_width="wrap_content"
         android:paddingTop="20dp"
         android:layout_height="100dp"
-        android:src="@drawable/incomb_srinke"></ImageView>
+        android:src="@drawable/incomb_srinke"/>
 
-    // Email
-    <TextView
+     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login to the system"
@@ -60,9 +59,7 @@
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
-    // Password
-
-    <com.google.android.material.textfield.TextInputLayout
+     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,7 +97,7 @@
         android:fontFamily="@font/exo_bold"
         android:background="@drawable/buttonshape"
         android:paddingBottom="10dp"
-        android:text="Login"></Button>
+        android:text="Login"/>
 
     <Button
         android:id="@+id/registration_btn"

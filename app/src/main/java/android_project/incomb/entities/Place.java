@@ -1,8 +1,13 @@
 package android_project.incomb.entities;
 
+import android.net.Uri;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
+
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Place {
     // attributes
@@ -15,6 +20,8 @@ public class Place {
     private String idHost;
     private ArrayList<String> idGuest;
     private Amenities amenities;
+    private ReservationsTimes availability;
+    private List<String> imagesList = new ArrayList<>();
 
     private enum typeOfActivities {Yoga,Lecture,SocialAction};
     private enum typeOfSpaces {Bar,Studio,LivingRoom,OpenSpace};
@@ -26,42 +33,42 @@ public class Place {
     }
 
     //Getters and Setters
-    private void setTypeOfActivity(String activityType) {
+    public void setTypeOfActivity(String activityType) {
         this.activityType = typeOfActivities.valueOf(activityType);
     }
     public typeOfActivities getTypeOfActivity() {
         return activityType;
     }
 
-    private void setTypeOfSpaces(String spaceType) {
+    public void setTypeOfSpaces(String spaceType) {
         this.spaceType = typeOfSpaces.valueOf(spaceType);
     }
     public typeOfSpaces getTypeOfSpaces() {
         return spaceType;
     }
 
-    private void setLocation(GeoPoint location) {
+    public void setLocation(GeoPoint location) {
         this.location = location;
     }
     public GeoPoint getLocation() {
         return location;
     }
 
-    private void setYourNameForThePlace(String placeName) {
+    public void setYourNameForThePlace(String placeName) {
         this.placeName = placeName;
     }
     public String getYourNameForThePlace() {
         return this.placeName;
     }
 
-    private void setRent(double rent) {
+    public void setRent(double rent) {
         this.rent = rent;
     }
     public double getRent() {
         return this.rent;
     }
 
-    private boolean setAmountOfGuest(int amountOfGuest) {
+    public boolean setAmountOfGuest(int amountOfGuest) {
         this.amountOfGuest = (amountOfGuest >= 0) ? amountOfGuest : -1;
         return this.amountOfGuest >= 0 ? true : false;
     }
@@ -69,15 +76,28 @@ public class Place {
         return amountOfGuest;
     }
 
-    //Methods
-    public void addGuest(String string){ idGuest.add(string); }
-    public void addLocation(GeoPoint location){ setLocation(location); }
-    public void addAmountOfGuest(int amountOfGuest){ setAmountOfGuest(amountOfGuest); }
-    public void addYourNameForThePlace(String placeName){ setYourNameForThePlace(placeName); }
-    public void addRent(double rent){ setRent(rent); }
-    public void addTypeOfActivity(String activityType) { setTypeOfActivity(activityType); }
-    public void addTypeOfSpaces(String spaceType) {setTypeOfSpaces(spaceType); }
-    public void updateCheck(String string, boolean check) { amenities.updateAmenities(string,check);
+    public List<String> getImagesList() { return imagesList; }
+
+    public void setImagesList(List<Uri> uriImagesList) {
+        for (Uri uri:uriImagesList) {
+            this.imagesList.add(uri.toString());
+        }
     }
 
+    public ReservationsTimes getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Date startEvent, Date endEvent) {
+        this.availability = new ReservationsTimes(startEvent,endEvent);
+    }
+
+    //Methods
+    public void addGuest(String string){
+        if(idGuest.size() < amountOfGuest)
+            idGuest.add(string);
+    }
+    public void updateCheck(String string, boolean check) { amenities.updateAmenities(string,check); }
+    public void updateAvailability(Date startEvent, Date endEvent){ availability.updareReservation(startEvent,endEvent);
+    }
 }

@@ -1,35 +1,37 @@
 package android_project.incomb.activites.Host;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
-import android_project.incomb.MainActivity;
 import android_project.incomb.R;
+import android_project.incomb.activites.Host.Interface.IRentActivity;
 import android_project.incomb.activites.Host.fragment.RentStepCalendarFragment;
 import android_project.incomb.activites.Host.fragment.RentStepFourFragment;
 import android_project.incomb.activites.Host.fragment.RentStepOneFragment;
 import android_project.incomb.activites.Host.fragment.RentStepTwoFragment;
 import android_project.incomb.entities.Place;
 
-public class RentPlaceActivity extends AppCompatActivity implements IRentActivity, IRentView {
+public class RentPlaceActivity extends AppCompatActivity implements IRentActivity {
 
-    //Presenter mPresenter;
     Place newPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //mPresenter = new Presenter(this);
         newPlace = new Place();
         setContentView(R.layout.activity_rent_place);
         getSupportFragmentManager()
@@ -40,11 +42,11 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
 
     @Override
     public void setFirstData(String capacity, String price, String place, String suitable, GeoPoint geoPoint) {
-        newPlace.addAmountOfGuest(Integer.parseInt(capacity));
-        newPlace.addRent(Double.parseDouble(price));
-        newPlace.addTypeOfSpaces(place);
-        newPlace.addTypeOfActivity(suitable);
-        newPlace.addLocation(geoPoint);
+        newPlace.setAmountOfGuest(Integer.parseInt(capacity));
+        newPlace.setRent(Double.parseDouble(price));
+        newPlace.setTypeOfSpaces(place);
+        newPlace.setTypeOfActivity(suitable);
+        newPlace.setLocation(geoPoint);
         openSecondFragment();
     }
 
@@ -52,7 +54,7 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
     public void setTwoData(Map hmap) {
         Iterator it = hmap.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
+            Map.Entry pair = (Map.Entry) it.next();
             newPlace.updateCheck((String) pair.getKey(), (boolean) pair.getValue());
             it.remove(); // avoids a ConcurrentModificationException
         }
@@ -60,16 +62,19 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
     }
 
     @Override
-    public void setCalendarData(Calendar calendarData){
-        //save data
+    public void setCalendarData(List <Date> dateSelect) {
+        Date begin = dateSelect.get(0);
+        Date end = dateSelect.get(dateSelect.size()-1);
+        newPlace.setAvailability(begin,end);
         openFourFragment();
     }
 
     @Override
-    public void setFourData(String namePlace){
-        newPlace.addYourNameForThePlace(namePlace);
+    public void setFourData(String namePlace, List<Uri> uriList) {
+        newPlace.setYourNameForThePlace(namePlace);
+        newPlace.setImagesList(uriList);
         submitData();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(getApplicationContext(), MyPlaceActivity.class));
         finish();
     }
 
@@ -80,7 +85,7 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                 .commit();
     }
 
-    private void openCalendarFragment(){
+    private void openCalendarFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, /*new fragment*/new RentStepCalendarFragment(this))
@@ -94,21 +99,66 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                 .commit();
     }
 
-    public void submitData(){
-        //Place place = new Place(new GeoPoint(31,34), 30,"yoga","bar",30,"hello");
-        // need to add the place to the host
+    public void uploadPlaceToDB(Consumer<String> onSuccess) {
         FirebaseFirestore.getInstance()
                 .collection("places")
                 .add(newPlace)
                 .addOnSuccessListener(documentReference -> {
+                    onSuccess.accept(documentReference.getId());
                 })
                 .addOnFailureListener(e -> {
-                    Log.i("n", "n");
+                    //handle failure here
                 });
     }
 
-    @Override
-    public void updateUI() {
-        //to do upate ui components
+    public void uploadImagesToStorage(String path, AtomicInteger imagesUploadedCounter, Consumer<String> onSuccess) {
+        for (int i = 0; i < newPlace.getImagesList().size(); i++) {
+            String image = newPlace.getImagesList().get(i);
+            int finalI = i;
+            FirebaseStorage.getInstance().getReference()
+                    .child("places")
+                    .child(path)
+                    .child(String.valueOf(i))
+                    .putFile(Uri.parse(image))
+                    .addOnSuccessListener(taskSnapshot -> {
+                        imagesUploadedCounter.getAndIncrement();
+                        taskSnapshot.getMetadata().getReference().getDownloadUrl()
+                                .addOnSuccessListener(uri -> {
+                                    newPlace.getImagesList().set(finalI, uri.toString());
+                                    if (imagesUploadedCounter.get() == newPlace.getImagesList().size())
+                                        onSuccess.accept(uri.toString());
+                                })
+                                .addOnFailureListener(e -> {
+                                    //handle failure here
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        //handle failure
+                    });
+        }
+    }
+
+    private void updateImagesInDB(String docId) {
+        FirebaseFirestore.getInstance()
+                .collection("places")
+                .document(docId)
+                .update("imagesList", newPlace.getImagesList())
+                .addOnSuccessListener(documentReference1 -> {
+                    //handle success
+                })
+                .addOnFailureListener(e -> {
+                    //handle failure here
+                });
+    }
+
+    public void submitData() {
+        AtomicInteger imagesUploadedCounter = new AtomicInteger();
+        uploadPlaceToDB(placeId ->
+                uploadImagesToStorage(placeId, imagesUploadedCounter, urlString ->
+                        updateImagesInDB(placeId)));
+
+        // need to check how to show the place in the myPlaceActivity
+//        Intent intent = new Intent(this, MyPlaceActivity.class);
+//        intent.putExtra("place", (Parcelable) newPlace);
     }
 }

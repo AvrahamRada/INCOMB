@@ -3,37 +3,34 @@ package android_project.incomb.activites.Host.fragment;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 import android_project.incomb.R;
-import android_project.incomb.activites.Host.IRentActivity;
+import android_project.incomb.activites.Host.Interface.IRentActivity;
 
 public class RentStepOneFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private final IRentActivity activity;
-    private EditText mCapacity, mPrice, mDisPrice, mDishour;
+    private EditText mCapacity, mPrice;
     private TextInputLayout mLocation;
     private Button button;
     private GeoPoint geoPoint;
-    private CheckBox chDiscount;
+    //private EditText mDisPrice, mDishour;
+    //private CheckBox chDiscount;
 
     private String sPlace, sSuitable, sCapacity, sPrice, sDisPrice, sDishour;
 
@@ -50,9 +47,9 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         mCapacity = (EditText) view.findViewById(R.id.capacity);
         mLocation = (TextInputLayout) view.findViewById(R.id.Location);
         mPrice = (EditText) view.findViewById(R.id.price);
-        mDisPrice = (EditText) view.findViewById(R.id.discount_price);
-        mDishour = (EditText) view.findViewById(R.id.discount_hour);
-        chDiscount = (CheckBox) view.findViewById(R.id.checkbox_discount);
+//        mDisPrice = (EditText) view.findViewById(R.id.discount_price);
+//        mDishour = (EditText) view.findViewById(R.id.discount_hour);
+//        chDiscount = (CheckBox) view.findViewById(R.id.checkbox_discount);
         button = (Button) view.findViewById(R.id.firstStep);
 
         //spinner-place
@@ -78,7 +75,7 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         findViews(view);
         button.setOnClickListener(v -> {
             getDatafromUser();
-            activity.setFirstData(sCapacity,sPrice,sPlace,sSuitable, geoPoint);
+            activity.setFirstData(sCapacity,sPrice,sPlace,sSuitable,geoPoint);
             //activity.setFirstData(sCapacity,sPrice,sPlace,sSuitable, geoPoint, sDisPrice, sDishour);
         });
         return view;
@@ -88,14 +85,14 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         sCapacity = mCapacity.getText().toString();
         sPrice = mPrice.getText().toString();
         geoPoint = getLocationFromAddress(mLocation.getEditText().getText().toString());
-        if(chDiscount.isChecked()){
-            sDisPrice = mDisPrice.getText().toString();
-            sDishour = mDishour.getText().toString();
-        }
-        else{
-            sDisPrice = "0";
-            sDishour = "0";
-        }
+//        if(chDiscount.isChecked()){
+//            sDisPrice = mDisPrice.getText().toString();
+//            sDishour = mDishour.getText().toString();
+//        }
+//        else{
+//            sDisPrice = "0";
+//            sDishour = "0";
+//        }
     }
 
     @Override
@@ -134,4 +131,5 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         }
         return p1;
     }
+
 }

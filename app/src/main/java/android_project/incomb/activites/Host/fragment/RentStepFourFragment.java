@@ -2,31 +2,23 @@ package android_project.incomb.activites.Host.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 
 import android_project.incomb.R;
-import android_project.incomb.activites.Host.IRentActivity;
 import android_project.incomb.activites.Host.ImagesAdapter;
+import android_project.incomb.activites.Host.Interface.IRentActivity;
 
 public class RentStepFourFragment extends Fragment {
 
@@ -39,11 +31,6 @@ public class RentStepFourFragment extends Fragment {
     private ImagesAdapter imagesAdapter;
     private ImageView addImage;
 
-    private Uri mImageUri;
-    private StorageReference mStorageRef;
-    private DatabaseReference mDatabaseRef;
-    private StorageTask mUploadTask;
-
     public RentStepFourFragment(IRentActivity activity) {
         this.activity = activity;
     }
@@ -51,8 +38,6 @@ public class RentStepFourFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
     }
 
     private void findViews(View view) {
@@ -69,7 +54,7 @@ public class RentStepFourFragment extends Fragment {
         findViews(view);
         uploadImagePlace();
         button.setOnClickListener(v -> {
-            activity.setFourData(mPlaceName.getEditText().getText().toString());
+            activity.setFourData(mPlaceName.getEditText().getText().toString(),imagesAdapter.getImagesList());
         });
         return view;
     }
@@ -77,7 +62,6 @@ public class RentStepFourFragment extends Fragment {
     private void uploadImagePlace() {
         setRecyclerView();
         setAddImage();
-        setFireBaseStorage();
     }
 
     private void setAddImage() {
@@ -88,7 +72,7 @@ public class RentStepFourFragment extends Fragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
@@ -112,9 +96,5 @@ public class RentStepFourFragment extends Fragment {
                 }
                 break;
         }
-    }
-
-    private void setFireBaseStorage() {
-
     }
 }

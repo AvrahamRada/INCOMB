@@ -27,11 +27,10 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.util.function.Consumer;
-
-import android_project.incomb.entities.Upload;
 import android_project.incomb.activites.Start.LoginActivity;
+import android_project.incomb.entities.Upload;
 
+//need to delete: this activity, Upload class
 
 public class MainActivity extends AppCompatActivity {
 

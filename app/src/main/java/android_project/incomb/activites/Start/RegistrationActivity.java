@@ -1,8 +1,5 @@
 package android_project.incomb.activites.Start;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -21,11 +21,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import android_project.incomb.entities.Person;
-import android_project.incomb.activites.Fest.FindPlaceActivity;
 import android_project.incomb.MainActivity;
 import android_project.incomb.R;
-import android_project.incomb.activites.Host.RentPlaceActivity;
+import android_project.incomb.activites.Fest.FindPlaceActivity;
+import android_project.incomb.activites.Host.MyPlaceActivity;
+import android_project.incomb.entities.Person;
 
 public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private TextInputLayout mFullName, mEmail, mPassword, mPhone;
@@ -56,16 +56,6 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         findViewById(R.id.move_to_sign_in).setOnClickListener(this);
         findViewById(R.id.registration).setOnClickListener(this);
     }
-
-    //need to check this
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if (fAuth.getCurrentUser() != null) { // if current user is already present we dont want to re-create
-//            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//            finish();
-//        }
-//    }
 
     @Override
     protected void onStop() {
@@ -182,7 +172,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                                         finish();
                                         break;
                                     case "Host":
-                                        startActivity(new Intent(getApplicationContext(), RentPlaceActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), MyPlaceActivity.class));
                                         finish();
                                         break;
                                 }
@@ -191,34 +181,6 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                                 Log.i("n", "n");
 
                             });
-
-//                    FirebaseDatabase.getInstance().getReference("Users")
-//                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                            .setValue(user)
-//                            .addOnCompleteListener(task1 -> {
-//                                progressBar.setVisibility(View.GONE);
-//                                if (task1.isSuccessful()) {// User Created Successfully
-//                                    Toast.makeText(Registration.this, "User Created.", Toast.LENGTH_SHORT).show();
-//                                    //by the type the user, we send him to the right activity
-//                                    switch (userType) {
-//                                        case "Fest":
-//                                            startActivity(new Intent(getApplicationContext(), FindPlaceActivity.class));
-//                                            finish();
-//                                            break;
-//                                        case "Guest":
-//                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//                                            finish();
-//                                            break;
-//                                        case "Host":
-//                                            startActivity(new Intent(getApplicationContext(), RentPlace.class));
-//                                            finish();
-//                                            break;
-//                                    }
-//                                } else {
-//                                    //display a failure message
-//                                    Toast.makeText(Registration.this, task1.getException().getMessage(), Toast.LENGTH_LONG).show();
-//                                }
-//                            });
                 } else {
                     Toast.makeText(RegistrationActivity.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     mPassword.setError("");

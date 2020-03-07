@@ -1,20 +1,19 @@
 package android_project.incomb.activites.Host.fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import android_project.incomb.R;
-import android_project.incomb.activites.Host.IRentActivity;
+import android_project.incomb.activites.Host.Interface.IRentActivity;
 
 public class RentStepTwoFragment extends Fragment {
     private final IRentActivity activity;
@@ -69,15 +68,4 @@ public class RentStepTwoFragment extends Fragment {
             hmap.put("sink", true);
     }
 
-//    private MyData fetchData(){
-//        MyData data = new MyData();
-//        //data.capacity = chKitchen.getText().toString();
-//        //data.
-//        return data;
-//    }
-//
-//    public class MyData{
-//        //String
-//        //int
-//    }
 }

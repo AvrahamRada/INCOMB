@@ -24,4 +24,10 @@ public class ReservationsTimes {
     public Date getEndEvent() { return endEvent; }
 
     public void setEndEvent(Date endEvent) { this.endEvent = endEvent; }
+
+    //Methods
+    public void updareReservation(Date startEvent, Date endEvent){
+        setStartEvent(startEvent);
+        setEndEvent(endEvent);
+    }
 }
