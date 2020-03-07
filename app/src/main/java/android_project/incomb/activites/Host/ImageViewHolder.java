@@ -11,13 +11,15 @@ import android_project.incomb.R;
 
 public class ImageViewHolder extends RecyclerView.ViewHolder {
     private ImageView image;
+    private ImageView remove;
 
     public ImageViewHolder(@NonNull View itemView) {
         super(itemView);
         this.image = itemView.findViewById(R.id.image);
+        this.remove = itemView.findViewById(R.id.remove);
     }
 
-    public void setUi(Uri uri) {
-        image.setImageURI(uri);
-    }
+    public void setUi(Uri uri) { image.setImageURI(uri); }
+
+    public void setRemove(){ remove.setImageDrawable(null);  }
 }

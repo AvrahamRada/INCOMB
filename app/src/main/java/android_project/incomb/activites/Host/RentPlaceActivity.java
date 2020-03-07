@@ -161,4 +161,9 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
 //        Intent intent = new Intent(this, MyPlaceActivity.class);
 //        intent.putExtra("place", (Parcelable) newPlace);
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
 }
