@@ -27,7 +27,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<ImageViewHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        holder.setUi( Uri.parse(placesList.get(position).getImagesList().get(0)));
+        holder.setUi(Uri.parse(placesList.get(position).getImagesList().get(0)));
         holder.setRemove(v -> {
             placesList.remove(position);
             notifyDataSetChanged();

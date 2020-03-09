@@ -165,8 +165,7 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                     finish();
                 }));
     }
-
-
+    
 //    @Override
 //    public void onBackPressed() {
 //        super.onBackPressed();
