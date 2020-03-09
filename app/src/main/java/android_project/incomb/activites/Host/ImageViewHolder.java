@@ -11,7 +11,7 @@ import android_project.incomb.R;
 
 public class ImageViewHolder extends RecyclerView.ViewHolder {
     private ImageView image;
-    private ImageView remove;
+    public ImageView remove;
 
     public ImageViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -19,7 +19,11 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
         this.remove = itemView.findViewById(R.id.remove);
     }
 
-    public void setUi(Uri uri) { image.setImageURI(uri); }
+    public void setUi(Uri uri) {
+        image.setImageURI(uri);
+    }
 
-    public void setRemove(){ remove.setImageDrawable(null);  }
+    public void setRemove(View.OnClickListener clickListener){
+        remove.setOnClickListener(clickListener);
+    }
 }

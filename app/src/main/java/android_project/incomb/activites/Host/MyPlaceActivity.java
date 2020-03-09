@@ -17,6 +17,7 @@ import android_project.incomb.activites.Host.fragment.PlaceListFragment;
 import android_project.incomb.activites.Start.LoginActivity;
 
 public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity {
+    private static final int RENT_PLACE_REQUEST_CODE = 2;
     private TextView listPlace;
     private RecyclerView placeRecyclerView;
     private Button button;
@@ -41,7 +42,32 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
 
     public void addPlace(){
         Intent intent = new Intent(this, RentPlaceActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, RENT_PLACE_REQUEST_CODE);
         finish();
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch (requestCode) {
+//            case RENT_PLACE_REQUEST_CODE:
+//                    if(resultCode == PLACE_UPLOADED_OK){
+//                        data.getStringExtra("place id"); //reference firebase
+//                        FirebaseFirestore.getInstance().collection("places")
+//                                .document(String.valueOf(data))
+//                                .get().addOnSuccessListener(documentSnapshot -> {
+//                                    Place addPlace = documentSnapshot.toObject(Place.class);
+//                                }).addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                //handle failure here
+//                            }
+//                        });
+//                        //get data firebase
+//                        //set data in ui
+//                        //firebase instance "places"document(placeid)  get onsuccesslistener adapter.add place
+//                    }
+//                break;
+//        }
+//    }
 }

@@ -33,6 +33,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         //logic here
         holder.setUi(imagesList.get(position));
+        holder.setRemove(v -> {
+            imagesList.remove(position);
+            notifyDataSetChanged();
+        });
     }
 
     @Override
@@ -42,17 +46,13 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     public void addPhoto(Uri uri) {
         imagesList.add(uri);
-        notifyItemChanged(imagesList.size()-1);
+        notifyItemChanged(imagesList.size() - 1);
     }
 
     public void addPhotos(ClipData uris) {
-        for(int i=0 ; i < uris.getItemCount() ; i++){
+        for (int i = 0; i < uris.getItemCount(); i++) {
             addPhoto(uris.getItemAt(i).getUri());
         }
     }
 
-    public void removePhoto(Uri uri) {
-        imagesList.remove(uri);
-        notifyItemChanged(imagesList.size()-1);
-    }
 }

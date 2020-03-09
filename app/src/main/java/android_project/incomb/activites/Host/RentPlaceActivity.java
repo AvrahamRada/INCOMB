@@ -27,7 +27,9 @@ import android_project.incomb.entities.Place;
 
 public class RentPlaceActivity extends AppCompatActivity implements IRentActivity {
 
+    public static final int PLACE_UPLOADED_OK = 3;
     Place newPlace;
+    String docId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +64,10 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
     }
 
     @Override
-    public void setCalendarData(List <Date> dateSelect) {
+    public void setCalendarData(List<Date> dateSelect) {
         Date begin = dateSelect.get(0);
-        Date end = dateSelect.get(dateSelect.size()-1);
-        newPlace.setAvailability(begin,end);
+        Date end = dateSelect.get(dateSelect.size() - 1);
+        newPlace.setAvailability(begin, end);
         openFourFragment();
     }
 
@@ -74,8 +76,6 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
         newPlace.setYourNameForThePlace(namePlace);
         newPlace.setImagesList(uriList);
         submitData();
-        startActivity(new Intent(getApplicationContext(), MyPlaceActivity.class));
-        finish();
     }
 
     private void openSecondFragment() {
@@ -104,6 +104,7 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                 .collection("places")
                 .add(newPlace)
                 .addOnSuccessListener(documentReference -> {
+                    docId = documentReference.getId();
                     onSuccess.accept(documentReference.getId());
                 })
                 .addOnFailureListener(e -> {
@@ -151,16 +152,20 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                 });
     }
 
+    //https://stackoverflow.com/questions/14785806/android-how-to-make-an-activity-return-results-to-the-activity-which-calls-it
     public void submitData() {
         AtomicInteger imagesUploadedCounter = new AtomicInteger();
         uploadPlaceToDB(placeId ->
-                uploadImagesToStorage(placeId, imagesUploadedCounter, urlString ->
-                        updateImagesInDB(placeId)));
-
-        // need to check how to show the place in the myPlaceActivity
-//        Intent intent = new Intent(this, MyPlaceActivity.class);
-//        intent.putExtra("place", (Parcelable) newPlace);
+                uploadImagesToStorage(placeId, imagesUploadedCounter, urlString -> {
+                    updateImagesInDB(placeId);
+                    Intent intentMyPlace = new Intent(new Intent(this, MyPlaceActivity.class));
+                    intentMyPlace.putExtra("place id",docId);
+                    setResult(PLACE_UPLOADED_OK, intentMyPlace);
+                    startActivity(intentMyPlace);
+                    finish();
+                }));
     }
+
 
 //    @Override
 //    public void onBackPressed() {
