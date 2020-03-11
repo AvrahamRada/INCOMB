@@ -13,12 +13,12 @@ import android_project.incomb.R;
 import android_project.incomb.activites.Host.Interface.IPlaceActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 
-public class PlaceActivityFragment extends Fragment {
+public class PlaceEventFragment extends Fragment {
     private final IPlaceActivity activity;
     private TextView listActivity;
     private ListView activityList;
 
-    public PlaceActivityFragment(MyPlaceActivity activity) { this.activity = activity; }
+    public PlaceEventFragment(MyPlaceActivity activity) { this.activity = activity; }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class PlaceActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_place_activity, container, false);
+        View view = inflater.inflate(R.layout.fragment_place_event, container, false);
         findViews(view);
         return view;
     }

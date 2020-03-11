@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    tools:context=".activites.Host.EditPlaceActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/images_slider"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <include layout="@layout/place_edit_form" />
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/edit_place_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

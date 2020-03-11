@@ -75,7 +75,7 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         findViews(view);
         button.setOnClickListener(v -> {
             getDatafromUser();
-            activity.setFirstData(sCapacity,sPrice,sPlace,sSuitable,geoPoint);
+            activity.setFirstData(sCapacity, sPrice, sPlace, sSuitable, geoPoint);
             //activity.setFirstData(sCapacity,sPrice,sPlace,sSuitable, geoPoint, sDisPrice, sDishour);
         });
         return view;
@@ -100,10 +100,10 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         Spinner spinner = (Spinner) parent;
         switch (spinner.getId()) {
             case R.id.spinner_place:
-                sPlace = parent.getItemAtPosition(position).toString().replaceAll(" ","");
+                sPlace = parent.getItemAtPosition(position).toString().replaceAll(" ", "");
                 break;
             case R.id.spinner_suitable:
-                sSuitable = parent.getItemAtPosition(position).toString().replaceAll(" ","");
+                sSuitable = parent.getItemAtPosition(position).toString().replaceAll(" ", "");
                 break;
         }
     }

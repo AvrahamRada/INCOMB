@@ -1,7 +1,5 @@
 package android_project.incomb.entities;
 
-import android.net.Uri;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 
@@ -24,7 +22,6 @@ public class Place {
     private List<String> imagesList = new ArrayList<>();
 
     private enum typeOfActivities {Yoga, Lecture, SocialAction};
-
     private enum typeOfSpaces {Bar, Studio, LivingRoom, OpenSpace};
 
     //Constructor
@@ -100,10 +97,8 @@ public class Place {
 
     public List<String> getImagesList() { return imagesList; }
 
-    public void setImagesList(List<Uri> uriImagesList) {
-        for (Uri uri : uriImagesList) {
-            this.imagesList.add(uri.toString());
-        }
+    public void setImagesList(List<String> imagesList) {
+        this.imagesList = imagesList;
     }
 
     //Methods
@@ -113,5 +108,27 @@ public class Place {
 
     public void updateAvailability(Date startEvent, Date endEvent) {
         availability.updareReservation(startEvent, endEvent);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Place)) return false;
+        Place place = (Place) o;
+        return amountOfGuest == place.amountOfGuest &&
+                Double.compare(place.rent, rent) == 0 &&
+                location.equals(place.location) &&
+                activityType == place.activityType &&
+                spaceType == place.spaceType &&
+                placeName.equals(place.placeName) &&
+                idHost.equals(place.idHost) &&
+                amenities.equals(place.amenities) &&
+                availability.equals(place.availability) &&
+                imagesList.equals(place.imagesList);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
     }
 }

@@ -3,6 +3,8 @@ package android_project.incomb.activites.Host;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +39,10 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
         super.onCreate(savedInstanceState);
         newPlace = new Place();
         setContentView(R.layout.activity_rent_place);
+
+        //https://stackoverflow.com/questions/9732761/prevent-the-keyboard-from-displaying-on-activity-start
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new RentStepOneFragment(this))
@@ -44,12 +51,16 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
 
     @Override
     public void setFirstData(String capacity, String price, String place, String suitable, GeoPoint geoPoint) {
-        newPlace.setAmountOfGuest(Integer.parseInt(capacity));
-        newPlace.setRent(Double.parseDouble(price));
-        newPlace.setTypeOfSpaces(place);
-        newPlace.setTypeOfActivity(suitable);
-        newPlace.setLocation(geoPoint);
-        openSecondFragment();
+        try {
+            newPlace.setAmountOfGuest(Integer.parseInt(capacity));
+            newPlace.setRent(Double.parseDouble(price));
+            newPlace.setTypeOfSpaces(place);
+            newPlace.setTypeOfActivity(suitable);
+            newPlace.setLocation(geoPoint);
+            openSecondFragment();
+        } catch (Exception ex) {
+            Toast.makeText(this, "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -74,7 +85,11 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
     @Override
     public void setFourData(String namePlace, List<Uri> uriList) {
         newPlace.setYourNameForThePlace(namePlace);
-        newPlace.setImagesList(uriList);
+        List<String> imageListString = new ArrayList<>();
+        for (Uri uri : uriList) {
+            imageListString.add(uri.toString());
+        }
+        newPlace.setImagesList(imageListString);
         submitData();
     }
 
@@ -113,6 +128,10 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
     }
 
     public void uploadImagesToStorage(String path, AtomicInteger imagesUploadedCounter, Consumer<String> onSuccess) {
+        if (newPlace.getImagesList().size() == 0) {
+            onSuccess.accept(null);
+            return;
+        }
         for (int i = 0; i < newPlace.getImagesList().size(); i++) {
             String image = newPlace.getImagesList().get(i);
             int finalI = i;
@@ -130,10 +149,12 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                                         onSuccess.accept(uri.toString());
                                 })
                                 .addOnFailureListener(e -> {
+                                    System.out.println("remove");
                                     //handle failure here
                                 });
                     })
                     .addOnFailureListener(e -> {
+                        System.out.println("remove");
                         //handle failure
                     });
         }
@@ -158,14 +179,13 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
         uploadPlaceToDB(placeId ->
                 uploadImagesToStorage(placeId, imagesUploadedCounter, urlString -> {
                     updateImagesInDB(placeId);
-                    Intent intentMyPlace = new Intent(new Intent(this, MyPlaceActivity.class));
-                    intentMyPlace.putExtra("place id",docId);
+                    Intent intentMyPlace = new Intent();
+                    intentMyPlace.putExtra("place id", docId);
                     setResult(PLACE_UPLOADED_OK, intentMyPlace);
-                    startActivity(intentMyPlace);
                     finish();
                 }));
     }
-    
+
 //    @Override
 //    public void onBackPressed() {
 //        super.onBackPressed();

@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import android_project.incomb.R;
 
 public class ImageViewHolder extends RecyclerView.ViewHolder {
@@ -20,10 +22,19 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setUi(Uri uri) {
-        image.setImageURI(uri);
+        if (uri == null) image.setImageResource(R.drawable.place_icon);
+        else {
+            Picasso.with(image.getContext())
+                    .load(uri)
+                    .into(image);
+        }
     }
 
-    public void setRemove(View.OnClickListener clickListener){
+    public void setRemove(View.OnClickListener clickListener) {
         remove.setOnClickListener(clickListener);
+    }
+
+    public void setImageClickListener(View.OnClickListener clickListener) {
+        image.setOnClickListener(clickListener);
     }
 }

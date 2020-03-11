@@ -7,14 +7,14 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.Interface.IPlaceActivity;
-import android_project.incomb.activites.Host.fragment.PlaceActivityFragment;
+import android_project.incomb.activites.Host.fragment.PlaceEventFragment;
 import android_project.incomb.activites.Host.fragment.PlaceListFragment;
 import android_project.incomb.activites.Start.LoginActivity;
 import android_project.incomb.entities.Place;
@@ -22,20 +22,23 @@ import android_project.incomb.entities.Place;
 public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity {
     private static final int RENT_PLACE_REQUEST_CODE = 2;
     public static final int PLACE_UPLOADED_OK = 3;
-    private TextView listPlace;
-    private RecyclerView placeRecyclerView;
+    private static final int EDIT_PLACE_REQUEST_CODE = 4;
+
     private Button button;
+    private Place addNewPlace;
+    private PlaceListFragment placeListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_place);
 
-        listPlace = (TextView) findViewById(R.id.manage_place);
+        TextView listPlace = (TextView) findViewById(R.id.manage_place);
         button = (Button) findViewById(R.id.logout_btn);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_list, new PlaceListFragment(this)).commit();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_activity, new PlaceActivityFragment(this)).commit();
+        placeListFragment = new PlaceListFragment(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_list, placeListFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_event, new PlaceEventFragment(this)).commit();
 
         button.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();//logout
@@ -44,10 +47,17 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
         });
     }
 
-    public void addPlace(){
+    @Override
+    public void addPlace() {
         Intent intent = new Intent(this, RentPlaceActivity.class);
         startActivityForResult(intent, RENT_PLACE_REQUEST_CODE);
-        finish();
+    }
+
+    @Override
+    public void onPlaceClick(Place place) {
+        Intent intent = new Intent(this, EditPlaceActivity.class);
+        intent.putExtra("place", new Gson().toJson(place));
+        startActivityForResult(intent, EDIT_PLACE_REQUEST_CODE);
     }
 
     @Override
@@ -55,19 +65,23 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RENT_PLACE_REQUEST_CODE:
-                    if(resultCode == PLACE_UPLOADED_OK){
-                        data.getStringExtra("place id"); //reference firebase
-                        FirebaseFirestore.getInstance().collection("places")
-                                .document(String.valueOf(data))
-                                .get().addOnSuccessListener(documentSnapshot -> {
-                                    Place addPlace = documentSnapshot.toObject(Place.class);
-                                }).addOnFailureListener(e -> {
-                                    //handle failure here
-                                });
-                        //get data firebase
-                        //set data in ui
-                        //firebase instance "places"document(placeid)  get onsuccesslistener adapter.add place
-                    }
+                if (resultCode == PLACE_UPLOADED_OK) {
+                    String placeDocId = data.getStringExtra("place id"); //reference firebase
+                    FirebaseFirestore.getInstance()
+                            .collection("places")
+                            .document(placeDocId)
+                            .get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                addNewPlace = documentSnapshot.toObject(Place.class);
+                                placeListFragment.addPlace(addNewPlace);
+                            }).addOnFailureListener(e -> {
+                        System.out.println("remove");
+                        //handle failure here
+                    });
+                    //get data firebase
+                    //set data in ui
+                    //firebase instance "places"document(placeid)  get onsuccesslistener adapter.add place
+                }
                 break;
         }
     }

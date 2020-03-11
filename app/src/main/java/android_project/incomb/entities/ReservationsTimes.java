@@ -30,4 +30,13 @@ public class ReservationsTimes {
         setStartEvent(startEvent);
         setEndEvent(endEvent);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReservationsTimes)) return false;
+        ReservationsTimes that = (ReservationsTimes) o;
+        return startEvent.equals(that.startEvent) &&
+                endEvent.equals(that.endEvent);
+    }
 }

@@ -32,7 +32,7 @@
         android:layout_height="250dp" />
 
     <FrameLayout
-        android:id="@+id/fragment_activity"
+        android:id="@+id/fragment_event"
         android:layout_width="match_parent"
         android:layout_height="250dp" />
 

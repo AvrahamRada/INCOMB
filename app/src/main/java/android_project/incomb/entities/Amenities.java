@@ -41,6 +41,7 @@ public class Amenities {
         return sink;
     }
 
+    //Methods
     public void updateAmenities(String string, boolean check){
         switch (string) {
             case "kitchen":
@@ -62,5 +63,23 @@ public class Amenities {
                 this.sink = check;
                 break;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Amenities)) return false;
+        Amenities amenities = (Amenities) o;
+        return kitchen == amenities.kitchen &&
+                wifi == amenities.wifi &&
+                yoga == amenities.yoga &&
+                toilet == amenities.toilet &&
+                table == amenities.table &&
+                sink == amenities.sink;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
     }
 }
