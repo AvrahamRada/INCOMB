@@ -4,6 +4,7 @@
     package="android_project.incomb">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -13,8 +14,15 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:supportsRtl">
-        <activity android:name=".activites.Host.EditPlaceActivity"></activity>
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCoPYv-Ivhka3ZWmhRblMoqh7PzZOeDhfg">
+        </meta-data>
+        <activity android:name=".activites.Fest.PermissionActivity"/>
+        <activity android:name=".activites.Fest.MapActivity"/>
+        <activity android:name=".activites.Host.EditPlaceActivity" />
         <activity android:name=".activites.Host.MyPlaceActivity" />
         <activity android:name=".activites.Guest.FindEventActivity" />
         <activity android:name=".activites.Host.RentPlaceActivity" />
@@ -35,7 +43,7 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCMX_vZVVWnrqkFhpRCuG1drv5aXeDcvqc" />
+            android:value="AIzaSyCoPYv-Ivhka3ZWmhRblMoqh7PzZOeDhfg" />
     </application>
 
 </manifest>

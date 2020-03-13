@@ -13,11 +13,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import android_project.incomb.MainActivity;
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.FindPlaceActivity;
+import android_project.incomb.activites.Fest.MapActivity;
+import android_project.incomb.activites.Fest.PermissionActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 4000;
+    private static int SPLASH_TIME_OUT = 3000;
     private FirebaseAuth fAuth;
 
     @Override
@@ -34,9 +36,8 @@ public class SplashScreen extends AppCompatActivity {
                 if (fAuth.getCurrentUser() != null) {
                     Login(fAuth.getCurrentUser());
                 }
-                else {
-                    Intent t = new Intent(SplashScreen.this, LoginActivity.class);
-                    startActivity(t);
+                else { // no user signed in
+                    startActivity(new Intent(SplashScreen.this,LoginActivity.class));
                     finish();
                 }
             }
@@ -53,7 +54,7 @@ public class SplashScreen extends AppCompatActivity {
                         String userType = (String) documentSnapshot.get("typeUser");
                         switch (userType) {
                             case "Fest":
-                                startActivity(new Intent(getApplicationContext(), FindPlaceActivity.class));
+                                startActivity(new Intent(getApplicationContext(), PermissionActivity.class));
                                 finish();
                                 break;
                             case "Guest":

@@ -5,142 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/cardview_light_background"
-    android:padding="30dp"
     tools:context=".activites.Fest.FindPlaceActivity">
 
-    <ImageView
-        android:id="@+id/login_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:src="@drawable/incomb_srinke"/>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Find Unique Place for you event"
-        android:fontFamily="@font/exo_bold"
-        android:textColor="#D2388E3C"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:layout_gravity="center"/>
-
-    <LinearLayout
-        android:id="@+id/type_activity"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/paper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
+    </androidx.viewpager.widget.ViewPager>
 
-    <TextView
-        android:id="@+id/type_activity_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:fontFamily="@font/exo_bold"
-        android:text="Your activity"
-        android:textSize="18dp"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:id="@+id/spinner_activity"
-        android:text="Choose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/type_activity_text"
-        android:textAlignment="center"/>
-    </LinearLayout>
-
-    //Location
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/Location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColorHint="@color/colorAccent"
-        android:fontFamily="@font/exo_bold"
-        android:layout_marginTop="5dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:inputType="textPersonName"
-            android:maxLength="31"
-            android:textColor="#64AA69"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/exo_bold"
-            android:hint="Where?"
-            android:ems="10">
-        </com.google.android.material.textfield.TextInputEditText>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    //Date
-        //from
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/from_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColorHint="@color/colorAccent"
-        android:fontFamily="@font/exo_bold"
-        android:layout_marginTop="5dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:focusable="false"
-            android:focusableInTouchMode="true"
-            android:inputType="date"
-            android:maxLength="31"
-            android:textColor="#64AA69"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/exo_bold"
-            android:hint="From date:"
-            android:ems="10">
-        </com.google.android.material.textfield.TextInputEditText>
-    </com.google.android.material.textfield.TextInputLayout>
-
-        //to
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/to_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColorHint="@color/colorAccent"
-        android:fontFamily="@font/exo_bold"
-        android:layout_marginTop="5dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:focusable="false"
-            android:focusableInTouchMode="true"
-            android:inputType="date"
-            android:maxLength="31"
-            android:textColor="#64AA69"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/exo_bold"
-            android:hint="To date:"
-            android:ems="10">
-        </com.google.android.material.textfield.TextInputEditText>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/finding_place"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Find an Host"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/exo_bold"
-        android:background="@drawable/buttonshape"
-        android:layout_gravity="center">
-    </Button>
+    <include layout="@layout/content_map" />
 
 </LinearLayout>
