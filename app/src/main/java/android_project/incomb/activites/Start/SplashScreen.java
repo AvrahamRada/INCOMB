@@ -12,8 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android_project.incomb.MainActivity;
 import android_project.incomb.R;
-import android_project.incomb.activites.Fest.FindPlaceActivity;
-import android_project.incomb.activites.Fest.MapActivity;
 import android_project.incomb.activites.Fest.PermissionActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 

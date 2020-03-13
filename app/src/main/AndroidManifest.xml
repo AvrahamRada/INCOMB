@@ -21,7 +21,6 @@
             android:value="AIzaSyCoPYv-Ivhka3ZWmhRblMoqh7PzZOeDhfg">
         </meta-data>
         <activity android:name=".activites.Fest.PermissionActivity"/>
-        <activity android:name=".activites.Fest.MapActivity"/>
         <activity android:name=".activites.Host.EditPlaceActivity" />
         <activity android:name=".activites.Host.MyPlaceActivity" />
         <activity android:name=".activites.Guest.FindEventActivity" />
