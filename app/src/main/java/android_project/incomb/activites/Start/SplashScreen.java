@@ -31,13 +31,19 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (fAuth.getCurrentUser() != null) {
-                    Login(fAuth.getCurrentUser());
-                }
-                else { // no user signed in
-                    startActivity(new Intent(SplashScreen.this,LoginActivity.class));
-                    finish();
-                }
+
+                Intent t = new Intent(SplashScreen.this, LoginActivity.class);
+                startActivity(t);
+                finish();
+
+                //Automatic Login
+//                if (fAuth.getCurrentUser() != null) {
+//                    Login(fAuth.getCurrentUser());
+//                }
+//                else { // no user signed in
+//                    startActivity(new Intent(SplashScreen.this,LoginActivity.class));
+//                    finish();
+//                }
             }
         },SPLASH_TIME_OUT);
     }

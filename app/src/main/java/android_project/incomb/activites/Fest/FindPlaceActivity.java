@@ -1,7 +1,5 @@
 package android_project.incomb.activites.Fest;
 
-
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
