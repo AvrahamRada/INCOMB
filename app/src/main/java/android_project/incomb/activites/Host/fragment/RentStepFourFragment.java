@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import android_project.incomb.R;
-import android_project.incomb.activites.Host.ImagesAdapter;
+import android_project.incomb.activites.Host.Adapter.ImagesAdapter;
 import android_project.incomb.activites.Host.Interface.IRentActivity;
 
 public class RentStepFourFragment extends Fragment {

@@ -1,4 +1,4 @@
-package android_project.incomb.activites.Host;
+package android_project.incomb.activites.Host.Adapter;
 
 import android.net.Uri;
 import android.view.View;

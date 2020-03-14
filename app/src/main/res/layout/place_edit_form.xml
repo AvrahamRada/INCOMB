@@ -2,12 +2,106 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_edit_place"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/name"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="name" />
+        android:layout_height="250dp">
+
+        <LinearLayout
+            android:id="@+id/details"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="name" />
+
+        <EditText
+            android:id="@+id/capacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="capacity" />
+
+        <EditText
+            android:id="@+id/priceRent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="rent" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="location" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/details"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/checkbox_kitchen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kitchen"/>
+
+            <CheckBox
+                android:id="@+id/checkbox_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wifi"/>
+
+            <CheckBox
+                android:id="@+id/checkbox_yoga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yoga mats"/>
+
+            <CheckBox
+                android:id="@+id/checkbox_toilet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toilet access"/>
+
+            <CheckBox
+                android:id="@+id/checkbox_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tables and chairs"/>
+
+            <CheckBox
+                android:id="@+id/checkbox_sink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A sink"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/calendar"
+        android:background="@drawable/bg_calen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        //need to to do a date to date calendar
+        <com.squareup.timessquare.CalendarPickerView
+            android:id="@+id/update_dates"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp" />
+    </LinearLayout>
+
 
 </LinearLayout>

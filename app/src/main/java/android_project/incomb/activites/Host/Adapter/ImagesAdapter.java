@@ -1,4 +1,4 @@
-package android_project.incomb.activites.Host;
+package android_project.incomb.activites.Host.Adapter;
 
 import android.content.ClipData;
 import android.net.Uri;

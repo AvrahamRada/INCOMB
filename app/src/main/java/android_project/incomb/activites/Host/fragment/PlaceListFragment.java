@@ -15,7 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.Interface.IPlaceActivity;
-import android_project.incomb.activites.Host.PlaceAdapter;
+import android_project.incomb.activites.Host.Adapter.PlaceAdapter;
 import android_project.incomb.entities.Place;
 
 public class PlaceListFragment extends Fragment {

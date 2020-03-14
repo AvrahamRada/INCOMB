@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
@@ -23,6 +25,8 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
     private static final int RENT_PLACE_REQUEST_CODE = 2;
     public static final int PLACE_UPLOADED_OK = 3;
     private static final int EDIT_PLACE_REQUEST_CODE = 4;
+    public static final int PLACE_UPDATED_OK = 5;
+    public static final int PLACE_UPLOADED_FAIL = 6;
 
     private Button button;
     private Place addNewPlace;
@@ -78,9 +82,31 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
                         System.out.println("remove");
                         //handle failure here
                     });
-                    //get data firebase
-                    //set data in ui
-                    //firebase instance "places"document(placeid)  get onsuccesslistener adapter.add place
+                }
+                break;
+            case EDIT_PLACE_REQUEST_CODE:
+                if(resultCode == PLACE_UPDATED_OK){
+                    String docId = getIntent().getStringExtra("Doc id");
+                    String placeString = getIntent().getStringExtra("place");
+                    addNewPlace = new Gson().fromJson(placeString, Place.class);
+                    //update place in fire base
+                    FirebaseFirestore.getInstance()
+                            .collection("places")
+                            .document(docId)
+                            .update("amenities", addNewPlace.getAmenities(),
+                                    "amountOfGuest", addNewPlace.getAmountOfGuest(),
+                                    "availability", addNewPlace.getAvailability(),
+                                    "rent", addNewPlace.getRent(),
+                                    "YourNameForThePlace" ,addNewPlace.getYourNameForThePlace())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(MyPlaceActivity.this, "Place Updated", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                }
+                if(resultCode == PLACE_UPLOADED_FAIL){
+                    break;
                 }
                 break;
         }
