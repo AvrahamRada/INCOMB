@@ -39,8 +39,11 @@
             android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:hint="location" />
+            android:layout_gravity="center"
+            android:fontFamily="@font/exo_bold"
+            android:textColor="#D2388E3C"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
 
         </LinearLayout>
 

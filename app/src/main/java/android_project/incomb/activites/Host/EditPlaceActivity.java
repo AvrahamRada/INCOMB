@@ -55,7 +55,7 @@ public class EditPlaceActivity extends AppCompatActivity {
         findViews();
         setViews();
         findDocID();
-        btnUpdate.setOnClickListener(v -> updateDetails());
+        btnUpdate.setOnClickListener(v -> updatePlace());
 
         btnCancel.setOnClickListener(v -> {
             Intent intentCancel = new Intent();
@@ -77,16 +77,6 @@ public class EditPlaceActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    private void updateDetails() {
-        updatePlace();
-        Intent intentUpdate = new Intent();
-        intentUpdate.putExtra("Doc id",docId);
-        intentUpdate.putExtra("place", new Gson().toJson(mPlace));
-        setResult(PLACE_UPDATED_OK, intentUpdate);
-        finish();
-    }
-
 
     private void findViews() {
         //Name,Price,Capacity,Location
@@ -116,32 +106,32 @@ public class EditPlaceActivity extends AppCompatActivity {
         capacityEditText.setText(sAmount);
         sRent = Double.toString(mPlace.getRent());
         priceRentEditText.setText(sRent);
-        sLocation = getAddress(mPlace.getLocation());
+        getAddress(mPlace.getLocation());
         locationView.setText(sLocation);
         check();
         selectDate();
-        silderPhotos();
+        sliderPhotos();
     }
 
-    private String getAddress(GeoPoint location) {
+    private void getAddress(GeoPoint location) {
         //Geocoder geoCoder =  new Geocoder(getBaseContext(), Locale.getDefault());
         Geocoder geoCoder =  new Geocoder(this, Locale.getDefault());
-        String add = "";
         try{
             List<Address> addresses = geoCoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
             StringBuilder sb = new StringBuilder();
             if (addresses.size() > 0)
             {
-                for (int i=0; i<addresses.get(0).getMaxAddressLineIndex(); i++)
-                    add += addresses.get(0).getAddressLine(i) + "\n";
+                Address address = addresses.get(0);
+                sb.append(address.getLocality()).append("\n");
+                sb.append(address.getCountryName());
             }
+            sLocation = sb.toString();
         }catch (IOException e) {
             e.printStackTrace();
         }
-        return add;
     }
 
-    private void silderPhotos(){
+    private void sliderPhotos(){
         if(!mPlace.getImagesList().isEmpty()){
             ViewPagerAdapter adapter = new ViewPagerAdapter(this, mPlace.getImagesList());
             viewPager.setAdapter(adapter);
@@ -165,11 +155,12 @@ public class EditPlaceActivity extends AppCompatActivity {
     }
 
     private void updatePlace() {
-        mPlace.setYourNameForThePlace(nameEditText.toString());
-        mPlace.setAmountOfGuest(Integer.parseInt(capacityEditText.toString()));
-        mPlace.setRent(Double.parseDouble(priceRentEditText.toString()));
+        mPlace.setYourNameForThePlace(nameEditText.getText().toString().trim());
+        mPlace.setAmountOfGuest(Integer.parseInt(capacityEditText.getText().toString().trim()));
+        mPlace.setRent(Double.parseDouble(priceRentEditText.getText().toString().trim()));
         amenitiesCheck();
         reservationsTimesCheck();
+        updateDetails();
     }
 
     private void reservationsTimesCheck() {
@@ -203,5 +194,13 @@ public class EditPlaceActivity extends AppCompatActivity {
             hmap.put("table", true);
         if(chSink.isChecked())
             hmap.put("sink", true);
+    }
+
+    private void updateDetails() {
+        Intent intentUpdate = new Intent();
+        intentUpdate.putExtra("Doc id",docId);
+        intentUpdate.putExtra("place", new Gson().toJson(mPlace));
+        setResult(PLACE_UPDATED_OK, intentUpdate);
+        finish();
     }
 }
