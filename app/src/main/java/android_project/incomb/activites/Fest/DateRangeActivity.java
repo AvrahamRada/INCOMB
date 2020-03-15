@@ -8,33 +8,44 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.r0adkll.slidr.Slidr;
-import com.savvi.rangedatepicker.CalendarPickerView;
+//import com.savvi.rangedatepicker.CalendarPickerView;
+import com.squareup.timessquare.CalendarPickerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import android_project.incomb.R;
 
 public class DateRangeActivity extends AppCompatActivity {
-    CalendarPickerView calender;
-    Button b;
+    //CalendarPickerView calender;
+    private CalendarPickerView datePicker;
+    private Button btnSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_range);
+        datePicker = findViewById(R.id.date);
+        btnSelect = findViewById(R.id.btn);
         Slidr.attach(this);
+        //Avraham - use this calendar
+        initCalender();
 
-
+        btnSelect.setOnClickListener(v -> {
+            Toast.makeText(DateRangeActivity.this, "Days!!", Toast.LENGTH_SHORT).show();
+            sendDateSelected();
+        });
+    /*
         final Calendar nextYear = Calendar.getInstance();
         final Calendar lastYear = Calendar.getInstance();
 
-        nextYear.add(Calendar.YEAR,10);
-        lastYear.add(Calendar.YEAR,-10);
+        nextYear.add(Calendar.YEAR, 10);
+        lastYear.add(Calendar.YEAR, -10);
 
         calender = findViewById(R.id.date);
         b = findViewById(R.id.btn);
@@ -52,7 +63,7 @@ public class DateRangeActivity extends AppCompatActivity {
             java.util.Date newdate2 = dateFormat.parse(strDate2);
             arrayList.add(newdate1);
             arrayList.add(newdate2);
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -64,13 +75,22 @@ public class DateRangeActivity extends AppCompatActivity {
                 .withDeactivateDates(list)
                 .withHighlightedDates(arrayList);
 
-        b.setOnClickListener(new View.OnClickListener(){
+        btnSelect.setOnClickListener(v -> Toast.makeText(DateRangeActivity.this, "dxfdz", Toast.LENGTH_SHORT).show());
+    */
 
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(DateRangeActivity.this,"dxfdz", Toast.LENGTH_SHORT).show();
-            }
-        });
+    }
 
+    private void sendDateSelected() {
+        //list of the selected dates
+        List<Date> select = datePicker.getSelectedDates();
+        Date begin = select.get(0); //first day from the list
+        Date end = select.get(select.size() - 1); //last day from the list
+    }
+
+    private void initCalender() {
+        Date today = new Date();
+        Calendar nextYear = Calendar.getInstance();
+        nextYear.add(Calendar.YEAR, 1);
+        datePicker.init(today, nextYear.getTime()).inMode(CalendarPickerView.SelectionMode.RANGE).withSelectedDate(today);
     }
 }

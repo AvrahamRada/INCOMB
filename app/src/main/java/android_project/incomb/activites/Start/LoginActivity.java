@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android_project.incomb.MainActivity;
 import android_project.incomb.R;
+import android_project.incomb.activites.Fest.MapAndPlacesActivity;
 import android_project.incomb.activites.Fest.PermissionActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         findViewById(R.id.login_btn).setOnClickListener(this);
         findViewById(R.id.registration_btn).setOnClickListener(this);

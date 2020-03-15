@@ -37,8 +37,8 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_place);
 
-        TextView listPlace = (TextView) findViewById(R.id.manage_place);
-        button = (Button) findViewById(R.id.logout_btn);
+        TextView listPlace = findViewById(R.id.manage_place);
+        button = findViewById(R.id.logout_btn);
 
         placeListFragment = new PlaceListFragment(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_list, placeListFragment).commit();
@@ -86,8 +86,8 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
                 break;
             case EDIT_PLACE_REQUEST_CODE:
                 if(resultCode == PLACE_UPDATED_OK){
-                    String docId = getIntent().getStringExtra("Doc id");
-                    String placeString = getIntent().getStringExtra("place");
+                    String docId = data.getStringExtra("Doc id");
+                    String placeString = data.getStringExtra("place");
                     addNewPlace = new Gson().fromJson(placeString, Place.class);
                     //update place in fire base
                     FirebaseFirestore.getInstance()

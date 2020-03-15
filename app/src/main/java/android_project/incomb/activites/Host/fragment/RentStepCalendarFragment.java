@@ -20,7 +20,7 @@ public class RentStepCalendarFragment extends Fragment {
     private final IRentActivity activity;
     private Button button;
     private Date today;
-    private Calendar nextYear, calSelected;
+    private Calendar nextYear;
     private CalendarPickerView datePicker;
 
     public RentStepCalendarFragment(IRentActivity activity) {
@@ -56,46 +56,5 @@ public class RentStepCalendarFragment extends Fragment {
         nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
         datePicker.init(today, nextYear.getTime()).inMode(CalendarPickerView.SelectionMode.RANGE).withSelectedDate(today);
-//        datePicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-//            @Override
-//            public void onDateSelected(Date date) {
-//                calSelected = Calendar.getInstance();
-//                calSelected.setTime(date);
-//            }
-//            @Override
-//            public void onDateUnselected(Date date) {
-//            }
-//        });
     }
 }
-/*
-    Date today = new Date();
-    Calendar nextYear = Calendar.getInstance();
-        nextYear.add(Calendar.YEAR, 1);
-
-                CalendarPickerView datePicker = findViewById(R.id.calendar);
-                datePicker.init(today, nextYear.getTime())
-                .inMode(CalendarPickerView.SelectionMode.RANGE)
-                .withSelectedDate(today);
-
-                datePicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-@Override
-public void onDateSelected(Date date) {
-        //String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(date);
-
-        Calendar calSelected = Calendar.getInstance();
-        calSelected.setTime(date);
-
-        String selectedDate = "" + calSelected.get(Calendar.DAY_OF_MONTH)
-        + " " + (calSelected.get(Calendar.MONTH) + 1)
-        + " " + calSelected.get(Calendar.YEAR);
-
-        Toast.makeText(MainActivity.this, selectedDate, Toast.LENGTH_SHORT).show();
-        }
-
-@Override
-public void onDateUnselected(Date date) {
-
-        }
-        });
- */

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android_project.incomb.MainActivity;
 import android_project.incomb.R;
+import android_project.incomb.activites.Fest.MapAndPlacesActivity;
 import android_project.incomb.activites.Fest.PermissionActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 import android_project.incomb.entities.Person;
@@ -37,6 +39,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //Spinner
         Spinner spinner = findViewById(R.id.columnSpinner);

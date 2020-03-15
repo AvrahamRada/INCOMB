@@ -85,8 +85,8 @@ public class EditPlaceActivity extends AppCompatActivity {
         this.priceRentEditText = findViewById(R.id.priceRent);
         this.locationView = findViewById(R.id.location);
         //Buttons
-        this.btnCancel = findViewById(R.id.updatePlace);
-        this.btnUpdate =  findViewById(R.id.exitEdit);
+        this.btnUpdate = findViewById(R.id.updatePlace);
+        this.btnCancel =  findViewById(R.id.exitEdit);
         //Calender
         this.datePicker = findViewById(R.id.update_dates);
         //Check box

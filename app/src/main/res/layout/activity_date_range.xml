@@ -9,9 +9,7 @@
     android:background="@color/black"
     tools:context=".activites.Fest.DateRangeActivity">
 
-    <com.savvi.rangedatepicker.CalendarPickerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.squareup.timessquare.CalendarPickerView
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,7 +20,7 @@
         android:scrollbarStyle="insideOverlay"
         app:tsquare_dividerColor="@color/colorPrimary"
         app:tsquare_headerTextColor="@color/white">
-    </com.savvi.rangedatepicker.CalendarPickerView>
+    </com.squareup.timessquare.CalendarPickerView>
 
     <Button
         android:id="@+id/btn"
@@ -30,8 +28,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/date"
         android:text="select"
-        android:layout_marginLeft="50dp">
-
-    </Button>
+        android:layout_marginLeft="50dp"/>
 
 </RelativeLayout>
