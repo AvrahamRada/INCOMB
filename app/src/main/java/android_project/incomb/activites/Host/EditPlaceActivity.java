@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -39,7 +40,7 @@ public class EditPlaceActivity extends AppCompatActivity {
     private TextView locationView;
     private CheckBox chKitchen, chWifi, chYoga, chToilet, chTable, chSink;
     private Place mPlace;
-    private String docId,sRent,sAmount,sLocation;
+    private String docId, sRent, sAmount, sLocation;
     private Map<String, Boolean> hmap = new HashMap<>();
     private Button btnUpdate, btnCancel;
     private CalendarPickerView datePicker;
@@ -60,7 +61,8 @@ public class EditPlaceActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(v -> {
             Intent intentCancel = new Intent();
             setResult(PLACE_UPLOADED_FAIL, intentCancel);
-            finish(); });
+            finish();
+        });
     }
 
     private void findDocID() {
@@ -68,9 +70,8 @@ public class EditPlaceActivity extends AppCompatActivity {
                 .collection("places")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for(DocumentSnapshot doc : queryDocumentSnapshots.getDocuments())
-                    {
-                        if(mPlace.equals(doc.toObject(Place.class))) {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        if (mPlace.equals(doc.toObject(Place.class))) {
                             docId = doc.getId();
                             break;
                         }
@@ -86,11 +87,11 @@ public class EditPlaceActivity extends AppCompatActivity {
         this.locationView = findViewById(R.id.location);
         //Buttons
         this.btnUpdate = findViewById(R.id.updatePlace);
-        this.btnCancel =  findViewById(R.id.exitEdit);
+        this.btnCancel = findViewById(R.id.exitEdit);
         //Calender
         this.datePicker = findViewById(R.id.update_dates);
         //Check box
-        this.chKitchen =  findViewById(R.id.checkbox_kitchen);
+        this.chKitchen = findViewById(R.id.checkbox_kitchen);
         this.chWifi = findViewById(R.id.checkbox_wifi);
         this.chYoga = findViewById(R.id.checkbox_yoga);
         this.chToilet = findViewById(R.id.checkbox_toilet);
@@ -115,30 +116,29 @@ public class EditPlaceActivity extends AppCompatActivity {
 
     private void getAddress(GeoPoint location) {
         //Geocoder geoCoder =  new Geocoder(getBaseContext(), Locale.getDefault());
-        Geocoder geoCoder =  new Geocoder(this, Locale.getDefault());
-        try{
-            List<Address> addresses = geoCoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+        Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             StringBuilder sb = new StringBuilder();
-            if (addresses.size() > 0)
-            {
+            if (addresses.size() > 0) {
                 Address address = addresses.get(0);
                 sb.append(address.getLocality()).append("\n");
                 sb.append(address.getCountryName());
             }
             sLocation = sb.toString();
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void sliderPhotos(){
-        if(!mPlace.getImagesList().isEmpty()){
+    private void sliderPhotos() {
+        if (!mPlace.getImagesList().isEmpty()) {
             ViewPagerAdapter adapter = new ViewPagerAdapter(this, mPlace.getImagesList());
             viewPager.setAdapter(adapter);
         }
     }
 
-    private void check(){
+    private void check() {
         chKitchen.setChecked(mPlace.getAmenities().isKitchen());
         chWifi.setChecked(mPlace.getAmenities().isWifi());
         chYoga.setChecked(mPlace.getAmenities().isYoga());
@@ -164,7 +164,7 @@ public class EditPlaceActivity extends AppCompatActivity {
     }
 
     private void reservationsTimesCheck() {
-        if(!datePicker.getSelectedDates().isEmpty()){
+        if (!datePicker.getSelectedDates().isEmpty()) {
             Date begin = datePicker.getSelectedDates().get(0);
             Date end = datePicker.getSelectedDates().get(datePicker.getSelectedDates().size() - 1);
             mPlace.setAvailability(begin, end);
@@ -182,23 +182,23 @@ public class EditPlaceActivity extends AppCompatActivity {
     }
 
     private void isCheck() {
-        if(chKitchen.isChecked())
+        if (chKitchen.isChecked())
             hmap.put("kitchen", true);
-        if(chWifi.isChecked())
+        if (chWifi.isChecked())
             hmap.put("wifi", true);
-        if(chYoga.isChecked())
+        if (chYoga.isChecked())
             hmap.put("yoga", true);
-        if(chToilet.isChecked())
+        if (chToilet.isChecked())
             hmap.put("toilet", true);
-        if(chTable.isChecked())
+        if (chTable.isChecked())
             hmap.put("table", true);
-        if(chSink.isChecked())
+        if (chSink.isChecked())
             hmap.put("sink", true);
     }
 
     private void updateDetails() {
         Intent intentUpdate = new Intent();
-        intentUpdate.putExtra("Doc id",docId);
+        intentUpdate.putExtra("Doc id", docId);
         intentUpdate.putExtra("place", new Gson().toJson(mPlace));
         setResult(PLACE_UPDATED_OK, intentUpdate);
         finish();

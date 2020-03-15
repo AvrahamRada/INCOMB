@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -46,6 +47,7 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new RentStepOneFragment(this))
+                .addToBackStack("stack")
                 .commit();
     }
 
@@ -96,21 +98,24 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
     private void openSecondFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, /*new fragment*/new RentStepTwoFragment(this))
+                .add(R.id.fragment_container, /*new fragment*/new RentStepTwoFragment(this))
+                .addToBackStack("stack")
                 .commit();
     }
 
     private void openCalendarFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, /*new fragment*/new RentStepCalendarFragment(this))
+                .add(R.id.fragment_container, /*new fragment*/new RentStepCalendarFragment(this))
+                .addToBackStack("stack")
                 .commit();
     }
 
     private void openFourFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, /*new fragment*/new RentStepFourFragment(this))
+                .add(R.id.fragment_container, /*new fragment*/new RentStepFourFragment(this))
+                .addToBackStack("stack")
                 .commit();
     }
 
@@ -158,6 +163,14 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                         //handle failure
                     });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getFragments().size() > 1){
+            getSupportFragmentManager().popBackStack();
+        }
+        else finish();
     }
 
     private void updateImagesInDB(String docId) {

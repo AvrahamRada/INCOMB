@@ -97,7 +97,7 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
                                     "amountOfGuest", addNewPlace.getAmountOfGuest(),
                                     "availability", addNewPlace.getAvailability(),
                                     "rent", addNewPlace.getRent(),
-                                    "YourNameForThePlace" ,addNewPlace.getYourNameForThePlace())
+                                    "yourNameForThePlace" ,addNewPlace.getYourNameForThePlace())
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

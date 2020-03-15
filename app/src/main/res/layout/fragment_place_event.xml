@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".activites.Host.fragment.PlaceEventFragment">
 
     <TextView
@@ -18,16 +20,11 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width = "match_parent"
-        android:layout_height = "match_parent"
-        android:layout_marginTop="40dp"
-        android:orientation = "vertical">
-        <ListView
-            android:id = "@+id/list"
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"/>
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/events_list"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/event_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-
-</FrameLayout>
+</LinearLayout>

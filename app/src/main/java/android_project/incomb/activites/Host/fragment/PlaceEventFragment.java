@@ -6,19 +6,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.Interface.IPlaceActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
+import android_project.incomb.entities.Event;
 
 public class PlaceEventFragment extends Fragment {
     private final IPlaceActivity activity;
     private TextView listActivity;
-    private ListView activityList;
+    private RecyclerView eventRecyclerViews;
 
-    public PlaceEventFragment(MyPlaceActivity activity) { this.activity = activity; }
+    public PlaceEventFragment(MyPlaceActivity activity) {
+        this.activity = activity;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,10 +41,8 @@ public class PlaceEventFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        listActivity = (TextView) view.findViewById(R.id.activity_place);
-        activityList = (ListView) view.findViewById(R.id.list);
-
-
+        listActivity = view.findViewById(R.id.activity_place);
+        eventRecyclerViews = view.findViewById(R.id.events_list);
     }
 
     @Override
@@ -37,6 +50,31 @@ public class PlaceEventFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_place_event, container, false);
         findViews(view);
+        setViews();
         return view;
+    }
+
+    private void setViews() {
+        setEventsRecyclerView();
+    }
+
+    private void setEventsRecyclerView() {
+        List<Event> events = new ArrayList<>();
+        FirebaseFirestore.getInstance()
+                .collection("events")
+                .whereEqualTo("hostId", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        events.addAll(queryDocumentSnapshots.toObjects(Event.class));
+                        EventsAdapter adapter = new EventsAdapter(events);
+                        eventRecyclerViews.setAdapter(adapter);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(),"No Events",Toast.LENGTH_LONG);
+        });
+
     }
 }

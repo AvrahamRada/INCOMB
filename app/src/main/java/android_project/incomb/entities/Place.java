@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Place {
     // attributes
+    private String id;
     private GeoPoint location; // Physical location
     private int amountOfGuest;
     private typeOfActivities activityType; // yoga, lecture or Social Action
@@ -31,6 +32,14 @@ public class Place {
     }
 
     //Getters and Setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public GeoPoint getLocation() {
         return location;
     }
