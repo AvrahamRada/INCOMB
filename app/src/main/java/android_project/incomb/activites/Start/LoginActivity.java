@@ -16,7 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android_project.incomb.MainActivity;
 import android_project.incomb.R;
-import android_project.incomb.activites.Fest.FindPlaceActivity;
+import android_project.incomb.activites.Fest.DateRangeActivity;
+import android_project.incomb.activites.Fest.MapAndPlacesActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -83,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String userType = (String) documentSnapshot.get("typeUser");
                         switch (userType) {
                             case "Fest":
-                                startActivity(new Intent(getApplicationContext(), FindPlaceActivity.class));
+                                startActivity(new Intent(getApplicationContext(), MapAndPlacesActivity.class));
                                 finish();
                                 break;
                             case "Guest":

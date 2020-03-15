@@ -17,7 +17,7 @@ import android_project.incomb.activites.Host.MyPlaceActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 1000;
     private FirebaseAuth fAuth;
 
     @Override
@@ -31,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (fAuth.getCurrentUser() != null) {
+                if (fAuth.getCurrentUser() != null) {// User already signed in
                     Login(fAuth.getCurrentUser());
                 }
                 else { // no user signed in

@@ -1,6 +1,7 @@
 package android_project.incomb.activites.Fest;
 
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,13 +14,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -52,25 +48,14 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
-//import com.skyfishjy.library.RippleBackground;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-
 import android_project.incomb.R;
-import android_project.incomb.activites.Fest.fragments.PageFragment1;
-import android_project.incomb.activites.Fest.fragments.PageFragment2;
 
-public class FindPlaceActivity extends AppCompatActivity implements OnMapReadyCallback {
-
-    private ViewPager paper;
-    private PagerAdapter paperAdapter;
+public class MapAndPlacesActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     // Map Object
     private GoogleMap mMap;
@@ -93,24 +78,20 @@ public class FindPlaceActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_find_place);
+        setContentView(R.layout.activity_map_and_places);
 
-        List<Fragment> list = new ArrayList<>();
-        list.add(new PageFragment1());
-        list.add(new PageFragment2());
-
-        paper = findViewById(R.id.paper);
-        paperAdapter = new SlidePagerAdapter(getSupportFragmentManager(),list);
-        paper.setAdapter(paperAdapter);
-
+        // Search bar for places
         materialSearchBar = findViewById(R.id.searchBar);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(FindPlaceActivity.this);
-        Places.initialize(FindPlaceActivity.this, getString(R.string.google_maps_token));
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapAndPlacesActivity.this);
+
+        // Initialize the SDK
+        Places.initialize(getApplicationContext(), getString(R.string.api_key));
+        // Create a new Places client instance
         placesClient = Places.createClient(this);
         final AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
@@ -232,7 +213,8 @@ public class FindPlaceActivity extends AppCompatActivity implements OnMapReadyCa
         });
     }
 
-    // Map is ready and loaded
+
+        // Map is ready and loaded
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -256,23 +238,23 @@ public class FindPlaceActivity extends AppCompatActivity implements OnMapReadyCa
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
 
-        SettingsClient settingsClient = LocationServices.getSettingsClient(FindPlaceActivity.this);
+        SettingsClient settingsClient = LocationServices.getSettingsClient(MapAndPlacesActivity.this);
         Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
 
-        task.addOnSuccessListener(FindPlaceActivity.this, new OnSuccessListener<LocationSettingsResponse>() {
+        task.addOnSuccessListener(MapAndPlacesActivity.this, new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 getDeviceLocation();
             }
         });
 
-        task.addOnFailureListener(FindPlaceActivity.this, new OnFailureListener() {
+        task.addOnFailureListener(MapAndPlacesActivity.this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 if (e instanceof ResolvableApiException) {
                     ResolvableApiException resolvable = (ResolvableApiException) e;
                     try {
-                        resolvable.startResolutionForResult(FindPlaceActivity.this, 51);
+                        resolvable.startResolutionForResult(MapAndPlacesActivity.this, 51);
                     } catch (IntentSender.SendIntentException e1) {
                         e1.printStackTrace();
                     }
@@ -333,9 +315,17 @@ public class FindPlaceActivity extends AppCompatActivity implements OnMapReadyCa
 
                             }
                         } else {
-                            Toast.makeText(FindPlaceActivity.this, "unable to get last location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MapAndPlacesActivity.this, "unable to get last location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+    public void openDateRangePick(View view) {
+        startActivity(new Intent(MapAndPlacesActivity.this,DateRangeActivity.class));
     }
 }

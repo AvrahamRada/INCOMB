@@ -5,4 +5,15 @@
     <color name="colorAccent">#D5FF0000</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="dividerColor">#e0e0e0</color>
+    <color name="custom_header_text">#030303</color>
+
+    //this is for HighLighted dates
+    <color name="calendar_unavailable_bg">#F44336</color>
+    <color name="calendar_range_middle_unavailable_bg">#F44336</color>
+
+    // this is for Deactivated dates
+    <color name="calendar_range_middle_deactivated_bg">#673AB7</color>
 </resources>
