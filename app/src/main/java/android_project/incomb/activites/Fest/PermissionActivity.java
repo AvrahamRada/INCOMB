@@ -21,6 +21,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import android_project.incomb.R;
+import android_project.incomb.activites.Start.LoginActivity;
 
 public class PermissionActivity extends AppCompatActivity {
 
@@ -35,7 +36,7 @@ public class PermissionActivity extends AppCompatActivity {
     private void checkForPermissions() {
         if(ContextCompat.checkSelfPermission(PermissionActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            startActivity(new Intent(PermissionActivity.this, FindPlaceActivity.class));
+            startActivity(new Intent(PermissionActivity.this, MapAndPlacesActivity.class));
             finish();
             return;
         }
@@ -45,7 +46,7 @@ public class PermissionActivity extends AppCompatActivity {
                     .withListener(new PermissionListener() {
                         @Override
                         public void onPermissionGranted(PermissionGrantedResponse response) {
-                            startActivity(new Intent(PermissionActivity.this, FindPlaceActivity.class));
+                            startActivity(new Intent(PermissionActivity.this, MapAndPlacesActivity.class));
                             finish();
                         }
 
@@ -54,7 +55,8 @@ public class PermissionActivity extends AppCompatActivity {
                             if(response.isPermanentlyDenied()){
                                 AlertDialog.Builder builder = new AlertDialog.Builder(PermissionActivity.this);
                                 builder.setTitle("Permission Denied")
-                                        .setMessage("Permission to access device location is permanently denied. you need to go to setting to allow the permission.")
+                                        .setMessage("Permission to access device location is permanently denied." +
+                                                " you need to go to setting to allow the permission.")
                                         .setNegativeButton("Cancel", null)
                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                             @Override
