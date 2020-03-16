@@ -27,4 +27,6 @@
         android:elevation="5dp"
         android:outlineProvider="bounds"
         app:mt_placeholder="Search a place"/>
+
+
 </RelativeLayout>

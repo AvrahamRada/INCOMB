@@ -57,17 +57,13 @@ public class Place {
         return amountOfGuest;
     }
 
-    public void setTypeOfActivity(String activityType) {
-        this.activityType = typeOfActivities.valueOf(activityType);
-    }
+    public void setTypeOfActivity(String activityType) { this.activityType = typeOfActivities.valueOf(activityType); }
 
     public typeOfActivities getTypeOfActivity() {
         return activityType;
     }
 
-    public void setTypeOfSpaces(String spaceType) {
-        this.spaceType = typeOfSpaces.valueOf(spaceType);
-    }
+    public void setTypeOfSpaces(String spaceType) { this.spaceType = typeOfSpaces.valueOf(spaceType); }
 
     public typeOfSpaces getTypeOfSpaces() {
         return spaceType;
@@ -80,7 +76,6 @@ public class Place {
     public double getRent() {
         return this.rent;
     }
-
 
     public void setYourNameForThePlace(String placeName) {
         this.placeName = placeName;

@@ -18,17 +18,15 @@
         android:layout_height="match_parent"
         android:id="@+id/activities_fragment"
         android:name="android_project.incomb.activites.Fest.Fragment.ActivitiesFragment"
-        android:layout_weight="0.9">
+        android:layout_weight="0.9"/>
 
-    </fragment>
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/date_fragment"
         android:layout_marginTop="5dp"
-        android:name="android_project.incomb.activites.Fest.DateFragment"
-        android:layout_weight="0.1">
-    </fragment>
+        android:name="android_project.incomb.activites.Fest.Fragment.DateFragment"
+        android:layout_weight="0.1"/>
 
 </LinearLayout>

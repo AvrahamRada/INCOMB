@@ -1,8 +1,5 @@
 package android_project.incomb.activites.Fest;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -16,6 +13,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -46,6 +46,8 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 
@@ -54,8 +56,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import android_project.incomb.R;
+import android_project.incomb.entities.ReservationsTimes;
 
 public class MapAndPlacesActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private static final int CHECK_PLACE_REQUEST_CODE = 2;
+    public static final int PLACE_SEARCH_OK = 3;
+
+    //result after the DateRangeActivity
+    String typeActivity;
+    ReservationsTimes calender;
+    List<android_project.incomb.entities.Place> places = new ArrayList<>();
 
     // Map Object
     private GoogleMap mMap;
@@ -274,6 +284,10 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
         });
     }
 
+    public void openDateRangePick(View view) {
+        startActivityForResult(new Intent(MapAndPlacesActivity.this,DateRangeActivity.class),CHECK_PLACE_REQUEST_CODE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -281,6 +295,30 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
             if (resultCode == RESULT_OK) {
                 getDeviceLocation();
             }
+        }
+        else if(requestCode == CHECK_PLACE_REQUEST_CODE){
+            if(resultCode == PLACE_SEARCH_OK){
+                typeActivity = data.getStringExtra("type Activity");
+                String CalenderString = data.getStringExtra("calendar");
+                calender = new Gson().fromJson(CalenderString, ReservationsTimes.class);
+                FirebaseFirestore.getInstance()
+                        .collection("places")
+                        .whereEqualTo( "typeOfActivity",typeActivity)
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
+                            setList();
+                        });
+            }
+        }
+    }
+
+    private void setList() {
+        for (android_project.incomb.entities.Place placeCheck: places) {
+            ReservationsTimes check = placeCheck.getAvailability();
+            // need to remove to places that out of range
+            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
+                //places.remove(placeCheck);
         }
     }
 
@@ -325,7 +363,5 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
-    public void openDateRangePick(View view) {
-        startActivity(new Intent(MapAndPlacesActivity.this,DateRangeActivity.class));
-    }
+
 }
