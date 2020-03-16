@@ -14,19 +14,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.mancj.materialsearchbar.MaterialSearchBar
-        style="@style/MaterialSearchBarLight"
-        app:mt_speechMode="false"
-        app:mt_hint="Search a place"
-        app:mt_maxSuggestionsCount="10"
+<!--    <com.mancj.materialsearchbar.MaterialSearchBar-->
+<!--        style="@style/MaterialSearchBarLight"-->
+<!--        app:mt_speechMode="false"-->
+<!--        app:mt_hint="Search a place"-->
+<!--        app:mt_maxSuggestionsCount="10"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/searchBar"-->
+<!--        android:layout_margin="16dp"-->
+<!--        app:mt_navIconEnabled="true"-->
+<!--        android:elevation="5dp"-->
+<!--        android:outlineProvider="bounds"-->
+<!--        app:mt_placeholder="Search a place"/>-->
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchBar"
-        android:layout_margin="16dp"
-        app:mt_navIconEnabled="true"
-        android:elevation="5dp"
-        android:outlineProvider="bounds"
-        app:mt_placeholder="Search a place"/>
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
+
+    </androidx.cardview.widget.CardView>
+
 
 
 </RelativeLayout>
