@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
@@ -93,7 +94,7 @@ public class DateRangeActivity extends AppCompatActivity {
     }
 
     public void test(){
-        /*
+        /* getting host information
         FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(placeCheck.getIdHost())
@@ -105,35 +106,38 @@ public class DateRangeActivity extends AppCompatActivity {
                     host.getPhoneNumber();
                 });
          */
-        /*
-        List<Place> places = new ArrayList<>();
-        FirebaseFirestore.getInstance()
-                .collection("events")
-                .whereEqualTo( "typeOfActivity",typeActivity)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
-                });
-         */
+        /* getting events and filter them by activity and dates
         List<Event> events = new ArrayList<>();
         FirebaseFirestore.getInstance()
                 .collection("events")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     events.addAll(queryDocumentSnapshots.toObjects(Event.class));
-                    //setList(events);
+                    setList(events);
                 });
+         */
         }
-//    private void setList(List<Event> events) {
-//        for (Event checkEvent: events) {
-//            FirebaseFirestore.getInstance()
-//                    .collection("places")
-//                    .
-//            // ReservationsTimes check = placeCheck.getAvailability();
-//            // need to remove to places that out of range
-//            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
-//            //places.remove(placeCheck);
-//        }
-//    }
+    private void setList(List<Event> events) {
+        /*
+        List<Event> temp = new ArrayList<>();
+        Place checkPlace;
+        for (Event checkEvent: events) {
+            Place checkPlace;
+            FirebaseFirestore.getInstance()
+                    .collection("places")
+                    .document(checkEvent.getPlaceId())
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        checkPlace = documentSnapshot.toObject(Place.class);
+                    });
+            ReservationsTimes check = checkPlace.getAvailability();
+            if(!checkPlace.getTypeOfActivity().equals(typeActivity))
+                temp.add(checkEvent);
+            else if(begin.before(check.getStartEvent()) || end.after(check.getEndEvent()))
+                temp.add(checkEvent);
+        }
+        events.removeAll(temp);
+         */
+    }
 }
 
