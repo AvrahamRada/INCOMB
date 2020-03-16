@@ -24,8 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android_project.incomb.MainActivity;
 import android_project.incomb.R;
-import android_project.incomb.activites.Fest.MapAndPlacesActivity;
-import android_project.incomb.activites.Fest.PermissionActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 import android_project.incomb.entities.Person;
 
@@ -165,7 +163,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                             .addOnSuccessListener(documentReference -> {
                                 switch (userType) {
                                     case "Fest":
-                                        Intent intent = new Intent(getApplicationContext(), PermissionActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), PermissionAndGPSActivity.class);
                                         intent.putExtra("host",""/*new Gson().toJson(user)*/);
                                         startActivity(intent);
                                         finish();

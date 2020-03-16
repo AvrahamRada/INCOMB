@@ -12,7 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android_project.incomb.MainActivity;
 import android_project.incomb.R;
-import android_project.incomb.activites.Fest.PermissionActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 
 public class SplashScreen extends AppCompatActivity {
@@ -58,7 +57,7 @@ public class SplashScreen extends AppCompatActivity {
                         String userType = (String) documentSnapshot.get("typeUser");
                         switch (userType) {
                             case "Fest":
-                                startActivity(new Intent(getApplicationContext(), PermissionActivity.class));
+                                startActivity(new Intent(getApplicationContext(), PermissionAndGPSActivity.class));
                                 finish();
                                 break;
                             case "Guest":

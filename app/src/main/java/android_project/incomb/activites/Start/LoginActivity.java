@@ -15,11 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import android_project.incomb.MainActivity;
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.MapAndPlacesActivity;
-import android_project.incomb.activites.Fest.PermissionActivity;
-import android_project.incomb.activites.Guest.DateRangeActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
