@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80507C44"
+    android:background="@color/white"
     tools:context=".activites.Start.SplashScreen">
 
     <ImageView
@@ -25,21 +25,21 @@
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/exo_extrabold"
         android:text=" INCOMB "
-        android:textColor="#000000"
+        android:textColor="#139e65"
         android:textSize="22dp"
         android:textStyle="bold" />
     <TextView
         android:id="@+id/signature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#000000"
+        android:background="#139e65"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/exo_bold"
         android:textColor="#ffffff"
         android:gravity="center"
         android:textStyle="bold"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:text="&#169;Lior Trachtman     &#169;Avraham Rada" />
 
 </RelativeLayout>

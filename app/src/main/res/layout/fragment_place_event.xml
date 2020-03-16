@@ -16,7 +16,7 @@
         android:layout_marginLeft="5dp"
         android:fontFamily="@font/exo_bold"
         android:text="Your place activity"
-        android:textColor="#D2388E3C"
+        android:textColor="#139e65"
         android:textSize="20sp"
         android:textStyle="bold" />
 

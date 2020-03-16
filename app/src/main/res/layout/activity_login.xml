@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login to the system"
-        android:textColor="#D2388E3C"
+        android:textColor="#139e65"
         android:textSize="15sp"
         android:fontFamily="@font/exo_bold"
         android:layout_marginBottom="50dp"
@@ -91,12 +91,11 @@
 
     <Button
         android:id="@+id/login_btn"
-        android:layout_width="120dp"
-        android:layout_height="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/exo_bold"
         android:background="@drawable/buttonshape"
-        android:paddingBottom="10dp"
         android:text="Login"/>
 
     <Button
@@ -108,7 +107,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/exo_bold"
         android:text=" New Here ?   Create Account "
-        android:textColor="#D2388E3C">
+        android:textColor="#139e65">
     </Button>
 
     <ProgressBar

@@ -14,7 +14,7 @@
         android:text="Your place"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:textColor="#D2388E3C"
+        android:textColor="#139e65"
         android:textSize="20sp"
         android:textStyle="bold" />
 

@@ -15,7 +15,7 @@
         android:layout_marginTop="5dp"
         android:text="What is the availabilty of your place?"
         android:fontFamily="@font/exo_bold"
-        android:textColor="#D2388E3C"
+        android:textColor="#139e65"
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_gravity="center"/>

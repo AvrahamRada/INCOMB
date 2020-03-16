@@ -16,30 +16,36 @@
         android:windowSoftInputMode="adjustResize"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:supportsRtl">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAEaX6z8jIIcM_rTOwRzwKlrJX7GyNGysU" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <activity android:name=".activites.Fest.MapAndPlacesActivity"/>
-        <activity android:name=".activites.Fest.DateRangeActivity"
-            android:theme="@style/AppTheme.slidrActivityTheme"/>
-        <activity android:name=".activites.Fest.PermissionActivity"/>
+
+        <activity android:name=".activites.Fest.MapAndPlacesActivity" />
+        <activity
+            android:name=".activites.Fest.DateRangeActivity"
+            android:theme="@style/AppTheme.slidrActivityTheme" />
+        <activity android:name=".activites.Start.SplashScreen" />
         <activity android:name=".activites.Host.EditPlaceActivity" />
         <activity android:name=".activites.Host.MyPlaceActivity" />
-        <activity android:name=".activites.Guest.FindEventActivity" />
+        <activity
+            android:name=".activites.Guest.DateRangeActivity"
+            android:theme="@style/AppTheme.slidrActivityTheme" />
         <activity android:name=".activites.Host.RentPlaceActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".activites.Start.LoginActivity" />
         <activity android:name=".activites.Start.RegistrationActivity" />
-        <activity android:name=".activites.Start.SplashScreen">
+        <activity android:name=".activites.Start.PermissionAndGPSActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

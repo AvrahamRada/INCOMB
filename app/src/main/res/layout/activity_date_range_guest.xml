@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:weightSum="1"
+    android:padding="5dp"
+    android:layout_gravity="center"
+tools:context=".activites.Guest.DateRangeActivity">
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="android_project.incomb.activites.Guest.ActivitiesGuestFragment"
+        android:id="@+id/activities_guest_fragment"
+        android:layout_weight="0.9">
+
+    </fragment>
+
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="android_project.incomb.activites.Guest.DateGuestFragment"
+        android:id="@+id/date_guest_fragment"
+        android:layout_weight="0.1">
+
+    </fragment>
+
+
+
+</LinearLayout>

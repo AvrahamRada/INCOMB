@@ -16,7 +16,7 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/exo_bold"
         android:text="Upload photos of your place"
-        android:textColor="#D2388E3C"
+        android:textColor="#139e65"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -28,7 +28,7 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/exo_bold"
         android:text="make sure the photos are in high-quality"
-        android:textColor="#D2388E3C"
+        android:textColor="#139e65"
         android:textSize="15sp"
         android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/exo_bold"
         android:text="Finally, give your place a spicy name"
-        android:textColor="#D2388E3C"
+        android:textColor="#139e65"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -82,7 +82,7 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/exo_bold"
         android:text="as it would show in the listing page"
-        android:textColor="#D2388E3C"
+        android:textColor="#139e65"
         android:textSize="15sp"
         android:textStyle="bold" />
 
@@ -105,7 +105,7 @@
             android:hint="Your place's name is..."
             android:inputType="textPersonName"
             android:maxLength="31"
-            android:textColor="#64AA69"
+            android:textColor="#139e65"
             android:textSize="16sp"
             android:textStyle="bold"/>
     </com.google.android.material.textfield.TextInputLayout>
