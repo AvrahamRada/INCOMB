@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android_project.incomb.R;
-import android_project.incomb.activites.Host.fragment.PlaceListFragment;
+import android_project.incomb.activites.Host.Fragment.PlaceListFragment;
 import android_project.incomb.entities.Place;
 
 public class PlaceAdapter extends RecyclerView.Adapter<ImageViewHolder> {

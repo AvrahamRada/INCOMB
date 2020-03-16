@@ -1,4 +1,4 @@
-package android_project.incomb.activites.Host.fragment;
+package android_project.incomb.activites.Host.Fragment;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,8 +23,6 @@ import java.util.List;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.Interface.IRentActivity;
-import android_project.incomb.activites.Host.MyPlaceActivity;
-import android_project.incomb.activites.Host.RentPlaceActivity;
 
 public class RentStepOneFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private final IRentActivity activity;

@@ -1,4 +1,4 @@
-package android_project.incomb.activites.Host.fragment;
+package android_project.incomb.activites.Host.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -68,6 +68,5 @@ public class PlaceEventFragment extends Fragment {
                 .addOnFailureListener(e -> {
                     Toast.makeText(getContext(),"No Events",Toast.LENGTH_LONG);
         });
-
     }
 }

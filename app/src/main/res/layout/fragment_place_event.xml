@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".activites.Host.fragment.PlaceEventFragment">
+    tools:context=".activites.Host.Fragment.PlaceEventFragment">
 
     <TextView
         android:id="@+id/activity_place"

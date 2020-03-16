@@ -16,7 +16,7 @@ tools:context=".activites.Guest.DateRangeActivity">
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="android_project.incomb.activites.Guest.ActivitiesGuestFragment"
+        android:name="android_project.incomb.activites.Guest.Fragment.ActivitiesGuestFragment"
         android:id="@+id/activities_guest_fragment"
         android:layout_weight="0.9">
 

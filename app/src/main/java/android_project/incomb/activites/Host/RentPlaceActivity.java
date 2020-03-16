@@ -7,7 +7,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -23,10 +22,10 @@ import java.util.function.Consumer;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.Interface.IRentActivity;
-import android_project.incomb.activites.Host.fragment.RentStepCalendarFragment;
-import android_project.incomb.activites.Host.fragment.RentStepFourFragment;
-import android_project.incomb.activites.Host.fragment.RentStepOneFragment;
-import android_project.incomb.activites.Host.fragment.RentStepTwoFragment;
+import android_project.incomb.activites.Host.Fragment.RentStepCalendarFragment;
+import android_project.incomb.activites.Host.Fragment.RentStepFourFragment;
+import android_project.incomb.activites.Host.Fragment.RentStepOneFragment;
+import android_project.incomb.activites.Host.Fragment.RentStepTwoFragment;
 import android_project.incomb.entities.Place;
 
 public class RentPlaceActivity extends AppCompatActivity implements IRentActivity {

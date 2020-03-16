@@ -6,20 +6,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.Interface.IPlaceActivity;
-import android_project.incomb.activites.Host.fragment.PlaceEventFragment;
-import android_project.incomb.activites.Host.fragment.PlaceListFragment;
+import android_project.incomb.activites.Host.Fragment.PlaceEventFragment;
+import android_project.incomb.activites.Host.Fragment.PlaceListFragment;
 import android_project.incomb.activites.Start.LoginActivity;
 import android_project.incomb.entities.Place;
 

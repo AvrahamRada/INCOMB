@@ -1,4 +1,4 @@
-package android_project.incomb.activites.Fest;
+package android_project.incomb.activites.Fest.Fragment;
 
 import android.os.Bundle;
 
@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 
 import android_project.incomb.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ActivitiesFragment extends Fragment {
 
     public ActivitiesFragment() {
@@ -21,8 +18,7 @@ public class ActivitiesFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_activities, container, false);
     }

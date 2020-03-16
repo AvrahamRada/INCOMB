@@ -1,4 +1,4 @@
-package android_project.incomb.activites.Host.fragment;
+package android_project.incomb.activites.Host.Fragment;
 
 import android.app.Activity;
 import android.content.Intent;

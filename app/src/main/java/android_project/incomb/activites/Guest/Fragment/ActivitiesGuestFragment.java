@@ -1,4 +1,4 @@
-package android_project.incomb.activites.Guest;
+package android_project.incomb.activites.Guest.Fragment;
 
 import android.os.Bundle;
 

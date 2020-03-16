@@ -1,9 +1,13 @@
 package android_project.incomb.entities;
 
-import com.google.firebase.auth.FirebaseAuth;
+import android.widget.Toast;
 
-import java.time.Clock;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
+
+import android_project.incomb.activites.Host.MyPlaceActivity;
 
 public class Event {
     // attributes
@@ -23,9 +27,7 @@ public class Event {
 
     //Getters and Setters
 
-    public String getPlaceId() {
-        return placeId;
-    }
+    public String getPlaceId() { return placeId;  }
 
     public void setPlaceId(String placeId) {
         this.placeId = placeId;
@@ -47,9 +49,7 @@ public class Event {
         this.idFest = idFest;
     }
 
-    public String getEventName() {
-        return eventName;
-    }
+    public String getEventName() { return eventName; }
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
@@ -71,8 +71,16 @@ public class Event {
 
 
     //Methods
-//    public void addGuest(String string){
-//        if(idGuest.size() < eventPlace.getAmountOfGuest())
-//            idGuest.add(string);
-//    }
+    public void addGuest(String guestID){
+        AtomicReference<Place> eventPlace = null;
+        FirebaseFirestore.getInstance()
+                .collection("places")
+                .document(placeId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    eventPlace.set(documentSnapshot.toObject(Place.class));
+                });
+        if(idGuest.size() < eventPlace.get().getAmountOfGuest())
+            idGuest.add(guestID);
+    }
 }

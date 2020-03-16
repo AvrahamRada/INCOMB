@@ -16,6 +16,8 @@
         android:windowSoftInputMode="adjustResize"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:supportsRtl">
+        <activity android:name=".activites.Fest.SearchPlaceActivity"></activity>
+        <activity android:name=".activites.Guest.SearchEventActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -35,7 +37,6 @@
             android:name=".activites.Guest.DateRangeActivity"
             android:theme="@style/AppTheme.slidrActivityTheme" />
         <activity android:name=".activites.Host.RentPlaceActivity" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".activites.Start.LoginActivity" />
         <activity android:name=".activites.Start.RegistrationActivity" />
         <activity android:name=".activites.Start.PermissionAndGPSActivity">
