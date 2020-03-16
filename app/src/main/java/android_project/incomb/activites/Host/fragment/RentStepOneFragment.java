@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -22,6 +23,8 @@ import java.util.List;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.Interface.IRentActivity;
+import android_project.incomb.activites.Host.MyPlaceActivity;
+import android_project.incomb.activites.Host.RentPlaceActivity;
 
 public class RentStepOneFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private final IRentActivity activity;
@@ -29,10 +32,8 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
     private TextInputLayout mLocation;
     private Button button;
     private GeoPoint geoPoint;
-    //private EditText mDisPrice, mDishour;
-    //private CheckBox chDiscount;
 
-    private String sPlace, sSuitable, sCapacity, sPrice, sDisPrice, sDishour;
+    private String sPlace, sSuitable, sCapacity, sPrice;
 
     public RentStepOneFragment(IRentActivity activity) {
         this.activity = activity;
@@ -47,9 +48,6 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         mCapacity = (EditText) view.findViewById(R.id.capacity);
         mLocation = (TextInputLayout) view.findViewById(R.id.Location);
         mPrice = (EditText) view.findViewById(R.id.price);
-//        mDisPrice = (EditText) view.findViewById(R.id.discount_price);
-//        mDishour = (EditText) view.findViewById(R.id.discount_hour);
-//        chDiscount = (CheckBox) view.findViewById(R.id.checkbox_discount);
         button = (Button) view.findViewById(R.id.firstStep);
 
         //spinner-place
@@ -59,8 +57,7 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         placeSpin.setAdapter(adapterPlace);
         placeSpin.setOnItemSelectedListener(this);
 
-        //spinner-suitable 'need to check how to do a multiple spinner'
-        //https://stackoverflow.com/questions/5015686/android-spinner-with-multiple-choice
+        //spinner-suitable
         Spinner suitableSpin = (Spinner) view.findViewById(R.id.spinner_suitable);
         ArrayAdapter<CharSequence> adapterSuitable = ArrayAdapter.createFromResource(getContext(), R.array.spinner_suitable, android.R.layout.simple_spinner_item);
         adapterSuitable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -76,7 +73,6 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         button.setOnClickListener(v -> {
             getDatafromUser();
             activity.setFirstData(sCapacity, sPrice, sPlace, sSuitable, geoPoint);
-            //activity.setFirstData(sCapacity,sPrice,sPlace,sSuitable, geoPoint, sDisPrice, sDishour);
         });
         return view;
     }
@@ -85,14 +81,6 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
         sCapacity = mCapacity.getText().toString();
         sPrice = mPrice.getText().toString();
         geoPoint = getLocationFromAddress(mLocation.getEditText().getText().toString());
-//        if(chDiscount.isChecked()){
-//            sDisPrice = mDisPrice.getText().toString();
-//            sDishour = mDishour.getText().toString();
-//        }
-//        else{
-//            sDisPrice = "0";
-//            sDishour = "0";
-//        }
     }
 
     @Override
@@ -124,9 +112,9 @@ public class RentStepOneFragment extends Fragment implements AdapterView.OnItemS
             Address location = address.get(0);
             location.getLatitude();
             location.getLongitude();
-            //p1 = new GeoPoint((double) (location.getLatitude() * 1E6), (double) (location.getLongitude() * 1E6));
             p1 = new GeoPoint((double) (location.getLatitude()), (double) (location.getLongitude()));
         } catch (IOException e) {
+            Toast.makeText(getContext(),"Wrong Place",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
         return p1;

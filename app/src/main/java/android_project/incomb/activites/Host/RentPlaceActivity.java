@@ -40,8 +40,6 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
         super.onCreate(savedInstanceState);
         newPlace = new Place();
         setContentView(R.layout.activity_rent_place);
-
-        //https://stackoverflow.com/questions/9732761/prevent-the-keyboard-from-displaying-on-activity-start
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         getSupportFragmentManager()
@@ -86,13 +84,17 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
 
     @Override
     public void setFourData(String namePlace, List<Uri> uriList) {
-        newPlace.setYourNameForThePlace(namePlace);
-        List<String> imageListString = new ArrayList<>();
-        for (Uri uri : uriList) {
-            imageListString.add(uri.toString());
+        try {
+            List<String> imageListString = new ArrayList<>();
+            for (Uri uri : uriList) {
+                imageListString.add(uri.toString());
+            }
+            newPlace.setImagesList(imageListString);
+            submitData();
+        }catch (Exception ex) {
+            Toast.makeText(this, "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
         }
-        newPlace.setImagesList(imageListString);
-        submitData();
+        newPlace.setYourNameForThePlace(namePlace);
     }
 
     private void openSecondFragment() {
@@ -128,7 +130,7 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                     onSuccess.accept(documentReference.getId());
                 })
                 .addOnFailureListener(e -> {
-                    //handle failure here
+                    Toast.makeText(this, "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -154,13 +156,11 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                                         onSuccess.accept(uri.toString());
                                 })
                                 .addOnFailureListener(e -> {
-                                    System.out.println("remove");
-                                    //handle failure here
+                                    Toast.makeText(this, "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
                                 });
                     })
                     .addOnFailureListener(e -> {
-                        System.out.println("remove");
-                        //handle failure
+                        Toast.makeText(this, "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
                     });
         }
     }
@@ -179,14 +179,13 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                 .document(docId)
                 .update("imagesList", newPlace.getImagesList())
                 .addOnSuccessListener(documentReference1 -> {
-                    //handle success
+                    Toast.makeText(this, "Photos Uploaded", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    //handle failure here
+                    Toast.makeText(this, "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
                 });
     }
 
-    //https://stackoverflow.com/questions/14785806/android-how-to-make-an-activity-return-results-to-the-activity-which-calls-it
     public void submitData() {
         AtomicInteger imagesUploadedCounter = new AtomicInteger();
         uploadPlaceToDB(placeId ->
@@ -198,9 +197,4 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                     finish();
                 }));
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//    }
 }

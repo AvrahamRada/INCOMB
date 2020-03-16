@@ -1,4 +1,4 @@
-package android_project.incomb.activites.Host.fragment;
+package android_project.incomb.activites.Host.Adapter;
 
 import android.view.View;
 import android.widget.TextView;
@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android_project.incomb.R;
 
-
-class EventViewHolder extends RecyclerView.ViewHolder {
+public class EventViewHolder extends RecyclerView.ViewHolder {
     private TextView eventName;
     private TextView placeName;
 

@@ -1,26 +1,23 @@
-package android_project.incomb.activites.Host.fragment;
+package android_project.incomb.activites.Host.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 import android_project.incomb.R;
 import android_project.incomb.entities.Event;
 
-class EventsAdapter extends RecyclerView.Adapter<EventViewHolder> {
-    List<Event> eventsList = new ArrayList<>();
+public class EventsAdapter extends RecyclerView.Adapter<EventViewHolder> {
+    List<Event> eventsList;
 
     public EventsAdapter(List<Event> eventsList) {
         this.eventsList = eventsList;
@@ -50,7 +47,7 @@ class EventsAdapter extends RecyclerView.Adapter<EventViewHolder> {
                     onSuccess.accept((String) documentSnapshot.get("yourNameForThePlace"));
                 })
                 .addOnFailureListener(e -> {
-                    //todd handle failure
+                    //handle failure
                 });
     }
 

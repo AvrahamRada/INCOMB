@@ -115,7 +115,6 @@ public class EditPlaceActivity extends AppCompatActivity {
     }
 
     private void getAddress(GeoPoint location) {
-        //Geocoder geoCoder =  new Geocoder(getBaseContext(), Locale.getDefault());
         Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
         try {
             List<Address> addresses = geoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);

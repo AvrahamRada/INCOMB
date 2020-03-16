@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -12,6 +13,7 @@ import com.squareup.timessquare.CalendarPickerView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Host.Interface.IRentActivity;
@@ -45,12 +47,21 @@ public class RentStepCalendarFragment extends Fragment {
         findViews(view);
         selectDate();
         button.setOnClickListener(v -> {
-            activity.setCalendarData(datePicker.getSelectedDates());
+            if(checkPicker(datePicker.getSelectedDates()))
+                activity.setCalendarData(datePicker.getSelectedDates());
+            else
+                Toast.makeText(getContext(),"Choose duration",Toast.LENGTH_LONG).show();
         });
         return view;
     }
 
-    //https://codinginflow.com/tutorials/android/timesquare-calendarpickerview
+    private boolean checkPicker(List<Date> selectedDates) {
+        if(selectedDates.isEmpty())
+            return false;
+        else
+            return true;
+    }
+
     private void selectDate() {
         today = new Date();
         nextYear = Calendar.getInstance();

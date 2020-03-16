@@ -6,9 +6,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -78,9 +80,9 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
                             .addOnSuccessListener(documentSnapshot -> {
                                 addNewPlace = documentSnapshot.toObject(Place.class);
                                 placeListFragment.addPlace(addNewPlace);
+                                Toast.makeText(MyPlaceActivity.this, "Place Uploaded", Toast.LENGTH_LONG).show();
                             }).addOnFailureListener(e -> {
-                        System.out.println("remove");
-                        //handle failure here
+                        Toast.makeText(MyPlaceActivity.this, "Place Not Uploaded", Toast.LENGTH_LONG).show();
                     });
                 }
                 break;
@@ -98,12 +100,10 @@ public class MyPlaceActivity extends AppCompatActivity implements IPlaceActivity
                                     "availability", addNewPlace.getAvailability(),
                                     "rent", addNewPlace.getRent(),
                                     "yourNameForThePlace" ,addNewPlace.getYourNameForThePlace())
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(MyPlaceActivity.this, "Place Updated", Toast.LENGTH_LONG).show();
-                                }
-                            });
+                            .addOnSuccessListener(aVoid ->
+                                    Toast.makeText(MyPlaceActivity.this, "Place Updated", Toast.LENGTH_LONG).show())
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(MyPlaceActivity.this, "Place Not Updated", Toast.LENGTH_LONG).show());
                 }
                 if(resultCode == PLACE_UPLOADED_FAIL){
                     break;

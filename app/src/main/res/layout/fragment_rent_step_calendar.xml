@@ -26,7 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        //need to to do a date to date calendar
         <com.squareup.timessquare.CalendarPickerView
             android:id="@+id/select_dates"
             android:layout_width="wrap_content"
