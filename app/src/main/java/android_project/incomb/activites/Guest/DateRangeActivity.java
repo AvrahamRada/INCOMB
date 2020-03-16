@@ -1,62 +1,139 @@
 package android_project.incomb.activites.Guest;
 
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.Toast;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
-        import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
-        import com.r0adkll.slidr.Slidr;
-//import com.savvi.rangedatepicker.CalendarPickerView;
-        import com.squareup.timessquare.CalendarPickerView;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+import com.r0adkll.slidr.Slidr;
+import com.squareup.timessquare.CalendarPickerView;
 
-        import java.text.ParseException;
-        import java.text.SimpleDateFormat;
-        import java.util.ArrayList;
-        import java.util.Calendar;
-        import java.util.Date;
-        import java.util.List;
-        import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
-        import android_project.incomb.R;
+import android_project.incomb.R;
+import android_project.incomb.entities.Event;
+import android_project.incomb.entities.Person;
+import android_project.incomb.entities.Place;
+import android_project.incomb.entities.ReservationsTimes;
 
 public class DateRangeActivity extends AppCompatActivity {
-    //CalendarPickerView calender;
+    public static final int EVENT_SEARCH_OK = 3;
+
+    private ReservationsTimes calendar;
+    private String typeActivity;
+    private Date today;
+    private Calendar nextYear;
     private CalendarPickerView datePicker;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
     private Button btnSelect;
+    private Date begin,end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_range_guest);
-        datePicker = findViewById(R.id.date);
-        btnSelect = findViewById(R.id.btn_check);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Slidr.attach(this);
-        //Avraham - use this calendar
+        findView();
         initCalender();
 
         btnSelect.setOnClickListener(v -> {
-            Toast.makeText(DateRangeActivity.this, "Checking", Toast.LENGTH_SHORT).show();
-            sendDateSelected();
-
-//            startActivity(new Intent(DateRangeActivity.this,MapAndPlacesGuestActivity.class));
+            Toast.makeText(DateRangeActivity.this, "Check...", Toast.LENGTH_SHORT).show();
+            sendCheckData();
         });
     }
 
-    private void sendDateSelected() {
-        //list of the selected dates
-        List<Date> select = datePicker.getSelectedDates();
-        Date begin = select.get(0); //first day from the list
-        Date end = select.get(select.size() - 1); //last day from the list
+    private void findView() {
+        radioGroup = findViewById(R.id.radioGroup);
+        datePicker = findViewById(R.id.date);
+        btnSelect = findViewById(R.id.btn_check);
     }
 
     private void initCalender() {
-        Date today = new Date();
-        Calendar nextYear = Calendar.getInstance();
+        today = new Date();
+        nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
         datePicker.init(today, nextYear.getTime()).inMode(CalendarPickerView.SelectionMode.RANGE).withSelectedDate(today);
     }
+
+    private void sendCheckData() {
+        isCheck();
+        setDate(datePicker.getSelectedDates());
+        Intent intentCheck = new Intent();
+        intentCheck.putExtra("type Activity", typeActivity);
+        intentCheck.putExtra("calendar", new Gson().toJson(calendar));
+        setResult(EVENT_SEARCH_OK, intentCheck);
+        finish();
+    }
+
+    private void isCheck() {
+        int radioId = radioGroup.getCheckedRadioButtonId();
+        radioButton = findViewById(radioId);
+        Toast.makeText(DateRangeActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
+        typeActivity = radioButton.getText().toString().replaceAll(" ", "");;
+    }
+
+    public void setDate(List <Date> dateSelect) {
+        begin = dateSelect.get(0);
+        end = dateSelect.get(dateSelect.size() - 1);
+        calendar = new ReservationsTimes(begin,end);
+    }
+
+    public void test(){
+        /*
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(placeCheck.getIdHost())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    Person host = documentSnapshot.toObject(Person.class);
+                    host.getEmail();
+                    host.getFullName();
+                    host.getPhoneNumber();
+                });
+         */
+        /*
+        List<Place> places = new ArrayList<>();
+        FirebaseFirestore.getInstance()
+                .collection("events")
+                .whereEqualTo( "typeOfActivity",typeActivity)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
+                });
+         */
+        List<Event> events = new ArrayList<>();
+        FirebaseFirestore.getInstance()
+                .collection("events")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    events.addAll(queryDocumentSnapshots.toObjects(Event.class));
+                    //setList(events);
+                });
+        }
+//    private void setList(List<Event> events) {
+//        for (Event checkEvent: events) {
+//            FirebaseFirestore.getInstance()
+//                    .collection("places")
+//                    .
+//            // ReservationsTimes check = placeCheck.getAvailability();
+//            // need to remove to places that out of range
+//            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
+//            //places.remove(placeCheck);
+//        }
+//    }
 }
 

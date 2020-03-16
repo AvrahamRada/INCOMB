@@ -21,7 +21,7 @@
             android:text="Choose your activities: "
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            android:textStyle="bold"></TextView>
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,35 +30,44 @@
             android:foregroundGravity="center_vertical"
             android:gravity="center|center_horizontal|center_vertical">
 
-            <CheckBox
-                android:id="@+id/checkbox_yoga"
+            <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:fontFamily="@font/exo_bold"
-                android:text="@string/yoga_class"
-                android:textColorLink="#139e65"
-                android:textStyle="bold" />
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:id="@+id/radioGroup">
 
-            <CheckBox
-                android:id="@+id/checkbox_lecture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:fontFamily="@font/exo_bold"
-                android:text="@string/lecture"
-                android:textColorLink="#139e65"
-                android:textStyle="bold" />
+                <RadioButton
+                    android:id="@+id/checkbox_yoga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:fontFamily="@font/exo_bold"
+                    android:text="@string/yoga_class"
+                    android:textColorLink="#139e65"
+                    android:textStyle="bold"/>
 
-            <CheckBox
-                android:id="@+id/checkbox_social_action"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:fontFamily="@font/exo_bold"
-                android:text="@string/social_action"
-                android:textColorLink="#139e65"
-                android:textStyle="bold" />
+                <RadioButton
+                    android:id="@+id/checkbox_lecture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:fontFamily="@font/exo_bold"
+                    android:text="@string/lecture"
+                    android:textColorLink="#139e65"
+                    android:textStyle="bold"/>
+
+                <RadioButton
+                    android:id="@+id/checkbox_social_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:fontFamily="@font/exo_bold"
+                    android:text="@string/social_action"
+                    android:textColorLink="#139e65"
+                    android:textStyle="bold" />
+
+            </RadioGroup>
 
         </LinearLayout>
 

@@ -50,7 +50,9 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
@@ -60,6 +62,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android_project.incomb.R;
+import android_project.incomb.entities.Person;
 import android_project.incomb.entities.ReservationsTimes;
 
 public class MapAndPlacesActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -374,12 +377,13 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void setList() {
+        List<android_project.incomb.entities.Place> temp = new ArrayList<>();
         for (android_project.incomb.entities.Place placeCheck: places) {
             ReservationsTimes check = placeCheck.getAvailability();
-            // need to remove to places that out of range
-            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
-                //places.remove(placeCheck);
+            if(calender.getStartEvent().before(check.getStartEvent()) || calender.getEndEvent().after(check.getEndEvent()))
+                temp.add(placeCheck);
         }
+        places.removeAll(temp);
     }
 
     @SuppressLint("MissingPermission")

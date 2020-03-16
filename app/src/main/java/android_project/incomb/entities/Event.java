@@ -2,6 +2,7 @@ package android_project.incomb.entities;
 
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Event {
 
     //Constructor
     public Event() {
-        //setIdFest(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        setIdFest(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     //Getters and Setters

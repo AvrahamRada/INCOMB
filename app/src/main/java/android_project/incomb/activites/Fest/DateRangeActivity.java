@@ -71,7 +71,6 @@ public class DateRangeActivity extends AppCompatActivity {
     private void sendCheckData() {
         isCheck();
         setDate(datePicker.getSelectedDates());
-        //findResult();
         Intent intentCheck = new Intent();
         intentCheck.putExtra("type Activity", typeActivity);
         intentCheck.putExtra("calendar", new Gson().toJson(calendar));
@@ -86,21 +85,9 @@ public class DateRangeActivity extends AppCompatActivity {
         typeActivity = radioButton.getText().toString().replaceAll(" ", "");;
     }
 
-
     public void setDate(List <Date> dateSelect) {
         begin = dateSelect.get(0);
         end = dateSelect.get(dateSelect.size() - 1);
         calendar = new ReservationsTimes(begin,end);
     }
-
-//    private void findResult() {
-//        List<Place> places = new ArrayList<>();
-//        FirebaseFirestore.getInstance()
-//                .collection("places")
-//                .whereEqualTo("typeOfActivity",typeActivity)
-//                .get()
-//                .addOnSuccessListener(queryDocumentSnapshots -> {
-//                    places.addAll(queryDocumentSnapshots.toObjects(Place.class));
-//                });
-//    }
 }

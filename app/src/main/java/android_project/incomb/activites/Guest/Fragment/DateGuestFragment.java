@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 
 import android_project.incomb.R;
 
-public class ActivitiesGuestFragment extends Fragment {
+public class DateGuestFragment extends Fragment {
 
-    public ActivitiesGuestFragment() {
+    public DateGuestFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_activities_guest, container, false);
+        return inflater.inflate(R.layout.fragment_date_guest, container, false);
     }
 }
