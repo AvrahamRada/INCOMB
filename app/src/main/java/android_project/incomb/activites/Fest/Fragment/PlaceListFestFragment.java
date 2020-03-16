@@ -1,16 +1,15 @@
 package android_project.incomb.activites.Fest.Fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,8 +20,6 @@ import java.util.List;
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.Adapter.FindPlaceAdapter;
 import android_project.incomb.activites.Fest.Interface.IFestActivty;
-import android_project.incomb.activites.Guest.Adapter.PartysAdapter;
-import android_project.incomb.activites.Guest.Interface.IPartyActivty;
 import android_project.incomb.entities.Event;
 
 public class PlaceListFestFragment extends Fragment {

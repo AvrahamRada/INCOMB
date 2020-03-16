@@ -1,20 +1,17 @@
 package android_project.incomb.activites.Guest;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import android_project.incomb.R;
-import android_project.incomb.activites.Guest.Adapter.PartysAdapter;
 import android_project.incomb.activites.Guest.Fragment.EventListFragment;
 import android_project.incomb.activites.Guest.Interface.IPartyActivty;
-import android_project.incomb.activites.Host.Fragment.PlaceEventFragment;
-import android_project.incomb.activites.Host.RentPlaceActivity;
 import android_project.incomb.activites.Start.LoginActivity;
 
 public class SearchEventActivity extends AppCompatActivity implements IPartyActivty {

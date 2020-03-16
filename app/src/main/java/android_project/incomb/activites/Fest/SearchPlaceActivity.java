@@ -21,7 +21,6 @@ public class SearchPlaceActivity extends AppCompatActivity implements IFestActiv
     private Button button;
     private PlaceListFestFragment placeListFestFragment;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +29,7 @@ public class SearchPlaceActivity extends AppCompatActivity implements IFestActiv
         button = findViewById(R.id.logout_btn);
 
         placeListFestFragment = new PlaceListFestFragment(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.event_list, placeListFestFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.place_list, placeListFestFragment).commit();
 
         button.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();//logout
@@ -41,7 +40,7 @@ public class SearchPlaceActivity extends AppCompatActivity implements IFestActiv
 
     @Override
     public void searchPlace() {
-        Intent intent = new Intent(this, DateRangeActivity.class);
+        Intent intent = new Intent(this, MapAndPlacesActivity.class);
         startActivityForResult(intent, PLACE_REQUEST_CODE);
         //startActivity(intent)
     }
