@@ -50,11 +50,16 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android_project.incomb.R;
 import android_project.incomb.entities.Host;
@@ -72,6 +77,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     String typeActivity;
     ReservationsTimes calender;
     List<android_project.incomb.entities.Place> places = new ArrayList<>();
+    Map<android_project.incomb.entities.Place,String> placeIdmap = new HashMap<>();
     //List view result
     ListView mListView;
     ArrayList<Host> hostList;
@@ -247,7 +253,10 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                         .whereEqualTo( "typeOfActivity",typeActivity)
                         .get()
                         .addOnSuccessListener(queryDocumentSnapshots -> {
-                            places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
+                            for (QueryDocumentSnapshot doc :queryDocumentSnapshots) {
+                                placeIdmap.put(doc.toObject(android_project.incomb.entities.Place.class),doc.getId());
+                            }
+                            //places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
                             setList();
                         });
             }
@@ -285,18 +294,26 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
 
     private void showHost() {
         hostList = new ArrayList<>();
-        for (android_project.incomb.entities.Place placeCheck: places) {
+        Iterator it = placeIdmap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            android_project.incomb.entities.Place checkPlace = (android_project.incomb.entities.Place) pair.getKey();
+            String placeId = (String) pair.getValue();
             FirebaseFirestore.getInstance()
                     .collection("users")
-                    .document(placeCheck.getIdHost())
+                    .document(checkPlace.getIdHost())
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
-                        Person host = documentSnapshot.toObject(Person.class);
-                        hostList.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
+                        Host addHost =  new Host();
+                        addHost.setHostPlace(checkPlace);
+                        addHost.setHost(documentSnapshot.toObject(Person.class));
+                        addHost.setPlaceId(placeId);
+                        hostList.add(addHost);
                         createAdapter(hostList);
                     });
+            it.remove(); // avoids a ConcurrentModificationException
+            }
         }
-    }
     //list of host - need to keep it for every one
     private void createAdapter(ArrayList<Host> temp) {
         PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,temp);
@@ -317,6 +334,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
         for (Host host:hostList) {
             if(host.isSelected()){
                 getNameForEvent();
+                //create event and send it to the database
             }
         }
     }
