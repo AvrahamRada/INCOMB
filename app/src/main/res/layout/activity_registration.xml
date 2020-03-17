@@ -20,7 +20,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1.dp"
         android:text="Create New Account"
         android:fontFamily="@font/exo_bold"
         android:textColor="#139e65"
@@ -137,15 +137,15 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:inputType="textVisiblePassword"
+            android:fontFamily="@font/exo_bold"
+            android:hint="Password"
+            android:inputType="textPassword"
             android:textColor="#139e65"
             android:textSize="16sp"
-            android:fontFamily="@font/exo_bold"
-            android:textStyle="bold"
-            android:hint="Password"
-            android:ems="10">
+            android:textStyle="bold">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
