@@ -66,6 +66,13 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(RegistrationActivity.this,LoginActivity.class));
+        finish();
+    }
+
     private boolean checkPassword(String password) {
         int countChar = 0, countNum = 0, i;
         if (TextUtils.isEmpty(password) || (password.length() < 6))
