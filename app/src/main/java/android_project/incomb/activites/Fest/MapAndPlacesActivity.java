@@ -93,11 +93,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_and_places);
-
         mListView = (ListView)findViewById(R.id.list_view);
-        hostList = new ArrayList<>();
-        PersonListAdapter adapter = new PersonListAdapter(this, R.layout.adapter_view_layout,hostList);
-
 
 //        materialSearchBar = findViewById(R.id.searchBar);
 
@@ -405,8 +401,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void showHost() {
-        ArrayList<Host> a = new ArrayList<>();
-        boolean next = false;
+        ArrayList<Host> temp = new ArrayList<>();
         for (android_project.incomb.entities.Place placeCheck: places) {
             FirebaseFirestore.getInstance()
                     .collection("users")
@@ -414,14 +409,14 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         Person host = documentSnapshot.toObject(Person.class);
-                        a.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
-                        createAdapter(a);
+                        temp.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
+                        createAdapter(temp);
                     });
         }
     }
 
-    private void createAdapter(ArrayList<Host> a) {
-        PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,a);
+    private void createAdapter(ArrayList<Host> temp) {
+        PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,temp);
         mListView.setAdapter(adapter);
     }
 
