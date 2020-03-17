@@ -42,7 +42,8 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
 
         //Spinner
         Spinner spinner = findViewById(R.id.columnSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.columns_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.columns_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
@@ -169,7 +170,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                                         finish();
                                         break;
                                     case "Guest":
-                                        startActivity(new Intent(getApplicationContext(), SearchEventActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), MapAndPlacesActivity.class));
                                         finish();
                                         break;
                                     case "Host":

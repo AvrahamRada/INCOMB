@@ -10,7 +10,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activites.Fest.MapAndPlacesActivity">
 
-    <include layout="@layout/content_map"/>
+    <include layout="@layout/content_guest_map"/>
 
     <ImageView
         android:layout_width="50dp"

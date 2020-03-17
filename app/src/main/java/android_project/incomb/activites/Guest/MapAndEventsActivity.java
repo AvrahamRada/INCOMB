@@ -1,4 +1,4 @@
-package android_project.incomb.activites.Fest;
+package android_project.incomb.activites.Guest;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -9,7 +9,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -35,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,6 +50,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -57,12 +58,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import android_project.incomb.R;
+import android_project.incomb.activites.Fest.Adapter.PersonListAdapter;
+import android_project.incomb.activites.Fest.DateRangeActivity;
 import android_project.incomb.entities.Host;
 import android_project.incomb.entities.Person;
-import android_project.incomb.activites.Fest.Adapter.PersonListAdapter;
 import android_project.incomb.entities.ReservationsTimes;
 
-public class MapAndPlacesActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapAndEventsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final int CHECK_PLACE_REQUEST_CODE = 2;
     public static final int PLACE_SEARCH_OK = 3;
     private static final String TAG = "TAG";
@@ -105,7 +107,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapAndPlacesActivity.this);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapAndEventsActivity.this);
 
         // Initialize the SDK
         Places.initialize(getApplicationContext(), getString(R.string.api_key));
@@ -139,15 +141,15 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
         // Create a RectangularBounds object.
         // specifies latitude and longitude bounds to constrain results to the specified region.
         RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(31.894756, 34.809322),   // 14A John Street, Sydney, New South Wales, 2037 Glebe Sydney Australia
-                new LatLng(32.109333, 34.855499));  // Cowper Wharf Roadway, Sydney, New South Wales, 2011 Potts Point Sydney Australia
+                new LatLng(29.550360, 34.952280),   // 14A John Street, Sydney, New South Wales, 2037 Glebe Sydney Australia
+                new LatLng(32.967656, 35.538025));  // Cowper Wharf Roadway, Sydney, New South Wales, 2011 Potts Point Sydney Australia
 
         // Use the builder to create a FindAutocompletePredictionsRequest.
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
                 .setLocationBias(bounds)
 //                .setLocationRestriction(bounds)
-                .setOrigin(new LatLng(31.894756,34.809322))
+                .setOrigin(new LatLng(-33.8749937,151.2041382))
                 .setCountries("IL") // indicating the country or countries to which results should be restricted.
                 .setTypeFilter(TypeFilter.ADDRESS) // restrict the results to the specified place type: ADDRESS,REGIONS,LOCALITY
                 .setSessionToken(token) // A AutocompleteSessionToken, which groups the query and selection phases of a user search into a discrete session for billing purposes.
@@ -193,23 +195,23 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
 
-        SettingsClient settingsClient = LocationServices.getSettingsClient(MapAndPlacesActivity.this);
+        SettingsClient settingsClient = LocationServices.getSettingsClient(MapAndEventsActivity.this);
         Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
 
-        task.addOnSuccessListener(MapAndPlacesActivity.this, new OnSuccessListener<LocationSettingsResponse>() {
+        task.addOnSuccessListener(MapAndEventsActivity.this, new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 getDeviceLocation();
             }
         });
 
-        task.addOnFailureListener(MapAndPlacesActivity.this, new OnFailureListener() {
+        task.addOnFailureListener(MapAndEventsActivity.this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 if (e instanceof ResolvableApiException) {
                     ResolvableApiException resolvable = (ResolvableApiException) e;
                     try {
-                        resolvable.startResolutionForResult(MapAndPlacesActivity.this, 51);
+                        resolvable.startResolutionForResult(MapAndEventsActivity.this, 51);
                     } catch (IntentSender.SendIntentException e1) {
                         e1.printStackTrace();
                     }
@@ -226,7 +228,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     }
 
     public void openDateRangePick(View view) {
-        startActivityForResult(new Intent(MapAndPlacesActivity.this,DateRangeActivity.class),CHECK_PLACE_REQUEST_CODE);
+        startActivityForResult(new Intent(MapAndEventsActivity.this,DateRangeActivity.class),CHECK_PLACE_REQUEST_CODE);
     }
 
     @Override
@@ -251,28 +253,22 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                             setList();
                         });
             }
+
+            int i =0;
+            ArrayList<LatLng> latLngArrayList = new ArrayList<>();
+            for (android_project.incomb.entities.Place placeCheck: places) {
+                GeoPoint geo = placeCheck.getLocation();
+                latLngArrayList.add(new LatLng(geo.getLatitude(),geo.getLongitude()));
+                mMap.addMarker(new MarkerOptions().position(latLngArrayList.get(i)).title("Marker"));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngArrayList.get(i)));
+                i++;
+            }
+
         }
     }
 
     private void setList() {
-//        for (android_project.incomb.entities.Place placeCheck: places) {
-//            ReservationsTimes check = placeCheck.getAvailability();
-//            FirebaseFirestore.getInstance().collection("users").document(placeCheck.getIdHost()).get().addOnSuccessListener(documentSnapshot -> {
-//                Person host = documentSnapshot.toObject(Person.class);
-//                host.getFullName();
-//                host.getEmail();
-//                host.getPhoneNumber();
-//            });
-            // need to remove to places that out of range
-            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
-            //places.remove(placeCheck);
-//        }
-//        for (android_project.incomb.entities.Place placeCheck: places) {
-//            ReservationsTimes check = placeCheck.getAvailability();
-//            // need to remove to places that out of range
-//            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
-//                //places.remove(placeCheck);
-//        }
         List<android_project.incomb.entities.Place> temp = new ArrayList<>();
         for(android_project.incomb.entities.Place placeCheck: places){
             ReservationsTimes check = placeCheck.getAvailability();
@@ -297,6 +293,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                     });
         }
     }
+
     //list of host - need to keep it for every one
     private void createAdapter(ArrayList<Host> temp) {
         PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,temp);
@@ -322,10 +319,10 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void getNameForEvent() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MapAndPlacesActivity.this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MapAndEventsActivity.this);
         alertDialog.setTitle("Make Event");
         alertDialog.setMessage("Enter event name");
-        final EditText input = new EditText(MapAndPlacesActivity.this);
+        final EditText input = new EditText(MapAndEventsActivity.this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
 
         input.setLayoutParams(lp);
@@ -374,7 +371,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
 
                             }
                         } else {
-                            Toast.makeText(MapAndPlacesActivity.this, "unable to get last location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MapAndEventsActivity.this, "unable to get last location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

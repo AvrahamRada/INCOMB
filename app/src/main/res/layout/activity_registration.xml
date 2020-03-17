@@ -20,12 +20,12 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:text="Create New Account"
         android:fontFamily="@font/exo_bold"
         android:textColor="#139e65"
         android:textStyle="bold"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:layout_gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/registration_logo"/>
 
@@ -44,17 +44,23 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/exo_bold"
-            android:text="What kind of user are you ? "
-            android:textSize="18dp"
+            android:text=" Choose profile :   "
+            android:textColor="@color/black"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/columnSpinner"
-            android:text="Choose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_toRightOf="@id/king_of_user_text"
-            android:textAlignment="center"/>
+            android:backgroundTint="@color/colorAccent"
+            android:foregroundTint="@color/colorGreenPrimary"
+            android:isScrollContainer="true"
+            android:fontFamily="@font/exo_bold"
+            android:textColor="@color/black"
+            android:text="Choose"
+            android:textAlignment="center" />
     </LinearLayout>
 
     // Full Name
@@ -186,9 +192,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:text="Male"
-            android:fontFamily="@font/exo_bold">
-        </RadioButton>
+            android:fontFamily="@font/exo_bold"
+            android:text="Male"></RadioButton>
 
         <RadioButton
             android:layout_width="wrap_content"
