@@ -10,7 +10,9 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activites.Fest.MapAndPlacesActivity">
 
-    <include layout="@layout/content_guest_map"/>
+    <include
+        layout="@layout/content_fest_map"
+        android:persistentDrawingCache="none" />
 
     <ImageView
         android:layout_width="50dp"
@@ -18,7 +20,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:onClick="openDateRangePick"
-        android:layout_margin="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
         android:src="@drawable/next_arrow">
     </ImageView>
 
@@ -27,9 +30,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_margin="20dp"
+        android:layout_marginBottom="5dp"
         android:onClick="makeEventClick"
         android:src="@drawable/make_event"/>
-
-
 </RelativeLayout>

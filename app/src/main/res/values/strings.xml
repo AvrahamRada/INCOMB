@@ -33,5 +33,6 @@
     <string name="yoga_class">Yoga</string>
     <string name="lecture">Lecture</string>
     <string name="social_action">Social Action</string>
+    <string name="search_a_place">Search a place</string>
 
 </resources>

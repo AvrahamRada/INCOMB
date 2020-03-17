@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -49,22 +53,18 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.Adapter.PersonListAdapter;
 import android_project.incomb.activites.Fest.DateRangeActivity;
-import android_project.incomb.entities.Event;
+import android_project.incomb.activites.Fest.MapAndPlacesActivity;
 import android_project.incomb.entities.Host;
 import android_project.incomb.entities.Person;
 import android_project.incomb.entities.ReservationsTimes;
@@ -78,13 +78,15 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     //result after the DateRangeActivity
     String typeActivity;
     ReservationsTimes calender;
-    List<Event> events = new ArrayList<>();
     List<android_project.incomb.entities.Place> places = new ArrayList<>();
-    Map<Event, String> eventIdmap = new HashMap<>();
     //List view result
     ListView mListView;
     ArrayList<Host> hostList;
     String name;
+
+    private AutoCompleteTextView mAddressField;
+    private StringBuilder mResult;
+    private List<String> options;
 
     // Map Object
     private GoogleMap mMap;
@@ -99,7 +101,7 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     // updating the user if last location is null
     private LocationCallback locationCallback;
 
-    //  private MaterialSearchBar materialSearchBar;
+//  private MaterialSearchBar materialSearchBar;
     private View mapView;
 
     private final float DEFAULT_ZOOM = 15;
@@ -108,77 +110,74 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_and_places);
-        mListView = (ListView) findViewById(R.id.list_view);
+        mListView = (ListView)findViewById(R.id.list_view);
 
+        // Map Config
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapAndEventsActivity.this);
-
+        mAddressField = findViewById(R.id.guest_place);
         // Initialize the SDK
         Places.initialize(getApplicationContext(), getString(R.string.api_key));
         // Create a new Places client instance
         placesClient = Places.createClient(this);
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
-        // Initialize the AutocompleteSupportFragment.
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-        // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        mAddressField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
             @Override
-            public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
+            @Override
+            public void afterTextChanged(Editable editable) {
+                autoComplete();
+            }
         });
 
-        // Create a RectangularBounds object.
-        // specifies latitude and longitude bounds to constrain results to the specified region.
-        RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(29.550360, 34.952280),   // 14A John Street, Sydney, New South Wales, 2037 Glebe Sydney Australia
-                new LatLng(32.967656, 35.538025));  // Cowper Wharf Roadway, Sydney, New South Wales, 2011 Potts Point Sydney Australia
+    }
 
-        // Use the builder to create a FindAutocompletePredictionsRequest.
+    // GOOGLE outocomplete
+    private void autoComplete() {
+        PlacesClient placesClient = Places.createClient(getApplicationContext());
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+        RectangularBounds bounds = RectangularBounds.newInstance(
+                new LatLng(-33.880490, 151.184363),
+                new LatLng(-33.858754, 151.229596));
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                // Call either setLocationBias() OR setLocationRestriction().
                 .setLocationBias(bounds)
-//                .setLocationRestriction(bounds)
-                .setOrigin(new LatLng(-33.8749937, 151.2041382))
-                .setCountries("IL") // indicating the country or countries to which results should be restricted.
-                .setTypeFilter(TypeFilter.ADDRESS) // restrict the results to the specified place type: ADDRESS,REGIONS,LOCALITY
-                .setSessionToken(token) // A AutocompleteSessionToken, which groups the query and selection phases of a user search into a discrete session for billing purposes.
-                // The session begins when the user starts typing a query, and concludes when they select a place.
-                .setQuery("ראשון לציון")     // A query string containing the text typed by the user.
+                .setCountry("IL")
+                .setTypeFilter(TypeFilter.ADDRESS)
+                .setSessionToken(token)
+                .setQuery(mAddressField.getText().toString())
                 .build();
 
-        placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+        placesClient.findAutocompletePredictions(request).addOnSuccessListener(response -> {
+            mResult = new StringBuilder();
+            options = new ArrayList();
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                Log.i(TAG, prediction.getPlaceId());
-                Log.i(TAG, prediction.getPrimaryText(null).toString());
+                mResult.append(" ").append(prediction.getFullText(null) + "\n");
+                options.add(prediction.getFullText(null).toString());
             }
+
+            ArrayAdapter<String> adapter =
+                    new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, options);
+
+            mAddressField.setAdapter(adapter);
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
                 Log.e(TAG, "Place not found: " + apiException.getStatusCode());
             }
         });
-
     }
 
-    // Map is ready and loaded
+        // Map is ready and loaded
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -235,7 +234,7 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     }
 
     public void openDateRangePick(View view) {
-        startActivityForResult(new Intent(MapAndEventsActivity.this, DateRangeActivity.class), CHECK_PLACE_REQUEST_CODE);
+        startActivityForResult(new Intent(MapAndEventsActivity.this,DateRangeActivity.class),CHECK_PLACE_REQUEST_CODE);
     }
 
     @Override
@@ -245,59 +244,57 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
             if (resultCode == RESULT_OK) {
                 getDeviceLocation();
             }
-        } else if (requestCode == CHECK_PLACE_REQUEST_CODE) {
-            if (resultCode == PLACE_SEARCH_OK) {
+        }
+        else if(requestCode == CHECK_PLACE_REQUEST_CODE){
+            if(resultCode == PLACE_SEARCH_OK){
                 typeActivity = data.getStringExtra("type Activity");
                 String CalenderString = data.getStringExtra("calendar");
                 calender = new Gson().fromJson(CalenderString, ReservationsTimes.class);
                 FirebaseFirestore.getInstance()
-                        .collection("event")
+                        .collection("places")
+                        .whereEqualTo( "typeOfActivity",typeActivity)
                         .get()
                         .addOnSuccessListener(queryDocumentSnapshots -> {
-                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                                Event event = doc.toObject(Event.class);
-                                FirebaseFirestore.getInstance()
-                                        .collection("places")
-                                        .document(event.getPlaceId())
-                                        .get()
-                                        .addOnSuccessListener(documentSnapshot -> {
-                                            android_project.incomb.entities.Place place = documentSnapshot.toObject(android_project.incomb.entities.Place.class);
-                                            if (place.getTypeOfActivity().equals(typeActivity)) {
-                                                ReservationsTimes check = place.getAvailability();
-                                                if (!(calender.getStartEvent().before(check.getStartEvent())) && !(calender.getEndEvent().after(check.getEndEvent()))) {
-                                                    eventIdmap.put(event, doc.getId());
-                                                    //upadte list in adapter
-
-                                                }
-                                            }
-                                        });
-                            }
-                            //showEvents();
+                            places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
+                            setList();
                         });
             }
-            int i = 0;
+
+            int i =0;
             ArrayList<LatLng> latLngArrayList = new ArrayList<>();
-            for (android_project.incomb.entities.Place placeCheck : places) {
+            for (android_project.incomb.entities.Place placeCheck: places) {
                 GeoPoint geo = placeCheck.getLocation();
-                latLngArrayList.add(new LatLng(geo.getLatitude(), geo.getLongitude()));
+                latLngArrayList.add(new LatLng(geo.getLatitude(),geo.getLongitude()));
                 mMap.addMarker(new MarkerOptions().position(latLngArrayList.get(i)).title("Marker"));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngArrayList.get(i)));
                 i++;
             }
+
         }
     }
 
-    private void showEvents() {
+    private void setList() {
+        List<android_project.incomb.entities.Place> temp = new ArrayList<>();
+        for(android_project.incomb.entities.Place placeCheck: places){
+            ReservationsTimes check = placeCheck.getAvailability();
+            if(calender.getStartEvent().before(check.getStartEvent()) || calender.getEndEvent().after(check.getEndEvent()))
+                temp.add(placeCheck);
+        }
+        places.removeAll(temp);
+        showHost();
+    }
+
+    private void showHost() {
         hostList = new ArrayList<>();
-        for (android_project.incomb.entities.Place placeCheck : places) {
+        for (android_project.incomb.entities.Place placeCheck: places) {
             FirebaseFirestore.getInstance()
                     .collection("users")
                     .document(placeCheck.getIdHost())
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         Person host = documentSnapshot.toObject(Person.class);
-                        hostList.add(new Host(host.getFullName(), host.getEmail(), host.getPhoneNumber()));
+                        hostList.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
                         createAdapter(hostList);
                     });
         }
@@ -305,13 +302,14 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
 
     //list of host - need to keep it for every one
     private void createAdapter(ArrayList<Host> temp) {
-        PersonListAdapter adapter = new PersonListAdapter(this, R.layout.adapter_view_layout, temp);
+        PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,temp);
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener((parent, view, position, id) -> {
-            if (!temp.get(position).isSelected()) {
+            if(!temp.get(position).isSelected()){
                 temp.get(position).setSelected(!temp.get(position).isSelected());
-                view.setBackgroundColor(getColor(R.color.colorGreenPrimary));
-            } else {
+                view.setBackgroundColor(getColor(R.color. colorGreenPrimary));
+            }
+            else{
                 temp.get(position).setSelected(!temp.get(position).isSelected());
                 view.setBackgroundColor(getColor(R.color.white));
             }
@@ -319,12 +317,34 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     }
 
     public void makeEventClick(View view) {
-        for (Host host : hostList) {
-            if (host.isSelected()) {
+        for (Host host:hostList) {
+            if(host.isSelected()){
+                getNameForEvent();
             }
         }
     }
 
+    private void getNameForEvent() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MapAndEventsActivity.this);
+        alertDialog.setTitle("Make Event");
+        alertDialog.setMessage("Enter event name");
+        final EditText input = new EditText(MapAndEventsActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try{
+                    name = input.getText().toString();
+                }catch (Exception ex) {
+                    Toast.makeText(getApplicationContext(), "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
     @SuppressLint("MissingPermission")
     private void getDeviceLocation() {

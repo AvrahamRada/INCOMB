@@ -20,7 +20,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1.dp"
+        android:layout_marginTop="10dp"
         android:text="Create New Account"
         android:fontFamily="@font/exo_bold"
         android:textColor="#139e65"
@@ -158,9 +158,6 @@
         android:layout_centerInParent="true"
         android:textColorHint="@color/colorAccent"
         android:fontFamily="@font/exo_bold"
-        app:counterMaxLength="10"
-        app:counterEnabled="true"
-        app:errorEnabled="true"
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -168,8 +165,7 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:maxLength="11"
-            android:inputType="phone"
+            android:inputType="textPhonetic"
             android:textColor="#139e65"
             android:fontFamily="@font/exo_bold"
             android:textSize="16sp"

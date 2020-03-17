@@ -11,39 +11,45 @@
     tools:context=".activites.Guest.MapAndEventsActivity"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_weight="0.4">
 
-        <androidx.cardview.widget.CardView
+        <AutoCompleteTextView
+            android:id="@+id/guest_place"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <fragment
-                android:id="@+id/autocomplete_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment">
-            </fragment>
-
-        </androidx.cardview.widget.CardView>
-
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            android:drawableRight="@drawable/ic_magnify_black_48dp"
+            android:fontFamily="@font/exo_bold"
+            android:hint="@string/search_a_place"
+            android:inputType="textAutoComplete"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textColorHint="@color/colorGreenPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </fragment>
-
     </LinearLayout>
 
-    <ListView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.6"
-        android:id="@+id/list_view"/>
+        android:layout_weight="0.6">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/list_view"/>
+
+    </LinearLayout>
 
 </LinearLayout>

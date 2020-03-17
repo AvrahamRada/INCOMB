@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -85,6 +89,9 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     ListView mListView;
     ArrayList<Host> hostList;
     String eventName;
+    private AutoCompleteTextView mAddressField;
+    private StringBuilder mResult;
+    private List<String> options;
 
     // Map Object
     private GoogleMap mMap;
@@ -115,67 +122,117 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
         mapView = mapFragment.getView();
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapAndPlacesActivity.this);
-
+        mAddressField = findViewById(R.id.fest_place);
         // Initialize the SDK
         Places.initialize(getApplicationContext(), getString(R.string.api_key));
         // Create a new Places client instance
         placesClient = Places.createClient(this);
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
-        // Initialize the AutocompleteSupportFragment.
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-        // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        mAddressField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
             @Override
-            public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
+            @Override
+            public void afterTextChanged(Editable editable) {
+                autoComplete();
+            }
         });
 
-        // Create a RectangularBounds object.
-        // specifies latitude and longitude bounds to constrain results to the specified region.
-        RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(31.894756, 34.809322),   // 14A John Street, Sydney, New South Wales, 2037 Glebe Sydney Australia
-                new LatLng(32.109333, 34.855499));  // Cowper Wharf Roadway, Sydney, New South Wales, 2011 Potts Point Sydney Australia
+//        // Initialize the AutocompleteSupportFragment.
+//        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-        // Use the builder to create a FindAutocompletePredictionsRequest.
+//        // Specify the types of place data to return.
+//        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+//
+//        // Set up a PlaceSelectionListener to handle the response.
+//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
+//                // TODO: Get info about the selected place.
+//                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+//            }
+//
+//            @Override
+//            public void onError(@NonNull Status status) {
+//                // TODO: Handle the error.
+//                Log.i(TAG, "An error occurred: " + status);
+//            }
+//
+//        });
+//
+//        // Create a RectangularBounds object.
+//        // specifies latitude and longitude bounds to constrain results to the specified region.
+//        RectangularBounds bounds = RectangularBounds.newInstance(
+//                new LatLng(31.894756, 34.809322),   // 14A John Street, Sydney, New South Wales, 2037 Glebe Sydney Australia
+//                new LatLng(32.109333, 34.855499));  // Cowper Wharf Roadway, Sydney, New South Wales, 2011 Potts Point Sydney Australia
+//
+//        // Use the builder to create a FindAutocompletePredictionsRequest.
+//        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+//                // Call either setLocationBias() OR setLocationRestriction().
+//                .setLocationBias(bounds)
+////                .setLocationRestriction(bounds)
+//                .setOrigin(new LatLng(31.894756,34.809322))
+//                .setCountries("IL") // indicating the country or countries to which results should be restricted.
+//                .setTypeFilter(TypeFilter.ADDRESS) // restrict the results to the specified place type: ADDRESS,REGIONS,LOCALITY
+//                .setSessionToken(token) // A AutocompleteSessionToken, which groups the query and selection phases of a user search into a discrete session for billing purposes.
+//                // The session begins when the user starts typing a query, and concludes when they select a place.
+//                .setQuery("ראשון לציון")     // A query string containing the text typed by the user.
+//                .build();
+//
+//        placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+//            for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+//                Log.i(TAG, prediction.getPlaceId());
+//                Log.i(TAG, prediction.getPrimaryText(null).toString());
+//            }
+//        }).addOnFailureListener((exception) -> {
+//            if (exception instanceof ApiException) {
+//                ApiException apiException = (ApiException) exception;
+//                Log.e(TAG, "Place not found: " + apiException.getStatusCode());
+//            }
+//        });
+
+    }
+
+    // GOOGLE outocomplete
+    private void autoComplete() {
+        PlacesClient placesClient = Places.createClient(getApplicationContext());
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+        RectangularBounds bounds = RectangularBounds.newInstance(
+                new LatLng(-33.880490, 151.184363),
+                new LatLng(-33.858754, 151.229596));
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                // Call either setLocationBias() OR setLocationRestriction().
                 .setLocationBias(bounds)
-//                .setLocationRestriction(bounds)
-                .setOrigin(new LatLng(31.894756,34.809322))
-                .setCountries("IL") // indicating the country or countries to which results should be restricted.
-                .setTypeFilter(TypeFilter.ADDRESS) // restrict the results to the specified place type: ADDRESS,REGIONS,LOCALITY
-                .setSessionToken(token) // A AutocompleteSessionToken, which groups the query and selection phases of a user search into a discrete session for billing purposes.
-                // The session begins when the user starts typing a query, and concludes when they select a place.
-                .setQuery("ראשון לציון")     // A query string containing the text typed by the user.
+                .setCountry("IL")
+                .setTypeFilter(TypeFilter.ADDRESS)
+                .setSessionToken(token)
+                .setQuery(mAddressField.getText().toString())
                 .build();
 
-        placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+        placesClient.findAutocompletePredictions(request).addOnSuccessListener(response -> {
+            mResult = new StringBuilder();
+            options = new ArrayList();
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                Log.i(TAG, prediction.getPlaceId());
-                Log.i(TAG, prediction.getPrimaryText(null).toString());
+                mResult.append(" ").append(prediction.getFullText(null) + "\n");
+                options.add(prediction.getFullText(null).toString());
             }
+
+            ArrayAdapter<String> adapter =
+                    new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, options);
+
+            mAddressField.setAdapter(adapter);
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
                 Log.e(TAG, "Place not found: " + apiException.getStatusCode());
             }
         });
-
     }
 
         // Map is ready and loaded

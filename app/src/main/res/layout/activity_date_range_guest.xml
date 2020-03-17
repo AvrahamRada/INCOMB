@@ -11,7 +11,7 @@
     android:weightSum="1"
     android:padding="5dp"
     android:layout_gravity="center"
-tools:context=".activites.Guest.DateRangeActivity">
+    tools:context=".activites.Guest.DateRangeActivity">
 
     <fragment
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@ tools:context=".activites.Guest.DateRangeActivity">
         android:layout_height="match_parent"
         android:name="android_project.incomb.activites.Guest.Fragment.DateGuestFragment"
         android:id="@+id/date_guest_fragment"
+        android:layout_marginTop="5dp"
         android:layout_weight="0.1">
 
     </fragment>
