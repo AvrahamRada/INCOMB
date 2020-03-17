@@ -10,23 +10,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.r0adkll.slidr.Slidr;
 import com.squareup.timessquare.CalendarPickerView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import android_project.incomb.R;
 import android_project.incomb.entities.Event;
-import android_project.incomb.entities.Person;
-import android_project.incomb.entities.Place;
 import android_project.incomb.entities.ReservationsTimes;
 
 public class DateRangeActivity extends AppCompatActivity {
