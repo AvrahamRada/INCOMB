@@ -89,11 +89,11 @@ public class RentPlaceActivity extends AppCompatActivity implements IRentActivit
                 imageListString.add(uri.toString());
             }
             newPlace.setImagesList(imageListString);
+            newPlace.setYourNameForThePlace(namePlace);
             submitData();
         }catch (Exception ex) {
             Toast.makeText(this, "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
         }
-        newPlace.setYourNameForThePlace(namePlace);
     }
 
     private void openSecondFragment() {
