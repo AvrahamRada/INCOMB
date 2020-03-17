@@ -177,7 +177,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                                         finish();
                                         break;
                                     case "Guest":
-                                        startActivity(new Intent(getApplicationContext(), MapAndPlacesActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), SearchEventActivity.class));
                                         finish();
                                         break;
                                     case "Host":

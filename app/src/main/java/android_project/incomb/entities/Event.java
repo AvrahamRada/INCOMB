@@ -11,6 +11,7 @@ public class Event {
     private String idFest;
     private String eventName;
     private ArrayList<String> idGuest;
+    private boolean selected = false;
 
     //Constructor
     public Event() {

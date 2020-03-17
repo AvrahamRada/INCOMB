@@ -16,17 +16,16 @@
         android:windowSoftInputMode="adjustResize"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:supportsRtl">
-        <activity android:name=".activites.Fest.SearchPlaceActivity"></activity>
+        <activity android:name=".activites.Fest.SearchPlaceActivity"/>
         <activity android:name=".activites.Guest.SearchEventActivity" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAEaX6z8jIIcM_rTOwRzwKlrJX7GyNGysU" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
         <activity android:name=".activites.Fest.MapAndPlacesActivity" />
+        <activity android:name=".activites.Guest.MapAndEventsActivity"/>
         <activity
             android:name=".activites.Fest.DateRangeActivity"
             android:theme="@style/AppTheme.slidrActivityTheme" />

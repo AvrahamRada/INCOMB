@@ -3,12 +3,15 @@ package android_project.incomb.activites.Fest.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -16,10 +19,10 @@ import android_project.incomb.R;
 import android_project.incomb.entities.Event;
 
 public class FindPlaceAdapter extends RecyclerView.Adapter<FindPlaceViewHolder> {
-    List<Event> eventsList;
+    List<Event> eventsList = new ArrayList<>();
 
-    public FindPlaceAdapter(List<Event> eventsList) {
-        this.eventsList = eventsList;
+    public FindPlaceAdapter() {
+        refreshData();
     }
 
     @NonNull
@@ -55,4 +58,19 @@ public class FindPlaceAdapter extends RecyclerView.Adapter<FindPlaceViewHolder> 
         return eventsList.size();
     }
 
+    public void refreshData(){
+
+        List<Event> events = new ArrayList<>();
+        FirebaseFirestore.getInstance()
+                .collection("event")
+                .whereEqualTo("idFest", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    eventsList.addAll(queryDocumentSnapshots.toObjects(Event.class));
+                    notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    //Toast.makeText(getContext(),"No Events",Toast.LENGTH_LONG);
+                });
+    }
 }

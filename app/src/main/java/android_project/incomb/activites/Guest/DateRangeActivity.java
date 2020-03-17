@@ -102,7 +102,7 @@ public class DateRangeActivity extends AppCompatActivity {
         /* getting events and filter them by activity and dates
         List<Event> events = new ArrayList<>();
         FirebaseFirestore.getInstance()
-                .collection("events")
+                .collection("event")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     events.addAll(queryDocumentSnapshots.toObjects(Event.class));

@@ -63,7 +63,7 @@ public class EventListFragment extends Fragment {
     private void setSearchRecyclerView() {
         List<Event> events = new ArrayList<>();
         FirebaseFirestore.getInstance()
-                .collection("events")
+                .collection("event")
                 .whereEqualTo("hostId", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

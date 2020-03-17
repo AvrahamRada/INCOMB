@@ -61,6 +61,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import android_project.incomb.R;
 import android_project.incomb.entities.Event;
@@ -258,7 +259,6 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                             for (QueryDocumentSnapshot doc :queryDocumentSnapshots) {
                                 placeIdmap.put(doc.toObject(android_project.incomb.entities.Place.class),doc.getId());
                             }
-                            //places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
                             setList();
                         });
             }
@@ -266,31 +266,23 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void setList() {
-//        for (android_project.incomb.entities.Place placeCheck: places) {
-//            ReservationsTimes check = placeCheck.getAvailability();
-//            FirebaseFirestore.getInstance().collection("users").document(placeCheck.getIdHost()).get().addOnSuccessListener(documentSnapshot -> {
-//                Person host = documentSnapshot.toObject(Person.class);
-//                host.getFullName();
-//                host.getEmail();
-//                host.getPhoneNumber();
-//            });
-            // need to remove to places that out of range
-            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
-            //places.remove(placeCheck);
-//        }
-//        for (android_project.incomb.entities.Place placeCheck: places) {
-//            ReservationsTimes check = placeCheck.getAvailability();
-//            // need to remove to places that out of range
-//            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
-//                //places.remove(placeCheck);
-//        }
+        Iterator it = placeIdmap.entrySet().iterator();
+        //list of places (empty)
         List<android_project.incomb.entities.Place> temp = new ArrayList<>();
-        for(android_project.incomb.entities.Place placeCheck: places){
-            ReservationsTimes check = placeCheck.getAvailability();
-            if(calender.getStartEvent().before(check.getStartEvent()) || calender.getEndEvent().after(check.getEndEvent()))
-                temp.add(placeCheck);
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            temp.add((android_project.incomb.entities.Place) pair.getKey());
+            }
+        //remove elements from map by keys from list
+        for(android_project.incomb.entities.Place key : temp ){
+            if(!key.getTypeOfActivity().equals(typeActivity))
+                placeIdmap.remove(key);
+            else{
+                ReservationsTimes check = key.getAvailability();
+                if(calender.getStartEvent().before(check.getStartEvent()) || calender.getEndEvent().after(check.getEndEvent()))
+                    placeIdmap.remove(key);
+            }
         }
-        places.removeAll(temp);
         showHost();
     }
 
@@ -335,19 +327,18 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     public void makeEventClick(View view) {
         for (Host host:hostList) {
             if(host.isSelected()){
-                getNameForEvent();
-                //create event and send it to the database
-                Event newEvent =  new Event();
-                newEvent.setEventName(eventName);
-                newEvent.setPlaceId(host.getPlaceId());
-                android_project.incomb.entities.Place temp = host.getHostPlace();
-                newEvent.setHostId(temp.getIdHost());
-                uploadEventToDB(newEvent);
+                getNameForEvent(eventName ->
+                        uploadEventToDB(host, eventName));
             }
         }
     }
 
-    private void uploadEventToDB(Event newEvent) {
+    private void uploadEventToDB(Host addHost, String eventName) {
+        Event newEvent =  new Event();
+        newEvent.setEventName(eventName);
+        newEvent.setPlaceId(addHost.getPlaceId());
+        android_project.incomb.entities.Place temp = addHost.getHostPlace();
+        newEvent.setHostId(temp.getIdHost());
         FirebaseFirestore.getInstance()
                 .collection("event")
                 .add(newEvent)
@@ -356,7 +347,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                 });
     }
 
-    private void getNameForEvent() {
+    private void getNameForEvent(Consumer<String> onOkClick) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MapAndPlacesActivity.this);
         alertDialog.setTitle("Make Event");
         alertDialog.setMessage("Enter event name");
@@ -371,6 +362,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
             public void onClick(DialogInterface dialog, int which) {
                 try{
                     eventName = input.getText().toString();
+                    onOkClick.accept(eventName);
                 }catch (Exception ex) {
                     Toast.makeText(getApplicationContext(), "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
                 }
@@ -419,5 +411,10 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

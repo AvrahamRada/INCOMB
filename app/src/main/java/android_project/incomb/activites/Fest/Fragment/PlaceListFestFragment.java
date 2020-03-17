@@ -20,6 +20,7 @@ import java.util.List;
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.Adapter.FindPlaceAdapter;
 import android_project.incomb.activites.Fest.Interface.IFestActivty;
+import android_project.incomb.activites.Host.Adapter.PlaceAdapter;
 import android_project.incomb.entities.Event;
 
 public class PlaceListFestFragment extends Fragment {
@@ -56,18 +57,11 @@ public class PlaceListFestFragment extends Fragment {
     }
 
     private void setSearchRecyclerView() {
-        List<Event> events = new ArrayList<>();
-        FirebaseFirestore.getInstance()
-                .collection("events")
-                .whereEqualTo("hostId", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    events.addAll(queryDocumentSnapshots.toObjects(Event.class));
-                    FindPlaceAdapter adapter = new FindPlaceAdapter(events);
-                    searchRecyclerViews.setAdapter(adapter);
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(),"No Events",Toast.LENGTH_LONG);
-                });
+        FindPlaceAdapter adapter = new FindPlaceAdapter();
+        searchRecyclerViews.setAdapter(adapter);
+    }
+
+    public RecyclerView getEventRecyclerView() {
+        return this.searchRecyclerViews;
     }
 }

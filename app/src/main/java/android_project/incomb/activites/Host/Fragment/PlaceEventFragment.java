@@ -57,7 +57,7 @@ public class PlaceEventFragment extends Fragment {
     private void setEventsRecyclerView() {
         List<Event> events = new ArrayList<>();
         FirebaseFirestore.getInstance()
-                .collection("events")
+                .collection("event")
                 .whereEqualTo("hostId", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

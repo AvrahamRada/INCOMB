@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.google.firebase.auth.FirebaseAuth;
 
 import android_project.incomb.R;
+import android_project.incomb.activites.Fest.Adapter.FindPlaceAdapter;
 import android_project.incomb.activites.Fest.Fragment.PlaceListFestFragment;
 import android_project.incomb.activites.Fest.Interface.IFestActivty;
 import android_project.incomb.activites.Start.LoginActivity;
@@ -42,15 +43,17 @@ public class SearchPlaceActivity extends AppCompatActivity implements IFestActiv
     public void searchPlace() {
         Intent intent = new Intent(this, MapAndPlacesActivity.class);
         startActivityForResult(intent, PLACE_REQUEST_CODE);
-        //startActivity(intent)
+        //startActivity(intent);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (PLACE_REQUEST_CODE){
-            case PLACE_ADD_OK:
-
+            default:
+            System.out.println("remove");
+                ((FindPlaceAdapter) placeListFestFragment.getEventRecyclerView().getAdapter()).refreshData();
+                //tell recyclerview adapter refresh data
         }
     }
 }

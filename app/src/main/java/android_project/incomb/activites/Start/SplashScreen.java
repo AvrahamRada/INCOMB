@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.MapAndPlacesActivity;
 import android_project.incomb.activites.Fest.SearchPlaceActivity;
+import android_project.incomb.activites.Guest.MapAndEventsActivity;
 import android_project.incomb.activites.Guest.SearchEventActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 

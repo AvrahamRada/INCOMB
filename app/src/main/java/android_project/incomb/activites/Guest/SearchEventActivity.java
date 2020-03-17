@@ -41,8 +41,8 @@ public class SearchEventActivity extends AppCompatActivity implements IPartyActi
     @Override
     public void searchEvent() {
         Intent intent = new Intent(this, MapAndEventsActivity.class);
-        startActivityForResult(intent, EVENT_REQUEST_CODE);
-        //startActivity(intent);
+        //startActivityForResult(intent, EVENT_REQUEST_CODE);
+        startActivity(intent);
     }
 
     @Override
