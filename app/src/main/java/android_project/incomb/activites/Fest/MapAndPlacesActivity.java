@@ -341,6 +341,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                 }
             }
         });
+        alertDialog.show();
     }
 
     @SuppressLint("MissingPermission")
