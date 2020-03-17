@@ -22,4 +22,14 @@
         android:src="@drawable/next_arrow">
     </ImageView>
 
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:onClick="makeEventClick"
+        android:src="@drawable/make_event"/>
+
+
 </RelativeLayout>

@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:showIn="@layout/paper1"
     android:orientation="vertical"
     android:background="@color/white"
     android:weightSum="1"
     tools:context=".activites.Fest.MapAndPlacesActivity"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,21 +38,6 @@
         </fragment>
 
     </LinearLayout>
-
-
-<!--    <com.mancj.materialsearchbar.MaterialSearchBar-->
-<!--        style="@style/MaterialSearchBarLight"-->
-<!--        app:mt_speechMode="false"-->
-<!--        app:mt_hint="Search a place"-->
-<!--        app:mt_maxSuggestionsCount="10"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/searchBar"-->
-<!--        android:layout_margin="16dp"-->
-<!--        app:mt_navIconEnabled="true"-->
-<!--        android:elevation="5dp"-->
-<!--        android:outlineProvider="bounds"-->
-<!--        app:mt_placeholder="Search a place"/>-->
 
     <ListView
         android:layout_width="match_parent"

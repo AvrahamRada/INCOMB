@@ -63,13 +63,18 @@ public class DateRangeActivity extends AppCompatActivity {
     }
 
     private void sendCheckData() {
-        isCheck();
-        setDate(datePicker.getSelectedDates());
-        Intent intentCheck = new Intent();
-        intentCheck.putExtra("type Activity", typeActivity);
-        intentCheck.putExtra("calendar", new Gson().toJson(calendar));
-        setResult(PLACE_SEARCH_OK, intentCheck);
-        finish();
+        try{
+            isCheck();
+            setDate(datePicker.getSelectedDates());
+            Intent intentCheck = new Intent();
+            intentCheck.putExtra("type Activity", typeActivity);
+            intentCheck.putExtra("calendar", new Gson().toJson(calendar));
+            setResult(PLACE_SEARCH_OK, intentCheck);
+            finish();
+        }catch (Exception ex)
+        {
+            Toast.makeText(this, "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void isCheck() {

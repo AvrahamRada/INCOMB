@@ -2,9 +2,12 @@ package android_project.incomb.entities;
 
 public class Host {
 
+    private Person host;
+    private Place hostPlace;
     private String name;
     private String address;
     private String phone;
+    private boolean selected = false;
 
     public Host(String name, String address, String phone) {
         this.name = name;
@@ -34,6 +37,14 @@ public class Host {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
 }

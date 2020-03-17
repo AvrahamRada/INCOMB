@@ -1,12 +1,17 @@
 package android_project.incomb.activites.Fest;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -67,9 +72,10 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     String typeActivity;
     ReservationsTimes calender;
     List<android_project.incomb.entities.Place> places = new ArrayList<>();
+    //List view result
     ListView mListView;
-
     ArrayList<Host> hostList;
+    String name;
 
     // Map Object
     private GoogleMap mMap;
@@ -84,7 +90,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     // updating the user if last location is null
     private LocationCallback locationCallback;
 
-//    private MaterialSearchBar materialSearchBar;
+//  private MaterialSearchBar materialSearchBar;
     private View mapView;
 
     private final float DEFAULT_ZOOM = 15;
@@ -94,8 +100,6 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_and_places);
         mListView = (ListView)findViewById(R.id.list_view);
-
-//        materialSearchBar = findViewById(R.id.searchBar);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -108,123 +112,6 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
         // Create a new Places client instance
         placesClient = Places.createClient(this);
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
-
-//        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
-//            @Override
-//            public void onSearchStateChanged(boolean enabled) {
-//
-//            }
-//
-//            @Override
-//            public void onSearchConfirmed(CharSequence text) {
-//                startSearch(text.toString(), true, null, true);
-//            }
-//
-//            @Override
-//            public void onButtonClicked(int buttonCode) {
-//                if (buttonCode == MaterialSearchBar.BUTTON_NAVIGATION) {
-//                    //opening or closing a navigation drawer
-//                } else if (buttonCode == MaterialSearchBar.BUTTON_BACK) {
-//                    materialSearchBar.disableSearch();
-//                }
-//            }
-//        });
-//
-//        materialSearchBar.addTextChangeListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
-//                        .setTypeFilter(TypeFilter.ADDRESS)
-//                        .setSessionToken(token)
-//                        .setQuery(s.toString())
-//                        .build();
-//                placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(new OnCompleteListener<FindAutocompletePredictionsResponse>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<FindAutocompletePredictionsResponse> task) {
-//                        if (task.isSuccessful()) {
-//                            FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
-//                            if (predictionsResponse != null) {
-//                                predictionList = predictionsResponse.getAutocompletePredictions();
-//                                List<String> suggestionsList = new ArrayList<>();
-//                                for (int i = 0; i < predictionList.size(); i++) {
-//                                    AutocompletePrediction prediction = predictionList.get(i);
-//                                    suggestionsList.add(prediction.getFullText(null).toString());
-//                                }
-//                                materialSearchBar.updateLastSuggestions(suggestionsList);
-//                                if (!materialSearchBar.isSuggestionsVisible()) {
-//                                    materialSearchBar.showSuggestionsList();
-//                                }
-//                            }
-//                        } else {
-//                            Log.i("mytag", "prediction fetching task unsuccessful");
-//                        }
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//
-//        materialSearchBar.setSuggestionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
-//            @Override
-//            public void OnItemClickListener(int position, View v) {
-//                if (position >= predictionList.size()) {
-//                    return;
-//                }
-//                AutocompletePrediction selectedPrediction = predictionList.get(position);
-//                String suggestion = materialSearchBar.getLastSuggestions().get(position).toString();
-//                materialSearchBar.setText(suggestion);
-//
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        materialSearchBar.clearSuggestions();
-//                    }
-//                }, 1000);
-//                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//                if (imm != null)
-//                    imm.hideSoftInputFromWindow(materialSearchBar.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-//                final String placeId = selectedPrediction.getPlaceId();
-//                List<Place.Field> placeFields = Arrays.asList(Place.Field.LAT_LNG);
-//
-//                FetchPlaceRequest fetchPlaceRequest = FetchPlaceRequest.builder(placeId, placeFields).build();
-//                placesClient.fetchPlace(fetchPlaceRequest).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
-//                    @Override
-//                    public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
-//                        Place place = fetchPlaceResponse.getPlace();
-//                        Log.i("mytag", "Place found: " + place.getName());
-//                        LatLng latLngOfPlace = place.getLatLng();
-//                        if (latLngOfPlace != null) {
-//                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfPlace, DEFAULT_ZOOM));
-//                        }
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        if (e instanceof ApiException) {
-//                            ApiException apiException = (ApiException) e;
-//                            apiException.printStackTrace();
-//                            int statusCode = apiException.getStatusCode();
-//                            Log.i("mytag", "place not found: " + e.getMessage());
-//                            Log.i("mytag", "status code: " + statusCode);
-//                        }
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void OnItemDeleteListener(int position, View v) {
-//
-//            }
-//        });
 
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
@@ -333,10 +220,6 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
-//                if (materialSearchBar.isSuggestionsVisible())
-//                    materialSearchBar.clearSuggestions();
-//                if (materialSearchBar.isSearchEnabled())
-//                    materialSearchBar.disableSearch();
                 return false;
             }
         });
@@ -401,7 +284,7 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void showHost() {
-        ArrayList<Host> temp = new ArrayList<>();
+        hostList = new ArrayList<>();
         for (android_project.incomb.entities.Place placeCheck: places) {
             FirebaseFirestore.getInstance()
                     .collection("users")
@@ -409,15 +292,55 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         Person host = documentSnapshot.toObject(Person.class);
-                        temp.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
-                        createAdapter(temp);
+                        hostList.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
+                        createAdapter(hostList);
                     });
         }
     }
-
+    //list of host - need to keep it for every one
     private void createAdapter(ArrayList<Host> temp) {
         PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,temp);
         mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener((parent, view, position, id) -> {
+            if(!temp.get(position).isSelected()){
+                temp.get(position).setSelected(!temp.get(position).isSelected());
+                view.setBackgroundColor(getColor(R.color. colorGreenPrimary));
+            }
+            else{
+                temp.get(position).setSelected(!temp.get(position).isSelected());
+                view.setBackgroundColor(getColor(R.color.white));
+            }
+        });
+    }
+
+    public void makeEventClick(View view) {
+        for (Host host:hostList) {
+            if(host.isSelected()){
+                getNameForEvent();
+            }
+        }
+    }
+
+    private void getNameForEvent() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MapAndPlacesActivity.this);
+        alertDialog.setTitle("Make Event");
+        alertDialog.setMessage("Enter event name");
+        final EditText input = new EditText(MapAndPlacesActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try{
+                    name = input.getText().toString();
+                }catch (Exception ex) {
+                    Toast.makeText(getApplicationContext(), "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @SuppressLint("MissingPermission")
@@ -461,5 +384,4 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
-
 }

@@ -20,15 +20,16 @@ import android_project.incomb.entities.Person;
 
 public class PersonListAdapter extends ArrayAdapter<Host> {
 
+    private List<Host> mlistHost;
     private Context mContext;
     private int mResource;
 
     public PersonListAdapter(Context context, int resource, ArrayList<Host> objects) {
         super(context, resource, objects);
-        mContext = context;
-        mResource = resource;
+        this.mContext = context;
+        this.mResource = resource;
+        this.mlistHost = objects;
     }
-
 
     @NonNull
     @Override
@@ -47,7 +48,6 @@ public class PersonListAdapter extends ArrayAdapter<Host> {
         TextView tvName = (TextView)convertView.findViewById(R.id.textView1);
         TextView tvAddress = (TextView)convertView.findViewById(R.id.textView2);
         TextView tvPhone = (TextView)convertView.findViewById(R.id.textView3);
-
 
         tvName.setText(name);
         tvAddress.setText(address);
