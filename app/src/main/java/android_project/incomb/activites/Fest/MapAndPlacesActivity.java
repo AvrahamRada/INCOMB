@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -52,7 +53,6 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
@@ -62,18 +62,24 @@ import java.util.Arrays;
 import java.util.List;
 
 import android_project.incomb.R;
+import android_project.incomb.entities.Host;
 import android_project.incomb.entities.Person;
+import android_project.incomb.entities.PersonListAdapter;
 import android_project.incomb.entities.ReservationsTimes;
 
 public class MapAndPlacesActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final int CHECK_PLACE_REQUEST_CODE = 2;
     public static final int PLACE_SEARCH_OK = 3;
     private static final String TAG = "TAG";
+    private static final String MAIN_AND_PLACES_ACTIVITY = "MapAndPlacesActivity";
 
     //result after the DateRangeActivity
     String typeActivity;
     ReservationsTimes calender;
     List<android_project.incomb.entities.Place> places = new ArrayList<>();
+    ListView mListView;
+
+    ArrayList<Host> hostList;
 
     // Map Object
     private GoogleMap mMap;
@@ -97,6 +103,10 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_and_places);
+
+        mListView = (ListView)findViewById(R.id.list_view);
+        hostList = new ArrayList<>();
+        PersonListAdapter adapter = new PersonListAdapter(this, R.layout.adapter_view_layout,hostList);
 
 
 //        materialSearchBar = findViewById(R.id.searchBar);
@@ -373,17 +383,53 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                             setList();
                         });
             }
+
+            ArrayList<Host> a = new ArrayList<>();
+            for (android_project.incomb.entities.Place placeCheck: places) {
+                FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .document(placeCheck.getIdHost())
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            Person host = documentSnapshot.toObject(Person.class);
+                            a.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
+                        });
+            }
+
+            PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,a);
+            mListView.setAdapter(adapter);
         }
+
+
+
     }
 
     private void setList() {
-        List<android_project.incomb.entities.Place> temp = new ArrayList<>();
         for (android_project.incomb.entities.Place placeCheck: places) {
             ReservationsTimes check = placeCheck.getAvailability();
-            if(calender.getStartEvent().before(check.getStartEvent()) || calender.getEndEvent().after(check.getEndEvent()))
-                temp.add(placeCheck);
+            FirebaseFirestore.getInstance().collection("users").document(placeCheck.getIdHost()).get().addOnSuccessListener(documentSnapshot -> {
+                Person host = documentSnapshot.toObject(Person.class);
+                host.getFullName();
+                host.getEmail();
+                host.getPhoneNumber();
+            });
+            // need to remove to places that out of range
+            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
+            //places.remove(placeCheck);
         }
-        places.removeAll(temp);
+//        for (android_project.incomb.entities.Place placeCheck: places) {
+//            ReservationsTimes check = placeCheck.getAvailability();
+//            // need to remove to places that out of range
+//            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
+//                //places.remove(placeCheck);
+//        }
+//        List<android_project.incomb.entities.Place> temp = new ArrayList<>();
+//        for(android_project.incomb.entities.Place placeCheck: places){
+//            ReservationsTimes check = placeCheck.getAvailability();
+//            if(calender.getStartEvent().before(check.getStartEvent()) || calender.getEndEvent().after(check.getEndEvent()))
+//                temp.add(placeCheck);
+//        }
+//        places.removeAll(temp);
     }
 
     @SuppressLint("MissingPermission")

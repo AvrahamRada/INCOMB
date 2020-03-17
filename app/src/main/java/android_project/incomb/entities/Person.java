@@ -16,6 +16,12 @@ public class Person {
         setTypeUser(type);
     }
 
+    public Person(String fullName, String email, String phoneNumber) {
+        setFullName(fullName);
+        setEmail(email);
+        setPhoneNumber(phoneNumber);
+    }
+
     public Person() {
     }
 
