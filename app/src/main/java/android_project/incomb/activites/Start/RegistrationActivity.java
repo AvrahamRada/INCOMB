@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.MapAndPlacesActivity;
+import android_project.incomb.activites.Fest.SearchPlaceActivity;
 import android_project.incomb.activites.Guest.SearchEventActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 import android_project.incomb.entities.Person;
@@ -172,8 +173,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                             .addOnSuccessListener(documentReference -> {
                                 switch (userType) {
                                     case "Fest":
-                                        //startActivity(new Intent(getApplicationContext(), SearchPlaceActivity.class));
-                                        startActivity(new Intent(getApplicationContext(), MapAndPlacesActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), SearchPlaceActivity.class));
                                         finish();
                                         break;
                                     case "Guest":

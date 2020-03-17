@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.MapAndPlacesActivity;
+import android_project.incomb.activites.Fest.SearchPlaceActivity;
 import android_project.incomb.activites.Guest.SearchEventActivity;
 import android_project.incomb.activites.Host.MyPlaceActivity;
 
@@ -31,19 +32,14 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                Intent t = new Intent(SplashScreen.this, LoginActivity.class);
-                startActivity(t);
-                finish();
-
                 //Automatic Login
-//                if (fAuth.getCurrentUser() != null) {
-//                    Login(fAuth.getCurrentUser());
-//                }
-//                else { // no user signed in
-//                    startActivity(new Intent(SplashScreen.this,LoginActivity.class));
-//                    finish();
-//                }
+                if (fAuth.getCurrentUser() != null) {
+                    Login(fAuth.getCurrentUser());
+                }
+                else { // no user signed in
+                    startActivity(new Intent(SplashScreen.this,LoginActivity.class));
+                    finish();
+                }
             }
         },SPLASH_TIME_OUT);
     }
@@ -58,8 +54,7 @@ public class SplashScreen extends AppCompatActivity {
                         String userType = (String) documentSnapshot.get("typeUser");
                         switch (userType) {
                             case "Fest":
-                                //startActivity(new Intent(getApplicationContext(), SearchPlaceActivity.class));
-                                startActivity(new Intent(getApplicationContext(), MapAndPlacesActivity.class));
+                                startActivity(new Intent(getApplicationContext(), SearchPlaceActivity.class));
                                 finish();
                                 break;
                             case "Guest":

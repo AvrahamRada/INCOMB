@@ -87,7 +87,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         switch (userType) {
                             case "Fest":
                                 startActivity(new Intent(getApplicationContext(), SearchPlaceActivity.class));
-                                //startActivity(new Intent(getApplicationContext(), MapAndPlacesActivity.class));
                                 finish();
                                 break;
                             case "Guest":

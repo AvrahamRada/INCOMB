@@ -49,14 +49,21 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android_project.incomb.R;
+import android_project.incomb.entities.Event;
 import android_project.incomb.entities.Host;
 import android_project.incomb.entities.Person;
 import android_project.incomb.activites.Fest.Adapter.PersonListAdapter;
@@ -72,10 +79,11 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
     String typeActivity;
     ReservationsTimes calender;
     List<android_project.incomb.entities.Place> places = new ArrayList<>();
+    Map<android_project.incomb.entities.Place,String> placeIdmap = new HashMap<>();
     //List view result
     ListView mListView;
     ArrayList<Host> hostList;
-    String name;
+    String eventName;
 
     // Map Object
     private GoogleMap mMap;
@@ -247,7 +255,10 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                         .whereEqualTo( "typeOfActivity",typeActivity)
                         .get()
                         .addOnSuccessListener(queryDocumentSnapshots -> {
-                            places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
+                            for (QueryDocumentSnapshot doc :queryDocumentSnapshots) {
+                                placeIdmap.put(doc.toObject(android_project.incomb.entities.Place.class),doc.getId());
+                            }
+                            //places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
                             setList();
                         });
             }
@@ -285,18 +296,26 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
 
     private void showHost() {
         hostList = new ArrayList<>();
-        for (android_project.incomb.entities.Place placeCheck: places) {
+        Iterator it = placeIdmap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            android_project.incomb.entities.Place checkPlace = (android_project.incomb.entities.Place) pair.getKey();
+            String placeId = (String) pair.getValue();
             FirebaseFirestore.getInstance()
                     .collection("users")
-                    .document(placeCheck.getIdHost())
+                    .document(checkPlace.getIdHost())
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
-                        Person host = documentSnapshot.toObject(Person.class);
-                        hostList.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
+                        Host addHost =  new Host();
+                        addHost.setHostPlace(checkPlace);
+                        addHost.setHost(documentSnapshot.toObject(Person.class));
+                        addHost.setPlaceId(placeId);
+                        hostList.add(addHost);
                         createAdapter(hostList);
                     });
+            it.remove(); // avoids a ConcurrentModificationException
+            }
         }
-    }
     //list of host - need to keep it for every one
     private void createAdapter(ArrayList<Host> temp) {
         PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,temp);
@@ -317,8 +336,24 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
         for (Host host:hostList) {
             if(host.isSelected()){
                 getNameForEvent();
+                //create event and send it to the database
+                Event newEvent =  new Event();
+                newEvent.setEventName(eventName);
+                newEvent.setPlaceId(host.getPlaceId());
+                android_project.incomb.entities.Place temp = host.getHostPlace();
+                newEvent.setHostId(temp.getIdHost());
+                uploadEventToDB(newEvent);
             }
         }
+    }
+
+    private void uploadEventToDB(Event newEvent) {
+        FirebaseFirestore.getInstance()
+                .collection("event")
+                .add(newEvent)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(getApplicationContext(), "Event add", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void getNameForEvent() {
@@ -335,12 +370,13 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try{
-                    name = input.getText().toString();
+                    eventName = input.getText().toString();
                 }catch (Exception ex) {
                     Toast.makeText(getApplicationContext(), "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        alertDialog.show();
     }
 
     @SuppressLint("MissingPermission")
