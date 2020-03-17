@@ -59,14 +59,16 @@ public class FindPlaceAdapter extends RecyclerView.Adapter<FindPlaceViewHolder> 
     }
 
     public void refreshData(){
-
         List<Event> events = new ArrayList<>();
         FirebaseFirestore.getInstance()
                 .collection("event")
                 .whereEqualTo("idFest", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    eventsList.addAll(queryDocumentSnapshots.toObjects(Event.class));
+                    if(queryDocumentSnapshots.size()!=eventsList.size()){
+                        eventsList.removeAll(eventsList);
+                        eventsList.addAll(queryDocumentSnapshots.toObjects(Event.class));
+                    }
                     notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
