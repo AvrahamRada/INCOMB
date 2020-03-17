@@ -55,16 +55,20 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.Adapter.PersonListAdapter;
 import android_project.incomb.activites.Fest.DateRangeActivity;
 import android_project.incomb.activites.Fest.MapAndPlacesActivity;
+import android_project.incomb.entities.Event;
 import android_project.incomb.entities.Host;
 import android_project.incomb.entities.Person;
 import android_project.incomb.entities.ReservationsTimes;
@@ -78,7 +82,9 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     //result after the DateRangeActivity
     String typeActivity;
     ReservationsTimes calender;
+    List<Event> events = new ArrayList<>();
     List<android_project.incomb.entities.Place> places = new ArrayList<>();
+    Map<Event, String> eventIdmap = new HashMap<>();
     //List view result
     ListView mListView;
     ArrayList<Host> hostList;
@@ -244,57 +250,59 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
             if (resultCode == RESULT_OK) {
                 getDeviceLocation();
             }
-        }
-        else if(requestCode == CHECK_PLACE_REQUEST_CODE){
-            if(resultCode == PLACE_SEARCH_OK){
+        } else if (requestCode == CHECK_PLACE_REQUEST_CODE) {
+            if (resultCode == PLACE_SEARCH_OK) {
                 typeActivity = data.getStringExtra("type Activity");
                 String CalenderString = data.getStringExtra("calendar");
                 calender = new Gson().fromJson(CalenderString, ReservationsTimes.class);
                 FirebaseFirestore.getInstance()
-                        .collection("places")
-                        .whereEqualTo( "typeOfActivity",typeActivity)
+                        .collection("event")
                         .get()
                         .addOnSuccessListener(queryDocumentSnapshots -> {
-                            places.addAll(queryDocumentSnapshots.toObjects(android_project.incomb.entities.Place.class));
-                            setList();
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                Event event = doc.toObject(Event.class);
+                                FirebaseFirestore.getInstance()
+                                        .collection("places")
+                                        .document(event.getPlaceId())
+                                        .get()
+                                        .addOnSuccessListener(documentSnapshot -> {
+                                            android_project.incomb.entities.Place place = documentSnapshot.toObject(android_project.incomb.entities.Place.class);
+                                            if (place.getTypeOfActivity().equals(typeActivity)) {
+                                                ReservationsTimes check = place.getAvailability();
+                                                if (!(calender.getStartEvent().before(check.getStartEvent())) && !(calender.getEndEvent().after(check.getEndEvent()))) {
+                                                    eventIdmap.put(event, doc.getId());
+                                                    //upadte list in adapter
+
+                                                }
+                                            }
+                                        });
+                            }
+                            //showEvents();
                         });
             }
-
-            int i =0;
+            int i = 0;
             ArrayList<LatLng> latLngArrayList = new ArrayList<>();
-            for (android_project.incomb.entities.Place placeCheck: places) {
+            for (android_project.incomb.entities.Place placeCheck : places) {
                 GeoPoint geo = placeCheck.getLocation();
-                latLngArrayList.add(new LatLng(geo.getLatitude(),geo.getLongitude()));
+                latLngArrayList.add(new LatLng(geo.getLatitude(), geo.getLongitude()));
                 mMap.addMarker(new MarkerOptions().position(latLngArrayList.get(i)).title("Marker"));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngArrayList.get(i)));
                 i++;
             }
-
         }
     }
 
-    private void setList() {
-        List<android_project.incomb.entities.Place> temp = new ArrayList<>();
-        for(android_project.incomb.entities.Place placeCheck: places){
-            ReservationsTimes check = placeCheck.getAvailability();
-            if(calender.getStartEvent().before(check.getStartEvent()) || calender.getEndEvent().after(check.getEndEvent()))
-                temp.add(placeCheck);
-        }
-        places.removeAll(temp);
-        showHost();
-    }
-
-    private void showHost() {
+    private void showEvents() {
         hostList = new ArrayList<>();
-        for (android_project.incomb.entities.Place placeCheck: places) {
+        for (android_project.incomb.entities.Place placeCheck : places) {
             FirebaseFirestore.getInstance()
                     .collection("users")
                     .document(placeCheck.getIdHost())
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         Person host = documentSnapshot.toObject(Person.class);
-                        hostList.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
+                        hostList.add(new Host(host.getFullName(), host.getEmail(), host.getPhoneNumber()));
                         createAdapter(hostList);
                     });
         }
@@ -319,32 +327,10 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     public void makeEventClick(View view) {
         for (Host host:hostList) {
             if(host.isSelected()){
-                getNameForEvent();
             }
         }
     }
 
-    private void getNameForEvent() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MapAndEventsActivity.this);
-        alertDialog.setTitle("Make Event");
-        alertDialog.setMessage("Enter event name");
-        final EditText input = new EditText(MapAndEventsActivity.this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
-
-        input.setLayoutParams(lp);
-        alertDialog.setView(input);
-
-        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try{
-                    name = input.getText().toString();
-                }catch (Exception ex) {
-                    Toast.makeText(getApplicationContext(), "Error! Wrong input, please check", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
 
     @SuppressLint("MissingPermission")
     private void getDeviceLocation() {
