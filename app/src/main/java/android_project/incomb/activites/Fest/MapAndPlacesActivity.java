@@ -5,12 +5,8 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -44,18 +40,12 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
-import com.mancj.materialsearchbar.MaterialSearchBar;
-import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,7 +54,7 @@ import java.util.List;
 import android_project.incomb.R;
 import android_project.incomb.entities.Host;
 import android_project.incomb.entities.Person;
-import android_project.incomb.entities.PersonListAdapter;
+import android_project.incomb.activites.Fest.Adapter.PersonListAdapter;
 import android_project.incomb.entities.ReservationsTimes;
 
 public class MapAndPlacesActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -296,7 +286,6 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
 
     }
 
-
         // Map is ready and loaded
     @SuppressLint("MissingPermission")
     @Override
@@ -383,53 +372,57 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
                             setList();
                         });
             }
-
-            ArrayList<Host> a = new ArrayList<>();
-            for (android_project.incomb.entities.Place placeCheck: places) {
-                FirebaseFirestore.getInstance()
-                        .collection("users")
-                        .document(placeCheck.getIdHost())
-                        .get()
-                        .addOnSuccessListener(documentSnapshot -> {
-                            Person host = documentSnapshot.toObject(Person.class);
-                            a.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
-                        });
-            }
-
-            PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,a);
-            mListView.setAdapter(adapter);
         }
-
-
-
     }
 
     private void setList() {
-        for (android_project.incomb.entities.Place placeCheck: places) {
-            ReservationsTimes check = placeCheck.getAvailability();
-            FirebaseFirestore.getInstance().collection("users").document(placeCheck.getIdHost()).get().addOnSuccessListener(documentSnapshot -> {
-                Person host = documentSnapshot.toObject(Person.class);
-                host.getFullName();
-                host.getEmail();
-                host.getPhoneNumber();
-            });
+//        for (android_project.incomb.entities.Place placeCheck: places) {
+//            ReservationsTimes check = placeCheck.getAvailability();
+//            FirebaseFirestore.getInstance().collection("users").document(placeCheck.getIdHost()).get().addOnSuccessListener(documentSnapshot -> {
+//                Person host = documentSnapshot.toObject(Person.class);
+//                host.getFullName();
+//                host.getEmail();
+//                host.getPhoneNumber();
+//            });
             // need to remove to places that out of range
             //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
             //places.remove(placeCheck);
-        }
+//        }
 //        for (android_project.incomb.entities.Place placeCheck: places) {
 //            ReservationsTimes check = placeCheck.getAvailability();
 //            // need to remove to places that out of range
 //            //if(check.getStartEvent().before(calender.getStartEvent()) || check.getEndEvent().after(calender.getEndEvent()))
 //                //places.remove(placeCheck);
 //        }
-//        List<android_project.incomb.entities.Place> temp = new ArrayList<>();
-//        for(android_project.incomb.entities.Place placeCheck: places){
-//            ReservationsTimes check = placeCheck.getAvailability();
-//            if(calender.getStartEvent().before(check.getStartEvent()) || calender.getEndEvent().after(check.getEndEvent()))
-//                temp.add(placeCheck);
-//        }
-//        places.removeAll(temp);
+        List<android_project.incomb.entities.Place> temp = new ArrayList<>();
+        for(android_project.incomb.entities.Place placeCheck: places){
+            ReservationsTimes check = placeCheck.getAvailability();
+            if(calender.getStartEvent().before(check.getStartEvent()) || calender.getEndEvent().after(check.getEndEvent()))
+                temp.add(placeCheck);
+        }
+        places.removeAll(temp);
+        showHost();
+    }
+
+    private void showHost() {
+        ArrayList<Host> a = new ArrayList<>();
+        boolean next = false;
+        for (android_project.incomb.entities.Place placeCheck: places) {
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(placeCheck.getIdHost())
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        Person host = documentSnapshot.toObject(Person.class);
+                        a.add(new Host(host.getFullName(),host.getEmail(),host.getPhoneNumber()));
+                        createAdapter(a);
+                    });
+        }
+    }
+
+    private void createAdapter(ArrayList<Host> a) {
+        PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,a);
+        mListView.setAdapter(adapter);
     }
 
     @SuppressLint("MissingPermission")

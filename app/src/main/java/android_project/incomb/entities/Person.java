@@ -46,7 +46,7 @@ public class Person {
 
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber;}
 
-    public type getTypeUser() { return typeUser; }
+    public String getTypeUser() { return typeUser.toString(); }
 
     public void setTypeUser(String typeUser) {this.typeUser = type.valueOf(typeUser); }
 }

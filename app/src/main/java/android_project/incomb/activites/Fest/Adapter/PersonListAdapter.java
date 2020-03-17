@@ -1,4 +1,4 @@
-package android_project.incomb.entities;
+package android_project.incomb.activites.Fest.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +15,8 @@ import java.util.List;
 
 import android_project.incomb.R;
 import android_project.incomb.activites.Fest.MapAndPlacesActivity;
+import android_project.incomb.entities.Host;
+import android_project.incomb.entities.Person;
 
 public class PersonListAdapter extends ArrayAdapter<Host> {
 

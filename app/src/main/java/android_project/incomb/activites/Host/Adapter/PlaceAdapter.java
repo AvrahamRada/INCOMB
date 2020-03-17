@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -64,7 +65,9 @@ public class PlaceAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     public void addPlaces(List<DocumentSnapshot> documents) {
         for(DocumentSnapshot doc : documents) {
-            addPlace(doc.toObject(Place.class));
+            Place temp = doc.toObject(Place.class);
+            if(temp.getIdHost().equals(FirebaseAuth.getInstance().getUid()))
+                addPlace(doc.toObject(Place.class));
         }
     }
 
