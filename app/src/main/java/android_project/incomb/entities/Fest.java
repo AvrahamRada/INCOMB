@@ -1,75 +1,57 @@
 package android_project.incomb.entities;
 
-import java.io.IOException;
-import java.util.Calendar;
 
-public class Fest extends Person {
+public class Fest {
     // attributes
-    private String typeActivity; // yoga, lecture or Social Action
-    private String space;// bar or class or studio
-    private String location; // Physical location
-    private int amountOfGuest;
-    private Calendar dateOfTheActivity; //check how to save dates
+    private Event event;
+    private Place eventPlace;
+    private Person fest;
+    private String eventId;
+    private boolean selected = false;
 
-    private enum typeOfActivities {yoga,lecture,socialAction};
-    private enum typeOfSpaces {bar,studio,houseLivingRoom,openSpace};
-
-    //constructor
-//    public Fest(String fullName, String email, String phoneNumber) /*throws IOException*/ {
-//        super(fullName, email, phoneNumber);
-//        setTypeActivity(typeActivity);
-//        setSpace(space);
-//        setLocation(location);
-//        setAmountOfGuest(amountOfGuest);
-//        setDateOfTheActivity(dateOfTheActivity);
-//    }
-
+    //Constructor
     public Fest() {
-        super();
+
     }
 
     //Getters and Setters
-    public String getTypeActivity() {
-        return typeActivity;
+    public Event getEvent() {
+        return event;
     }
 
-    private void setTypeActivity(String typeActivity) {
-        this.typeActivity = typeActivity;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
-    public String getSpace() {
-        return space;
+    public Place getEventPlace() {
+        return eventPlace;
     }
 
-    private void setSpace(String space) {
-        this.space = space;
+    public void setEventPlace(Place eventPlace) {
+        this.eventPlace = eventPlace;
     }
 
-    public String getLocation() {
-        return location;
+    public Person getFest() {
+        return fest;
     }
 
-    private void setLocation(String location) {
-        this.location = location;
+    public void setFest(Person fest) {
+        this.fest = fest;
     }
 
-    public int getAmountOfGuest() {
-        return amountOfGuest;
+    public String getEventId() {
+        return eventId;
     }
 
-    private void setAmountOfGuest(int amountOfGuest) throws IOException {
-        if(amountOfGuest > 0)
-            this.amountOfGuest = amountOfGuest;
-        else {
-            throw new IOException();
-        }
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
-    public Calendar getDateOfTheActivity() {
-        return dateOfTheActivity;
+    public boolean isSelected() {
+        return selected;
     }
 
-    private void setDateOfTheActivity(Calendar dateOfTheActivity) {
-        this.dateOfTheActivity = dateOfTheActivity;
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

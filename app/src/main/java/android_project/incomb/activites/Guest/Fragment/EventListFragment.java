@@ -9,6 +9,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,18 +63,11 @@ public class EventListFragment extends Fragment {
     }
 
     private void setSearchRecyclerView() {
-        List<Event> events = new ArrayList<>();
-        FirebaseFirestore.getInstance()
-                .collection("event")
-                .whereEqualTo("hostId", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    events.addAll(queryDocumentSnapshots.toObjects(Event.class));
-                    PartysAdapter adapter = new PartysAdapter(events);
-                    searchRecyclerViews.setAdapter(adapter);
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(),"No Events",Toast.LENGTH_LONG);
-                });
+        PartysAdapter adapter = new PartysAdapter();
+        searchRecyclerViews.setAdapter(adapter);
+    }
+
+    public RecyclerView getEventRecyclerView() {
+        return this.searchRecyclerViews;
     }
 }

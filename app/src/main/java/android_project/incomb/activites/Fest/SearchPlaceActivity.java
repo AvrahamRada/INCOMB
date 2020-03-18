@@ -17,7 +17,6 @@ import android_project.incomb.activites.Start.LoginActivity;
 
 public class SearchPlaceActivity extends AppCompatActivity implements IFestActivty {
     private static final int PLACE_REQUEST_CODE = 2;
-    public static final int PLACE_ADD_OK = 3;
 
     private Button button;
     private PlaceListFestFragment placeListFestFragment;
@@ -43,7 +42,6 @@ public class SearchPlaceActivity extends AppCompatActivity implements IFestActiv
     public void searchPlace() {
         Intent intent = new Intent(this, MapAndPlacesActivity.class);
         startActivityForResult(intent, PLACE_REQUEST_CODE);
-        //startActivity(intent);
     }
 
     @Override
@@ -51,7 +49,6 @@ public class SearchPlaceActivity extends AppCompatActivity implements IFestActiv
         super.onActivityResult(requestCode, resultCode, data);
         switch (PLACE_REQUEST_CODE){
             default:
-            System.out.println("remove");
                 ((FindPlaceAdapter) placeListFestFragment.getEventRecyclerView().getAdapter()).refreshData();
                 //tell recyclerview adapter refresh data
         }

@@ -39,6 +39,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -341,6 +342,22 @@ public class MapAndPlacesActivity extends AppCompatActivity implements OnMapRead
             }
         }
         showHost();
+        setMap();
+    }
+
+    private void setMap() {
+        double latitude;
+        double longitude;
+        List<android_project.incomb.entities.Place> places = new ArrayList<>(placeIdmap.keySet());
+        ArrayList<LatLng> latLngArrayList = new ArrayList<>();
+        for (int i = 0; i < places.size(); i++) {
+            latitude = latLngArrayList.get(i).latitude;
+            longitude = latLngArrayList.get(i).longitude;
+            latLngArrayList.add(new LatLng(latitude, longitude));
+            mMap.addMarker(new MarkerOptions().position(latLngArrayList.get(i)).title("Marker"));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngArrayList.get(i)));
+        }
     }
 
     private void showHost() {

@@ -53,6 +53,8 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -61,6 +63,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +71,9 @@ import android_project.incomb.R;
 import android_project.incomb.activites.Fest.Adapter.PersonListAdapter;
 import android_project.incomb.activites.Fest.DateRangeActivity;
 import android_project.incomb.activites.Fest.MapAndPlacesActivity;
+import android_project.incomb.activites.Guest.Adapter.EventPersonListAdapter;
 import android_project.incomb.entities.Event;
+import android_project.incomb.entities.Fest;
 import android_project.incomb.entities.Host;
 import android_project.incomb.entities.Person;
 import android_project.incomb.entities.ReservationsTimes;
@@ -82,13 +87,10 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     //result after the DateRangeActivity
     String typeActivity;
     ReservationsTimes calender;
-    List<Event> events = new ArrayList<>();
-    List<android_project.incomb.entities.Place> places = new ArrayList<>();
     Map<Event, String> eventIdmap = new HashMap<>();
     //List view result
     ListView mListView;
-    ArrayList<Host> hostList;
-    String name;
+    ArrayList<Fest> festList;
 
     private AutoCompleteTextView mAddressField;
     private StringBuilder mResult;
@@ -115,7 +117,7 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_and_places);
+        setContentView(R.layout.activity_map_and_events);
         mListView = (ListView)findViewById(R.id.list_view);
 
         // Map Config
@@ -272,45 +274,47 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
                                                 if (!(calender.getStartEvent().before(check.getStartEvent())) && !(calender.getEndEvent().after(check.getEndEvent()))) {
                                                     eventIdmap.put(event, doc.getId());
                                                     //upadte list in adapter
-
                                                 }
                                             }
+                                            showEvents();
                                         });
                             }
-                            //showEvents();
                         });
-            }
-            int i = 0;
-            ArrayList<LatLng> latLngArrayList = new ArrayList<>();
-            for (android_project.incomb.entities.Place placeCheck : places) {
-                GeoPoint geo = placeCheck.getLocation();
-                latLngArrayList.add(new LatLng(geo.getLatitude(), geo.getLongitude()));
-                mMap.addMarker(new MarkerOptions().position(latLngArrayList.get(i)).title("Marker"));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngArrayList.get(i)));
-                i++;
             }
         }
     }
 
     private void showEvents() {
-        hostList = new ArrayList<>();
-        for (android_project.incomb.entities.Place placeCheck : places) {
+        festList = new ArrayList<>();
+        Fest fest = new Fest();
+        Iterator it = eventIdmap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Event checkEvent = (Event) pair.getKey();
+            String eventID = (String) pair.getValue();
             FirebaseFirestore.getInstance()
-                    .collection("users")
-                    .document(placeCheck.getIdHost())
+                    .collection("event")
+                    .document(checkEvent.getIdFest())
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
-                        Person host = documentSnapshot.toObject(Person.class);
-                        hostList.add(new Host(host.getFullName(), host.getEmail(), host.getPhoneNumber()));
-                        createAdapter(hostList);
+                        fest.setEvent(checkEvent);
+                        fest.setEventId(eventID);
+                        fest.setFest(documentSnapshot.toObject(Person.class));
+                    FirebaseFirestore.getInstance()
+                            .collection("event")
+                            .document()
+                            .get()
+                            .addOnSuccessListener(documentSnapshot1 -> {
+                                fest.setEventPlace(documentSnapshot1.toObject(android_project.incomb.entities.Place.class));
+                                festList.add(fest);
+                            });
+                        createAdapter(festList);createAdapter(festList);
                     });
         }
     }
 
-    //list of host - need to keep it for every one
-    private void createAdapter(ArrayList<Host> temp) {
-        PersonListAdapter adapter = new PersonListAdapter(this,R.layout.adapter_view_layout,temp);
+    private void createAdapter(ArrayList<Fest> temp) {
+        EventPersonListAdapter adapter = new EventPersonListAdapter(this,R.layout.adapter_view_layout,temp);
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener((parent, view, position, id) -> {
             if(!temp.get(position).isSelected()){
@@ -325,10 +329,21 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
     }
 
     public void makeEventClick(View view) {
-        for (Host host:hostList) {
-            if(host.isSelected()){
+        for (Fest fest:festList) {
+            if(fest.isSelected()){
+                updateEventList(fest);
             }
         }
+    }
+
+    private void updateEventList(Fest fest) {
+        FirebaseFirestore.getInstance()
+                .collection("event")
+                .document(fest.getEventId())
+                .update("idGuest", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Add to event!", Toast.LENGTH_SHORT).show();
+                });
     }
 
 
@@ -374,3 +389,5 @@ public class MapAndEventsActivity extends AppCompatActivity implements OnMapRead
 
     }
 }
+
+

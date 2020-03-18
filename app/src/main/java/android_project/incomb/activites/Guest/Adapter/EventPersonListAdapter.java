@@ -20,16 +20,17 @@ import java.util.List;
 import java.util.Locale;
 
 import android_project.incomb.R;
+import android_project.incomb.entities.Fest;
 import android_project.incomb.entities.Host;
 import android_project.incomb.entities.Person;
 import android_project.incomb.entities.Place;
 
-public class EventPersonListAdapter extends ArrayAdapter<Host> {
+public class EventPersonListAdapter extends ArrayAdapter<Fest> {
 
     private Context mContext;
     private int mResource;
 
-    public EventPersonListAdapter(Context context, int resource, ArrayList<Host> objects) {
+    public EventPersonListAdapter(Context context, int resource, ArrayList<Fest> objects) {
         super(context, resource, objects);
         this.mContext = context;
         this.mResource = resource;
@@ -39,13 +40,13 @@ public class EventPersonListAdapter extends ArrayAdapter<Host> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         //get the place and the host
-        Place hostPlace = getItem(position).getHostPlace();
-        Person host = getItem(position).getHost();
+        Place festPlace = getItem(position).getEventPlace();
+        Person fest = getItem(position).getFest();
         //get the persons information
-        String name = host.getFullName();
-        String email = host.getEmail();
-        String phone = host.getPhoneNumber();
-        String address = getAddress(hostPlace.getLocation());
+        String name = fest.getFullName();
+        String email = fest.getEmail();
+        String phone = fest.getPhoneNumber();
+        String address = getAddress(festPlace.getLocation());
 
         //Create the person object with the information
         LayoutInflater inflater = LayoutInflater.from(mContext);

@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -16,10 +18,10 @@ import android_project.incomb.R;
 import android_project.incomb.entities.Event;
 
 public class PartysAdapter extends RecyclerView.Adapter<PartyViewHolder> {
-    List<Event> eventsList;
+    List<Event> eventsList = new ArrayList<>();
 
-    public PartysAdapter(List<Event> eventsList) {
-        this.eventsList = eventsList;
+    public PartysAdapter() {
+        refreshData();
     }
 
     @NonNull
@@ -53,6 +55,24 @@ public class PartysAdapter extends RecyclerView.Adapter<PartyViewHolder> {
     @Override
     public int getItemCount() {
         return eventsList.size();
+    }
+
+    public void refreshData(){
+        List<Event> events = new ArrayList<>();
+        FirebaseFirestore.getInstance()
+                .collection("event")
+                .whereEqualTo("idGuest", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if(queryDocumentSnapshots.size()!=eventsList.size()){
+                        eventsList.removeAll(eventsList);
+                        eventsList.addAll(queryDocumentSnapshots.toObjects(Event.class));
+                    }
+                    notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    //Toast.makeText(getContext(),"No Events",Toast.LENGTH_LONG);
+                });
     }
 
 }
